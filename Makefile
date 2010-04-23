@@ -1,5 +1,6 @@
-CURSORDIR=$(HOME)/.icons/ComixCursors-Custom
-BUILDDIR=cursors
+ICONSDIR ?= ${HOME}/.icons
+CURSORDIR = ${ICONSDIR}/ComixCursors-Custom
+BUILDDIR = cursors
 
 #Define here the animation cursor directories
 ANIMATED_CURSORS:= wait progress help
@@ -25,8 +26,8 @@ all: $(CURSORS) $(ANIMATIONS)
 
 install: all
 #	Create necessary directories
-	if test ! -d $(HOME)/.icons ;then mkdir $(HOME)/.icons; fi
-	if test ! -d $(HOME)/.icons/default ;then mkdir $(HOME)/.icons/default;fi
+	if test ! -d ${ICONSDIR} ;then mkdir ${ICONSDIR}; fi
+	if test ! -d ${ICONSDIR}/default ;then mkdir ${ICONSDIR}/default;fi
 	if test -d $(CURSORDIR) ;then rm -rf $(CURSORDIR); fi
 	if test ! -d $(CURSORDIR) ;then mkdir $(CURSORDIR); fi
 	if test ! -d $(CURSORDIR)/cursors ;then mkdir $(CURSORDIR)/cursors; fi
