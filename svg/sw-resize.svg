@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   version="1.0"
+   width="500"
+   height="500"
+   viewBox="0 0 1000 1000"
+   id="page"
+   xml:space="preserve"><defs
+   id="defs38"><linearGradient
+   id="linearGradient2218"><stop
+     style="stop-color:#999999;stop-opacity:1"
+     offset="0"
+     id="stop2220" /><stop
+     style="stop-color:#555555;stop-opacity:1"
+     offset="1"
+     id="stop2222" /></linearGradient><linearGradient
+   x1="494.34314"
+   y1="-0.10605561"
+   x2="494.34314"
+   y2="529.69983"
+   id="linearGradient2224"
+   xlink:href="#linearGradient2218"
+   gradientUnits="userSpaceOnUse" />
+		<linearGradient
+   x1="481.1828"
+   y1="226.36562"
+   x2="481.1828"
+   y2="698.36462"
+   id="linearGradient4101"
+   xlink:href="#linearGradient2218"
+   gradientUnits="userSpaceOnUse" /><linearGradient
+   x1="481.1828"
+   y1="226.36562"
+   x2="481.1828"
+   y2="698.36462"
+   id="linearGradient4104"
+   xlink:href="#linearGradient2218"
+   gradientUnits="userSpaceOnUse" /><linearGradient
+   x1="481.1828"
+   y1="226.36562"
+   x2="481.1828"
+   y2="698.36462"
+   id="linearGradient4107"
+   xlink:href="#linearGradient2218"
+   gradientUnits="userSpaceOnUse" /><linearGradient
+   x1="303.29138"
+   y1="115.33563"
+   x2="303.29138"
+   y2="508.32028"
+   id="linearGradient4206"
+   xlink:href="#linearGradient2218"
+   gradientUnits="userSpaceOnUse"
+   gradientTransform="translate(-1.36756e-5,1.84549e-6)" /></defs>
+<path
+   d="M 555.35972,167.46512 C 535.16172,167.85012 417.41772,321.16412 400.16172,320.85112 C 381.41772,321.16412 400.45172,140.13312 391.16172,131.85012 C 381.41772,123.16412 327.41772,123.16412 319.16172,131.85012 C 309.41772,141.16412 313.21072,481.60012 320.35872,489.46512 C 330.36072,500.46712 669.41772,501.16412 679.16172,491.85212 C 690.88272,480.64712 687.41772,429.16512 679.16172,419.85212 C 669.41772,411.16512 489.41772,429.16512 490.16172,410.85212 C 489.41872,393.16512 643.16172,275.85212 645.36172,257.46812 C 642.41772,222.16412 588.41772,168.16512 555.35972,167.46512 z "
+   style="opacity:1;fill:url(#linearGradient4206);fill-opacity:1;stroke:#000000;stroke-width:20;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:1"
+   id="path4191" /></svg>
