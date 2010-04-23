@@ -1,4 +1,4 @@
-#!/bin/sh
+#! /bin/bash
 
 # the original cursors
 SIZES="Small Regular Large Huge"
