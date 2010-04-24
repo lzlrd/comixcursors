@@ -19,6 +19,10 @@ PKGS="ComixCursors-LH-opaque ComixCursors-LH ComixCursors-opaque ComixCursors"
 BASEDIR=$PWD
 DISTDIR=$PWD/dist
 
+# Set the ICONSDIR destination to a default (if not already set).
+ICONSDIR=${ICONSDIR:-~/.icons}
+export ICONSDIR
+
 if [ ! -d $DISTDIR ] ; then mkdir $DISTDIR; fi
 rm -rf $DISTDIR/*
 
@@ -51,7 +55,7 @@ for PKG in $PKGS; do
 
   cd $SUBDIR
   ./install-all.sh
-  cp link-cursors.sh ~/.icons/
+  cp link-cursors.sh ${ICONSDIR}/
 
   #
   # cursors packages
@@ -61,7 +65,7 @@ for PKG in $PKGS; do
   # now it's important that the $PKGS get processed in an "reverse" order,
   # so only directories matching package name get packed. 
 
-  cd ~/.icons/ 
+  cd ${ICONSDIR}/ 
   TARFILE=$PKG-$VERSION.tar.bz2
   if [ -f $TARFILE ] ; then rm $TARFILE; fi
   tar -cjhf $TARFILE $PKG* link-cursors.sh
