@@ -1,18 +1,19 @@
 #!/bin/bash
 ##########################################################
-# svg2png.bash                                           #
-# 2006 Jens Luetkens <j.luetkens@limitland.de>           #
-# version: ComixCursors 0.5.0                            #
-#          flatbedcursors 0.1 (compatible)               #
-#                                                        #
-# take a simple svg file, export it to an image,         #
-# do some image magig, generate a shadow, scale          #
-# and merge it to a single image                         #
-#                                                        #
-# Required tools:                                        #
-# ImageMagick : http://www.imagemagick.org               #
-# Inkscape    : http://www.inkscape.org                  #
-#                                                        #
+# svg2png.bash
+# Copyright © 2010 Ben Finney <ben+debian@benfinney.id.au>
+# Copyright © 2006 Jens Luetkens <j.luetkens@limitland.de>
+# version: ComixCursors 0.5.0
+#          flatbedcursors 0.1 (compatible)
+#
+# Take a simple svg file, export it to an image,
+# do some image magig, generate a shadow, scale
+# and merge it to a single image.
+#
+# Required tools:
+# ImageMagick:  http://www.imagemagick.org/
+# librsvg:      http://librsvg.sourceforge.net/
+#
 ##########################################################
 
 if [ $# -lt 1 ]; then
@@ -69,11 +70,11 @@ YMOVE=`echo "$YOFFSET * $TMPSCALE" | bc`
 
 SCALEBLUR=`echo "$BLUR * $TMPSCALE" | bc`
 SCALESIZE=`echo "$SIZE * $TMPSCALE" | bc`
-CROP=`echo "($SCALESIZE - $TMPSIZE) / 2" | bc`
 
-# scaling the shadow from a 500x500 px image
-RIGHT=`echo "500 / $SHADOWSCALE" | bc`
-LEFT=`echo "500 - $RIGHT" | bc`
+# Scaling the shadow from the cursor image.
+SHADOWSIZE=$(echo "$TMPSIZE * $SHADOWSCALE" | bc)
+RIGHT=$(echo "$TMPSIZE / $SHADOWSCALE" | bc)
+LEFT=$(echo "$TMPSIZE - $RIGHT" | bc)
 
 if [ ! -d tmp ]; then mkdir tmp ; fi
 if [ ! -d shadows ]; then mkdir shadows ; fi
@@ -113,27 +114,28 @@ SHADOWIMAGE=shadows/$SHADOW-$SIZE-$SHADOWCOLOR-$SHADOWTRANS.png
 CURSORIMAGE=tmp/cursor.png
 SCALEDIMAGE=tmp/scaledcursor.png
 
+function svg2png {
+    # Convert a single SVG image to PNG.
+    local infile=$1
+    local outfile=$2
+    local size=$3
+
+    rsvg --format png \
+        --dpi-x 72 --dpi-y 72 \
+        --width $size --height $size \
+        $infile $outfile
+}
+
 # compose the image
-inkscape -e $CURSORIMAGE \
-   -w $TMPSIZE \
-   -h $TMPSIZE \
-   -b $OUTLINECOLOR \
-   -y 0 \
-   -d 72 \
-   $INFILE >> /dev/null
+svg2png $INFILE $CURSORIMAGE $TMPSIZE
 
 if [ ! -f $SHADOWIMAGE ]; then
-  # echo "creating shadow image $SHADOWIMAGE..."
-  # scaling the shadow must be done with exporting a different area from inkscape...
-  inkscape -e $SCALEDIMAGE \
-     -a $LEFT:$LEFT:$RIGHT:$RIGHT \
-     -w $TMPSIZE \
-     -h $TMPSIZE \
-     -b $OUTLINECOLOR \
-     -y 0 \
-     -d 72 \
-   $INFILE >> /dev/null
-  
+    # Make the shadow image from an extract of the cursor.
+    convert \
+        -extract ${SHADOWSIZE}x${SHADOWSIZE}+${LEFT}+${LEFT} \
+        -resize ${TMPSIZE}x${TMPSIZE} \
+        $CURSORIMAGE $SCALEDIMAGE
+
   convert -modulate 0 \
      -fill "$SHADOWCOLOR" \
      -colorize 100 \

@@ -4,11 +4,10 @@
 
 INSTALLATION
 
-You need to have the ImageMagick (www.imagemagick.org)
-tools and Inkscape (www.inkscape.org) installed, to run
-the installation script!
+Refer to the ‘INSTALL’ file for requirements and detailed instructions
+to build and install.
 
-If you have, issue
+If you have the required programs, issue
 
 # ./install.bash
 
