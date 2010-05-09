@@ -6,8 +6,8 @@
 #
 
 # inner cursor colors, #999999 and #555555 in source image
-CURSORCOLORHI="#ffffff"
-CURSORCOLORLO="#ffffff"
+CURSORCOLORHI="#ccffff"
+CURSORCOLORLO="#00ccff"
 
 # shadow color, processed by ImageMagick
 SHADOWCOLOR="#000000"
