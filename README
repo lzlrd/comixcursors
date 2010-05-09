@@ -24,6 +24,8 @@ ComixCursors is licensed to all under the terms of the LGPL:
     License along with this work.
     If not, see <http://www.gnu.org/licenses/>.
 
+The license terms are in the files ‘LICENSE.LGPL’ and ‘LICENSE.GPL’.
+
 
 INSTALLATION
 
@@ -42,8 +44,6 @@ install", to create the xcursor files and install them
 into you personal cursors folder (~/.icons/). 
 Thanks to uga and the RedDot cursor theme for the basic
 skeleton and Makefile. 
-
-Read the file INSTALLATION for installation details. 
 
 
 CUSTOMIZE YOUR CURSORS
