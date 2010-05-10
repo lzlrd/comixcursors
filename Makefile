@@ -23,7 +23,8 @@
 # Makefile for ComixCursors project.
 
 ICONSDIR ?= ${HOME}/.icons
-CURSORDIR = ${ICONSDIR}/ComixCursors-Custom
+themedir = ${ICONSDIR}/ComixCursors-Custom
+cursordir = ${themedir}/cursors
 BUILDDIR = cursors
 
 #Define here the animation cursor directories
@@ -43,26 +44,25 @@ CURSORNAMES= $(cursornames)
 ANIMATIONS= $(animcursorfiles)
 ANIMATIONNAMES=$(animcursornames)
 
-
+
 .PHONY: all
-
 all: $(CURSORS) $(ANIMATIONS)
 
+.PHONY: install
 install: all
-#	Create necessary directories
-	if test ! -d ${ICONSDIR} ;then mkdir ${ICONSDIR}; fi
-	if test ! -d ${ICONSDIR}/default ;then mkdir ${ICONSDIR}/default;fi
-	if test -d $(CURSORDIR) ;then rm -rf $(CURSORDIR); fi
-	if test ! -d $(CURSORDIR) ;then mkdir $(CURSORDIR); fi
-	if test ! -d $(CURSORDIR)/cursors ;then mkdir $(CURSORDIR)/cursors; fi
+#	Create necessary directories.
+	install -d "${ICONSDIR}" "${ICONSDIR}/default"
+	rm -rf "${themedir}"
+	install -d "${cursordir}"
 
-#	Copy the cursors
-	cp -Rf $(BUILDDIR)/* $(CURSORDIR)/cursors
+#	Install the cursors.
+	install -m u=rw,go=r "${BUILDDIR}"/* "${cursordir}"
 
-#	Copy the configuration file
-	cp -f  index.theme $(CURSORDIR)
+#	Install the theme configuration file.
+	install -m u=rw,go=r index.theme "${themedir}"
 
-	sh link-cursors.sh $(CURSORDIR)/cursors
+#	Install alternative name symlinks for the cursors.
+	sh link-cursors.sh "${cursordir}"
 
 #Normal Cursors
 define CURSOR_template
