@@ -2,13 +2,37 @@
 # The original Comix Cursors sources README
 #
 
+COPYRIGHT
+
+ComixCursors, and all its file contents, comprise a work that is
+copyright © 2006–2010 Jens Luetkens and others. For a full list of
+authors and contributors, see the ‘AUTHORS’ file.
+
+ComixCursors is licensed to all under the terms of the LGPL:
+
+    This work is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Lesser General Public License as
+    published by the Free Software Foundation, either version 3 of the
+    License, or (at your option) any later version.
+
+    This work is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Lesser General Public License for more details.
+
+    You should have received a copy of the GNU Lesser General Public
+    License along with this work.
+    If not, see <http://www.gnu.org/licenses/>.
+
+The license terms are in the files ‘LICENSE.LGPL’ and ‘LICENSE.GPL’.
+
+
 INSTALLATION
 
-You need to have the ImageMagick (www.imagemagick.org)
-tools and Inkscape (www.inkscape.org) installed, to run
-the installation script!
+Refer to the ‘INSTALL’ file for requirements and detailed instructions
+to build and install.
 
-If you have, issue
+If you have the required programs, issue
 
 # ./install.bash
 
@@ -20,8 +44,6 @@ install", to create the xcursor files and install them
 into you personal cursors folder (~/.icons/). 
 Thanks to uga and the RedDot cursor theme for the basic
 skeleton and Makefile. 
-
-Read the file INSTALLATION for installation details. 
 
 
 CUSTOMIZE YOUR CURSORS
