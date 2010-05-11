@@ -3,15 +3,20 @@
 # source the global config file
 source CONFIG
 
-# process svg file
+function svg_substitutions {
+    # Process an SVG file with custom substitutions.
+    local infile="$1"
 
-SED1="sed s/#000000/$OUTLINECOLOR/g"
-SED2="sed s/stroke-width:20/stroke-width:$OUTLINE/g"
-SED3="sed s/#999999/$CURSORCOLORHI/g"
-SED4="sed s/#555555/$CURSORCOLORLO/g"
-SED5="sed s/#999933/$HILIGHTHI/g"
-SED6="sed s/#666600/$HILIGHTLO/g"
-SED7="sed s/#010101/$HAIR/g"
+    sed \
+        -e "s/#000000/$OUTLINECOLOR/g" \
+        -e "s/stroke-width:20/stroke-width:$OUTLINE/g" \
+        -e "s/#999999/$CURSORCOLORHI/g" \
+        -e "s/#555555/$CURSORCOLORLO/g" \
+        -e "s/#999933/$HILIGHTHI/g" \
+        -e "s/#666600/$HILIGHTLO/g" \
+        -e "s/#010101/$HAIR/g" \
+        "$infile"
+}
 
 # the basic cursors
 FILES="
@@ -56,8 +61,7 @@ if [ ! -d shadows ] ; then mkdir shadows; fi
 
 for f in $FILES; do 
   if [ -f svg/$f.svg ] ; then
-    cat svg/$f.svg | $SED1 | $SED2 \
-    | $SED3 | $SED4 | $SED5 | $SED6 | $SED7 > tmp/tmp.svg
+    svg_substitutions svg/$f.svg > tmp/tmp.svg
     ./svg2png.bash $f
   else
     echo "skipping $f: no svg file found."
@@ -76,8 +80,7 @@ no-drop
 
 for f in $FILES; do 
   if [ -f svg/$f.svg ] ; then
-    cat svg/$f.svg | $SED1 | $SED2 \
-    | $SED3 | $SED4 | $SED5 | $SED6 | $SED7 > tmp/tmp.svg
+    svg_substitutions svg/$f.svg > tmp/tmp.svg
     ./svg2png.bash $f $f -BACKGROUND default -SHADOW move
   else
     echo "skipping $f: no svg file found."
@@ -89,19 +92,16 @@ done
 if [ ! -d build/help ] ; then
 	mkdir build/help
 fi
-cat svg/help1.svg | $SED1 | $SED2 \
-    | $SED3 | $SED4 | $SED5 | $SED6 | $SED7 > tmp/tmp.svg
+svg_substitutions svg/help1.svg > tmp/tmp.svg
 ./svg2png.bash help -PART 1 -BACKGROUND default -SHADOW move -TIME 2000
-cat svg/help2.svg | $SED1 | $SED2 \
-    | $SED3 | $SED4 | $SED5 | $SED6 | $SED7 > tmp/tmp.svg
+svg_substitutions svg/help2.svg > tmp/tmp.svg
 ./svg2png.bash help -PART 2 -BACKGROUND default -SHADOW move -TIME 500
 
 
 if [ ! -d build/progress ] ; then
 	mkdir build/progress
 fi
-cat svg/progress.svg | $SED1 | $SED2 \
-    | $SED3 | $SED4 | $SED5 | $SED6 | $SED7 > tmp/tmp.svg
+svg_substitutions svg/progress.svg > tmp/tmp.svg
 for (( i=1; $i < 25; i++ )); do
   ./svg2png.bash progress -PART $i -BACKGROUND default -SHADOW move
   patch -f --silent tmp/tmp.svg svg/progress.diff >> /dev/null
@@ -111,8 +111,7 @@ done
 if [ ! -d build/wait ] ; then
 	mkdir build/wait
 fi
-cat svg/wait.svg | $SED1 | $SED2 \
-    | $SED3 | $SED4 | $SED5 | $SED6 | $SED7 > tmp/tmp.svg
+svg_substitutions svg/wait.svg > tmp/tmp.svg
 for (( i=1; $i < 37; i++ )); do
   ./svg2png.bash wait -PART $i 
   patch -f --silent tmp/tmp.svg svg/wait.diff >> /dev/null
@@ -124,4 +123,3 @@ echo "silent make"
 make -silent
 echo "silent make install"
 make -silent install
-
