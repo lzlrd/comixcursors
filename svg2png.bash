@@ -63,13 +63,13 @@ while [ "$1" != "" ]; do
 	shift
 done
 
-TMPSIZE=`echo " $SIZE * $TMPSCALE" | bc`
+TMPSIZE=$(echo "$SIZE * $TMPSCALE" | bc)
 
-XMOVE=`echo "$XOFFSET * $TMPSCALE" | bc`
-YMOVE=`echo "$YOFFSET * $TMPSCALE" | bc`
+XMOVE=$(echo "$XOFFSET * $TMPSCALE" | bc)
+YMOVE=$(echo "$YOFFSET * $TMPSCALE" | bc)
 
-SCALEBLUR=`echo "$BLUR * $TMPSCALE" | bc`
-SCALESIZE=`echo "$SIZE * $TMPSCALE" | bc`
+SCALEBLUR=$(echo "$BLUR * $TMPSCALE" | bc)
+SCALESIZE=$(echo "$SIZE * $TMPSCALE" | bc)
 
 # Scaling the shadow from the cursor image.
 SHADOWSIZE=$(echo "$TMPSIZE * $SHADOWSCALE" | bc)
@@ -89,13 +89,13 @@ fi
 
 # write the hotspot config file
 if [ $BACKGROUND ] ; then 
-  HOTSPOT=(`grep "^$BACKGROUND" HOTSPOTS`)
+  HOTSPOT=( $(grep "^$BACKGROUND" HOTSPOTS) )
 else 
-  HOTSPOT=(`grep "^$NAME" HOTSPOTS`)
+  HOTSPOT=( $(grep "^$NAME" HOTSPOTS) )
 fi
 	
-HOTX=`echo "${HOTSPOT[1]} * $SIZE / 500" | bc`
-HOTY=`echo "${HOTSPOT[2]} * $SIZE / 500" | bc`
+HOTX=$(echo "${HOTSPOT[1]} * $SIZE / 500" | bc)
+HOTY=$(echo "${HOTSPOT[2]} * $SIZE / 500" | bc)
 	
 if [ $PART -lt 2 ]; then
   if [ -e build/$SUBPATH$NAME.conf ]; then
@@ -152,7 +152,7 @@ if [ ! -f $SHADOWIMAGE ]; then
      $SHADOWIMAGE
 fi
 
-if [ `echo "$CURSORTRANS > 0" | bc` -gt 0 ]; then
+if [ $(echo "$CURSORTRANS > 0" | bc) -gt 0 ]; then
    # echo "applying cursor transparency: $CURSORTRANS ..."
    convert -channel Alpha -fx \'a-$CURSORTRANS\' $CURSORIMAGE $CURSORIMAGE
 fi
