@@ -38,6 +38,7 @@ cursorfiles:= $(foreach conffile,$(conffiles),$(BUILDDIR)/$(subst ./,,$(subst .c
 cursornames:= $(foreach conffile,$(conffiles),$(subst ./,,$(subst .conf,,$(subst build/,,$(conffile)))))
 animcursorfiles:=$(foreach animationfile,$(ANIMATED_CURSORS),$(BUILDDIR)/$(animationfile))
 animcursornames:=$(ANIMATED_CURSORS)
+linksfile = cursorlinks
 
 CURSORS = $(cursorfiles)
 CURSORNAMES= $(cursornames)
@@ -62,7 +63,12 @@ install: all
 	install -m u=rw,go=r index.theme "${themedir}"
 
 #	Install alternative name symlinks for the cursors.
-	sh link-cursors.sh "${cursordir}"
+	sed -e 's/#.*$$//' "${linksfile}" \
+	| grep -v '^[[:space:]]*$$' \
+	| (cd "${cursordir}" ; \
+	    while read orig new ; do \
+	        ln -sf "$$orig" "$$new" ; \
+	    done)
 
 #Normal Cursors
 define CURSOR_template
