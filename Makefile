@@ -66,16 +66,16 @@ install: all
 
 #Normal Cursors
 define CURSOR_template
-$(BUILDDIR)/$(1): build/$(1).png build/$(1).conf
-	xcursorgen "build/$(1).conf" "$(BUILDDIR)/$(1)"
+$(BUILDDIR)/$(1): build/$(1).conf build/$(1).png
+	xcursorgen "$$<" "$$@"
 endef
 
 $(foreach cursor,$(CURSORNAMES),$(eval $(call CURSOR_template,$(cursor))))
 
 #Animated Cursors
 define ANIMCURSOR_template
-$(BUILDDIR)/$(1):  build/$(1)/$(1).conf build/$(1)/*.png
-	xcursorgen "build/$(1)/$(1).conf" "$(BUILDDIR)/$(1)"
+$(BUILDDIR)/$(1): build/$(1)/$(1).conf build/$(1)/*.png
+	xcursorgen "$$<" "$$@"
 endef
 
 $(foreach anim,$(ANIMATIONNAMES),$(eval $(call ANIMCURSOR_template,$(anim))))
