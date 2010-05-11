@@ -38,7 +38,6 @@ cursorfiles:= $(foreach conffile,$(conffiles),$(BUILDDIR)/$(subst ./,,$(subst .c
 cursornames:= $(foreach conffile,$(conffiles),$(subst ./,,$(subst .conf,,$(subst build/,,$(conffile)))))
 animcursorfiles:=$(foreach animationfile,$(ANIMATED_CURSORS),$(BUILDDIR)/$(animationfile))
 animcursornames:=$(ANIMATED_CURSORS)
-linksfile = cursorlinks
 
 CURSORS = $(cursorfiles)
 CURSORNAMES= $(cursornames)
@@ -63,17 +62,12 @@ install: all
 	install -m u=rw,go=r index.theme "${themedir}"
 
 #	Install alternative name symlinks for the cursors.
-	sed -e 's/#.*$$//' "${linksfile}" \
-	| grep -v '^[[:space:]]*$$' \
-	| (cd "${cursordir}" ; \
-	    while read orig new ; do \
-	        ln -sf "$$orig" "$$new" ; \
-	    done)
+	./link-cursors "${cursordir}"
 
 #Normal Cursors
 define CURSOR_template
 $(BUILDDIR)/$(1): build/$(1).png build/$(1).conf
-	xcursorgen build/$(1).conf $(BUILDDIR)/$(1)
+	xcursorgen "build/$(1).conf" "$(BUILDDIR)/$(1)"
 endef
 
 $(foreach cursor,$(CURSORNAMES),$(eval $(call CURSOR_template,$(cursor))))
@@ -81,7 +75,7 @@ $(foreach cursor,$(CURSORNAMES),$(eval $(call CURSOR_template,$(cursor))))
 #Animated Cursors
 define ANIMCURSOR_template
 $(BUILDDIR)/$(1):  build/$(1)/$(1).conf build/$(1)/*.png
-	xcursorgen build/$(1)/$(1).conf $(BUILDDIR)/$(1)
+	xcursorgen "build/$(1)/$(1).conf" "$(BUILDDIR)/$(1)"
 endef
 
 $(foreach anim,$(ANIMATIONNAMES),$(eval $(call ANIMCURSOR_template,$(anim))))
