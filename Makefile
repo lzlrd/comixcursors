@@ -63,3 +63,9 @@ clean::
 	$(RM) -r tmp
 	$(RM) -r shadows
 
+
+# Local Variables:
+# mode: makefile
+# coding: utf-8
+# End:
+# vim: filetype=make fileencoding=utf-8 :
