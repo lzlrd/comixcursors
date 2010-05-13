@@ -18,6 +18,72 @@ function svg_substitutions {
         "$infile"
 }
 
+indir="svg"
+tempdir="tmp"
+destdir="build"
+
+mkdir --parents "${destdir}"
+mkdir --parents "${tempdir}"
+mkdir --parents "cursors"
+mkdir --parents "shadows"
+
+
+function generate_animation_source_frames {
+    # Generate the source frame images for an animation.
+    local name="$1"
+    local frames_count=$2
+
+    first_frame_file="${indir}/${name}.svg"
+    patch_file="${indir}/${name}.diff"
+    for frame in $(seq 1 $frames_count) ; do
+        frame_file="${indir}/${name}${frame}.svg"
+        case $frame in
+            1)
+                cp "$first_frame_file" "$frame_file"
+                ;;
+            *)
+                cp "$prev_frame_file" "$frame_file"
+                patch --force --silent \
+                    "$frame_file" < "$patch_file" > /dev/null
+                ;;
+        esac
+        prev_frame_file="$frame_file"
+    done
+}
+
+function render_cursor_image {
+    # Render SVG source image to finished PNG image.
+    local name="$1"
+    local compose_opts="$2"
+    local frame=$3
+    local frame_time=$4
+
+    if [[ "$frame" ]] ; then
+        outdir="${destdir}/${name}"
+        frame_name="${name}${frame}"
+        compose_opts="${compose_opts} -PART $frame"
+        if [[ "$frame_time" ]] ; then
+            compose_opts="${compose_opts} -TIME $frame_time"
+        fi
+    else
+        frame=0
+        outdir="${destdir}"
+        frame_name="${name}"
+    fi
+
+    mkdir --parents "$outdir"
+    infile="${indir}/${frame_name}.svg"
+    if [[ ! -f "$infile" ]] ; then
+        echo "skipping $name; no svg file found."
+        return 1
+    fi
+    tempfile="${tempdir}/$(basename $infile)"
+    outfile="${outdir}/${frame_name}.png"
+    svg_substitutions "$infile" > "$tempfile"
+    ./svg2png.bash $compose_opts "$name" "$tempfile" "$outfile"
+}
+
+
 # the basic cursors
 names="
 all-scroll
@@ -52,20 +118,9 @@ zoom-in
 zoom-out
 "
 
-
-mkdir --parents "build"
-mkdir --parents "tmp"
-mkdir --parents "cursors"
-mkdir --parents "shadows"
-
-
 for name in $names; do
-    if [ -f "svg/${name}.svg" ] ; then
-        svg_substitutions "svg/${name}.svg" > "tmp/tmp.svg"
-        ./svg2png.bash "$name" "tmp/tmp.svg" "build/${name}.png"
-    else
-        echo "skipping $name: no svg file found."
-    fi
+    compose_opts=""
+    render_cursor_image "$name" "$compose_opts"
 done
 
 # the pointer combined cursors
@@ -79,36 +134,29 @@ no-drop
 "
 
 for name in $names; do
-    if [ -f "svg/${name}.svg" ] ; then
-        svg_substitutions "svg/${name}.svg" > "tmp/tmp.svg"
-        ./svg2png.bash -BACKGROUND "build/default.png" "${name}" "tmp/tmp.svg" "build/${name}.png"
-    else
-        echo "skipping $name: no svg file found."
-    fi
+    compose_opts="-BACKGROUND ${destdir}/default.png"
+    render_cursor_image "$name" "$compose_opts"
 done
 
+name="help"
+compose_opts="-BACKGROUND ${destdir}/default.png"
+render_cursor_image "$name" "$compose_opts" 1 2000
+render_cursor_image "$name" "$compose_opts" 2 500
 
-
-mkdir --parents "build/help"
-svg_substitutions "svg/help1.svg" > "tmp/tmp.svg"
-./svg2png.bash -PART 1 -BACKGROUND "build/default.png" -TIME 2000 "help" "tmp/tmp.svg" "build/help/help1.png"
-svg_substitutions "svg/help2.svg" > "tmp/tmp.svg"
-./svg2png.bash -PART 2 -BACKGROUND "build/default.png" -TIME 500 "help" "tmp/tmp.svg" "build/help/help2.png"
-
-
-mkdir --parents "build/progress"
-svg_substitutions "svg/progress.svg" > "tmp/tmp.svg"
-for i in $(seq 1 24) ; do
-    ./svg2png.bash -PART $i -BACKGROUND "build/default.png" "progress" "tmp/tmp.svg" "build/progress/progress${i}.png"
-    patch -f --silent "tmp/tmp.svg" "svg/progress.diff" >> /dev/null
+name="progress"
+frames_count=24
+generate_animation_source_frames "$name" $frames_count
+for frame in $(seq 1 $frames_count) ; do
+    compose_opts="-BACKGROUND ${destdir}/default.png"
+    render_cursor_image "$name" "$compose_opts" $frame
 done
 
-
-mkdir --parents "build/wait"
-svg_substitutions "svg/wait.svg" > "tmp/tmp.svg"
-for i in $(seq 1 36) ; do
-    ./svg2png.bash -PART $i "wait" "tmp/tmp.svg" "build/wait/wait${i}.png"
-    patch -f --silent "tmp/tmp.svg" "svg/wait.diff" >> /dev/null
+name="wait"
+frames_count=36
+generate_animation_source_frames "$name" $frames_count
+for frame in $(seq 1 $frames_count) ; do
+    compose_opts=""
+    render_cursor_image "$name" "$compose_opts" $frame
 done
 
 # make and install
