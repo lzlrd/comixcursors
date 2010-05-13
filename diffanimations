@@ -30,8 +30,8 @@ function make_cumulative_patch {
 
     patch_file="${cursorname}.diff"
 
-    (for this_part in $(seq $parts_count 2) ; do
-        prev_part=$(($part - 1))
+    (for this_part in $(seq $parts_count -1 2) ; do
+        prev_part=$(($this_part - 1))
         this_file="${cursorname}${this_part}.svg"
         prev_file="${cursorname}${prev_part}.svg"
         diff "${prev_file}" "${this_file}"
