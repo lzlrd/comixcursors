@@ -61,7 +61,7 @@ function render_cursor_image {
     if [[ "$frame" ]] ; then
         outdir="${destdir}/${name}"
         frame_name="${name}${frame}"
-        compose_opts="${compose_opts} -PART $frame"
+        compose_opts="${compose_opts} -FRAME $frame"
         if [[ "$frame_time" ]] ; then
             compose_opts="${compose_opts} -TIME $frame_time"
         fi
