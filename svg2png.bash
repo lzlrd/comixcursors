@@ -41,8 +41,8 @@ PART=0
 FIXPART=""
 
 # parse argument list
-NAME=$1
-SHADOW=$NAME
+NAME="$1"
+SHADOW="$NAME"
 
 # parse argument list
 while [ "$1" != "" ]; do
@@ -51,10 +51,10 @@ while [ "$1" != "" ]; do
 					PART=$1
 					;;
 		-BACKGROUND  )	shift
-					BACKGROUND=$1
+					BACKGROUND="$1"
 					;;
 		-SHADOW  )	shift
-					SHADOW=$1
+					SHADOW="$1"
 					;;
 		-TIME  )	shift
 					TIME=$1
@@ -63,13 +63,13 @@ while [ "$1" != "" ]; do
 	shift
 done
 
-TMPSIZE=`echo " $SIZE * $TMPSCALE" | bc`
+TMPSIZE=$(echo "$SIZE * $TMPSCALE" | bc)
 
-XMOVE=`echo "$XOFFSET * $TMPSCALE" | bc`
-YMOVE=`echo "$YOFFSET * $TMPSCALE" | bc`
+XMOVE=$(echo "$XOFFSET * $TMPSCALE" | bc)
+YMOVE=$(echo "$YOFFSET * $TMPSCALE" | bc)
 
-SCALEBLUR=`echo "$BLUR * $TMPSCALE" | bc`
-SCALESIZE=`echo "$SIZE * $TMPSCALE" | bc`
+SCALEBLUR=$(echo "$BLUR * $TMPSCALE" | bc)
+SCALESIZE=$(echo "$SIZE * $TMPSCALE" | bc)
 
 # Scaling the shadow from the cursor image.
 SHADOWSIZE=$(echo "$TMPSIZE * $SHADOWSCALE" | bc)
@@ -84,81 +84,83 @@ if [ $PART -lt 1 ]; then
 else
 	echo "processing $NAME part $PART..."
 	FIXPART=$PART
-	SUBPATH=$NAME/
+	SUBPATH="$NAME"/
 fi
 
 # write the hotspot config file
-if [ $BACKGROUND ] ; then 
-  HOTSPOT=(`grep "^$BACKGROUND" HOTSPOTS`)
-else 
-  HOTSPOT=(`grep "^$NAME" HOTSPOTS`)
-fi
-	
-HOTX=`echo "${HOTSPOT[1]} * $SIZE / 500" | bc`
-HOTY=`echo "${HOTSPOT[2]} * $SIZE / 500" | bc`
-	
-if [ $PART -lt 2 ]; then
-  if [ -e build/$SUBPATH$NAME.conf ]; then
-    rm build/$SUBPATH$NAME.conf
-  fi
-fi 
-if [ $PART -gt 0 ]; then
-  echo "$SIZE $HOTX $HOTY build/$SUBPATH$NAME$PART.png $TIME" >> build/$SUBPATH$NAME.conf
+if [ $BACKGROUND ] ; then
+  HOTSPOT=( $(grep "^$BACKGROUND" HOTSPOTS) )
 else
-  echo "$SIZE $HOTX $HOTY build/$NAME.png" >> build/$NAME.conf
+  HOTSPOT=( $(grep "^$NAME" HOTSPOTS) )
 fi
 
-INFILE=tmp/tmp.svg
-OUTFILE=build/$SUBPATH$NAME$FIXPART.png
-SHADOWIMAGE=shadows/$SHADOW-$SIZE-$SHADOWCOLOR-$SHADOWTRANS.png
-CURSORIMAGE=tmp/cursor.png
-SCALEDIMAGE=tmp/scaledcursor.png
+HOTX=$(echo "${HOTSPOT[1]} * $SIZE / 500" | bc)
+HOTY=$(echo "${HOTSPOT[2]} * $SIZE / 500" | bc)
+
+destdir="build"
+cursorconfig="${destdir}/$SUBPATH$NAME.conf"
+if [ $PART -lt 2 ]; then
+    if [ -e "${cursorconfig}" ]; then
+        rm "${cursorconfig}"
+    fi
+fi
+if [ $PART -gt 0 ]; then
+    echo "$SIZE $HOTX $HOTY ${destdir}/$SUBPATH$NAME$PART.png $TIME" >> "${cursorconfig}"
+else
+    echo "$SIZE $HOTX $HOTY ${destdir}/$NAME.png" >> "${cursorconfig}"
+fi
+
+INFILE="tmp/tmp.svg"
+OUTFILE="${destdir}/$SUBPATH$NAME$FIXPART.png"
+SHADOWIMAGE="shadows/$SHADOW-$SIZE-$SHADOWCOLOR-$SHADOWTRANS.png"
+CURSORIMAGE="tmp/cursor.png"
+SCALEDIMAGE="tmp/scaledcursor.png"
 
 function svg2png {
     # Convert a single SVG image to PNG.
-    local infile=$1
-    local outfile=$2
+    local infile="$1"
+    local outfile="$2"
     local size=$3
 
     rsvg --format png \
         --dpi-x 72 --dpi-y 72 \
         --width $size --height $size \
-        $infile $outfile
+        "$infile" "$outfile"
 }
 
 # compose the image
-svg2png $INFILE $CURSORIMAGE $TMPSIZE
+svg2png "$INFILE" "$CURSORIMAGE" $TMPSIZE
 
-if [ ! -f $SHADOWIMAGE ]; then
+if [ ! -f "$SHADOWIMAGE" ]; then
     # Make the shadow image from an extract of the cursor.
     convert \
         -extract ${SHADOWSIZE}x${SHADOWSIZE}+${LEFT}+${LEFT} \
         -resize ${TMPSIZE}x${TMPSIZE} \
-        $CURSORIMAGE $SCALEDIMAGE
+        "$CURSORIMAGE" "$SCALEDIMAGE"
 
   convert -modulate 0 \
      -fill "$SHADOWCOLOR" \
      -colorize 100 \
      -channel Alpha \
      -fx \'a-$SHADOWTRANS\' \
-     $SCALEDIMAGE $SHADOWIMAGE
+     "$SCALEDIMAGE" "$SHADOWIMAGE"
 
   mogrify -channel Alpha \
-     -blur $SCALEBLUR\x$SCALEBLUR \
+     -blur ${SCALEBLUR}x${SCALEBLUR} \
      -resize 50% \
-     $SHADOWIMAGE
+     "$SHADOWIMAGE"
 
-  mogrify -roll +$XMOVE+$YMOVE \
-     $SHADOWIMAGE
+  mogrify -roll +${XMOVE}+${YMOVE} \
+     "$SHADOWIMAGE"
 fi
 
-if [ `echo "$CURSORTRANS > 0" | bc` -gt 0 ]; then
+if [ $(echo "$CURSORTRANS > 0" | bc) -gt 0 ]; then
    # echo "applying cursor transparency: $CURSORTRANS ..."
-   convert -channel Alpha -fx \'a-$CURSORTRANS\' $CURSORIMAGE $CURSORIMAGE
+   convert -channel Alpha -fx \'a-$CURSORTRANS\' "$CURSORIMAGE" "$CURSORIMAGE"
 fi
 
-composite -geometry $SIZEx$SIZE $CURSORIMAGE $SHADOWIMAGE $OUTFILE
+composite -geometry ${SIZE}x${SIZE} "$CURSORIMAGE" "$SHADOWIMAGE" "$OUTFILE"
 
-if [ $BACKGROUND ]; then
-   composite $OUTFILE build/$BACKGROUND.png $OUTFILE
+if [ "$BACKGROUND" ]; then
+   composite "$OUTFILE" "${destdir}/$BACKGROUND.png" "$OUTFILE"
 fi
