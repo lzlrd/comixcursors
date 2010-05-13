@@ -50,21 +50,21 @@ all: $(CURSORS) $(ANIMATIONS)
 
 .PHONY: install
 install: all
-#	Create necessary directories.
+# Create necessary directories.
 	install -d "${ICONSDIR}" "${ICONSDIR}/default"
 	rm -rf "${themedir}"
 	install -d "${cursordir}"
 
-#	Install the cursors.
+# Install the cursors.
 	install -m u=rw,go=r "${BUILDDIR}"/* "${cursordir}"
 
-#	Install the theme configuration file.
+# Install the theme configuration file.
 	install -m u=rw,go=r index.theme "${themedir}"
 
-#	Install alternative name symlinks for the cursors.
+# Install alternative name symlinks for the cursors.
 	./link-cursors "${cursordir}"
 
-#Normal Cursors
+# Normal Cursors
 define CURSOR_template
 $(BUILDDIR)/$(1): build/$(1).conf build/$(1).png
 	xcursorgen "$$<" "$$@"
@@ -72,7 +72,7 @@ endef
 
 $(foreach cursor,$(CURSORNAMES),$(eval $(call CURSOR_template,$(cursor))))
 
-#Animated Cursors
+# Animated Cursors
 define ANIMCURSOR_template
 $(BUILDDIR)/$(1): build/$(1)/$(1).conf build/$(1)/*.png
 	xcursorgen "$$<" "$$@"
@@ -81,25 +81,11 @@ endef
 $(foreach anim,$(ANIMATIONNAMES),$(eval $(call ANIMCURSOR_template,$(anim))))
 
 .PHONY: clean
-clean:: clean-all
-
-.PHONY: clean-all
-clean-all:: clean-build clean-cursors clean-tmp clean-shadows
-
-.PHONY: clean-build
-clean-build::
+clean::
+# cleanup temporary build files
 	$(RM) -r build
-
-.PHONY: clean-cursors
-clean-cursors::
 	$(RM) -r cursors
-
-.PHONY: clean-tmp
-clean-tmp::
 	$(RM) -r tmp
-
-.PHONY: clean-shadows
-clean-shadows::
 	$(RM) -r shadows
 
 
