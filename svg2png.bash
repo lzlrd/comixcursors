@@ -18,13 +18,12 @@
 
 if [ $# -lt 1 ]; then
   echo ""
-  echo "Usage: $0 <in name> {options}"
+  echo "Usage: $0 [options] <in name> <in file> <out file>"
   echo ""
   echo "Options:"
   echo "    -PART <part>              animated cursors part#"
-  echo "    -BACKGROUND <name>        background image name"
-  echo "    -SHADOW <name>            shadow image name"
-  echo "    -TIME <milliseconds>      background image name"
+  echo "    -BACKGROUND <file>        background image file"
+  echo "    -TIME <milliseconds>      duration for this animation frame"
   echo ""
   exit -1
 fi
@@ -41,27 +40,27 @@ PART=0
 FIXPART=""
 
 # parse argument list
-NAME="$1"
-SHADOW="$NAME"
-
-# parse argument list
-while [ "$1" != "" ]; do
-	case $1 in
-		-PART  )	shift
-					PART=$1
-					;;
-		-BACKGROUND  )	shift
-					BACKGROUND="$1"
-					;;
-		-SHADOW  )	shift
-					SHADOW="$1"
-					;;
-		-TIME  )	shift
-					TIME=$1
-					;;
-	esac
-	shift
+while [ "${1::1}" == "-" ]; do
+    case $1 in
+	-PART)
+            shift
+	    PART=$1
+	    ;;
+	-BACKGROUND)
+	    shift
+	    BACKGROUND="$1"
+	    ;;
+	-TIME)
+	    shift
+	    TIME=$1
+	    ;;
+    esac
+    shift
 done
+
+NAME="$1"
+infile="$2"
+outfile="$3"
 
 TMPSIZE=$(echo "$SIZE * $TMPSCALE" | bc)
 
@@ -76,9 +75,6 @@ SHADOWSIZE=$(echo "$TMPSIZE * $SHADOWSCALE" | bc)
 RIGHT=$(echo "$TMPSIZE / $SHADOWSCALE" | bc)
 LEFT=$(echo "$TMPSIZE - $RIGHT" | bc)
 
-if [ ! -d tmp ]; then mkdir tmp ; fi
-if [ ! -d shadows ]; then mkdir shadows ; fi
-
 if [ $PART -lt 1 ]; then
 	echo "processing $NAME..."
 else
@@ -89,30 +85,29 @@ fi
 
 # write the hotspot config file
 if [ $BACKGROUND ] ; then
-  HOTSPOT=( $(grep "^$BACKGROUND" HOTSPOTS) )
+    background_file="$(basename $BACKGROUND)"
+    hotspot_name="${background_file%%.png}"
 else
-  HOTSPOT=( $(grep "^$NAME" HOTSPOTS) )
+    hotspot_name="$NAME"
 fi
+HOTSPOT=( $(grep "^$hotspot_name" HOTSPOTS) )
 
 HOTX=$(echo "${HOTSPOT[1]} * $SIZE / 500" | bc)
 HOTY=$(echo "${HOTSPOT[2]} * $SIZE / 500" | bc)
 
-destdir="build"
-cursorconfig="${destdir}/$SUBPATH$NAME.conf"
+cursorconfig="$(dirname $outfile)/${NAME}.conf"
 if [ $PART -lt 2 ]; then
     if [ -e "${cursorconfig}" ]; then
         rm "${cursorconfig}"
     fi
 fi
 if [ $PART -gt 0 ]; then
-    echo "$SIZE $HOTX $HOTY ${destdir}/$SUBPATH$NAME$PART.png $TIME" >> "${cursorconfig}"
+    echo "$SIZE $HOTX $HOTY $outfile $TIME" >> "${cursorconfig}"
 else
-    echo "$SIZE $HOTX $HOTY ${destdir}/$NAME.png" >> "${cursorconfig}"
+    echo "$SIZE $HOTX $HOTY $outfile" >> "${cursorconfig}"
 fi
 
-INFILE="tmp/tmp.svg"
-OUTFILE="${destdir}/$SUBPATH$NAME$FIXPART.png"
-SHADOWIMAGE="shadows/$SHADOW-$SIZE-$SHADOWCOLOR-$SHADOWTRANS.png"
+SHADOWIMAGE="shadows/$NAME-$SIZE-$SHADOWCOLOR-$SHADOWTRANS.png"
 CURSORIMAGE="tmp/cursor.png"
 SCALEDIMAGE="tmp/scaledcursor.png"
 
@@ -129,7 +124,7 @@ function svg2png {
 }
 
 # compose the image
-svg2png "$INFILE" "$CURSORIMAGE" $TMPSIZE
+svg2png "$infile" "$CURSORIMAGE" $TMPSIZE
 
 if [ ! -f "$SHADOWIMAGE" ]; then
     # Make the shadow image from an extract of the cursor.
@@ -159,8 +154,8 @@ if [ $(echo "$CURSORTRANS > 0" | bc) -gt 0 ]; then
    convert -channel Alpha -fx \'a-$CURSORTRANS\' "$CURSORIMAGE" "$CURSORIMAGE"
 fi
 
-composite -geometry ${SIZE}x${SIZE} "$CURSORIMAGE" "$SHADOWIMAGE" "$OUTFILE"
+composite -geometry ${SIZE}x${SIZE} "$CURSORIMAGE" "$SHADOWIMAGE" "$outfile"
 
 if [ "$BACKGROUND" ]; then
-   composite "$OUTFILE" "${destdir}/$BACKGROUND.png" "$OUTFILE"
+    composite "$outfile" "$BACKGROUND" "$outfile"
 fi

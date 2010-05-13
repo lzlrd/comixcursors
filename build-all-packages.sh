@@ -23,7 +23,7 @@ DISTDIR=$PWD/dist
 ICONSDIR=${ICONSDIR:-~/.icons}
 export ICONSDIR
 
-if [ ! -d $DISTDIR ] ; then mkdir $DISTDIR; fi
+mkdir --parents $DISTDIR
 rm -rf $DISTDIR/*
 
 for PKG in $PKGS; do

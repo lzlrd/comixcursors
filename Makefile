@@ -23,6 +23,7 @@
 # Makefile for ComixCursors project.
 
 ICONSDIR ?= ${HOME}/.icons
+indir = svg
 themedir = ${ICONSDIR}/ComixCursors-Custom
 cursordir = ${themedir}/cursors
 BUILDDIR = cursors
@@ -83,6 +84,9 @@ $(foreach anim,$(ANIMATIONNAMES),$(eval $(call ANIMCURSOR_template,$(anim))))
 .PHONY: clean
 clean::
 # cleanup temporary build files
+	$(RM) -r ${indir}/*.orig ${indir}/*.rej
+	$(RM) -r ${indir}/progress[0-9]*.svg
+	$(RM) -r ${indir}/wait[0-9]*.svg
 	$(RM) -r build
 	$(RM) -r cursors
 	$(RM) -r tmp
