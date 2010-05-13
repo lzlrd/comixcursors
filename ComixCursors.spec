@@ -37,8 +37,8 @@ X11 mouse theme with a comics feeling.
 install -d %{buildroot}%{prefix}/icons
 
 for d in %{name}-*; do
-   sh ./link-cursors.sh $d/cursors
-   cp -R $d %{buildroot}%{prefix}/icons
+    ./link-cursors "$d/cursors"
+    cp -R $d %{buildroot}%{prefix}/icons
 done
 
 
