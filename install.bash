@@ -98,7 +98,7 @@ svg_substitutions "svg/help2.svg" > "tmp/tmp.svg"
 
 mkdir --parents "build/progress"
 svg_substitutions "svg/progress.svg" > "tmp/tmp.svg"
-for (( i=1; $i < 25; i++ )); do
+for i in $(seq 1 24) ; do
     ./svg2png.bash -PART $i -BACKGROUND "build/default.png" "progress" "tmp/tmp.svg" "build/progress/progress${i}.png"
     patch -f --silent "tmp/tmp.svg" "svg/progress.diff" >> /dev/null
 done
@@ -106,7 +106,7 @@ done
 
 mkdir --parents "build/wait"
 svg_substitutions "svg/wait.svg" > "tmp/tmp.svg"
-for (( i=1; $i < 37; i++ )); do
+for i in $(seq 1 36) ; do
     ./svg2png.bash -PART $i "wait" "tmp/tmp.svg" "build/wait/wait${i}.png"
     patch -f --silent "tmp/tmp.svg" "svg/wait.diff" >> /dev/null
 done
