@@ -53,10 +53,10 @@ zoom-out
 "
 
 
-if [ ! -d "build" ] ; then mkdir "build"; fi
-if [ ! -d "tmp" ] ; then mkdir "tmp"; fi
-if [ ! -d "cursors" ] ; then mkdir "cursors"; fi
-if [ ! -d "shadows" ] ; then mkdir "shadows"; fi
+mkdir --parents "build"
+mkdir --parents "tmp"
+mkdir --parents "cursors"
+mkdir --parents "shadows"
 
 
 for name in $names; do
@@ -89,18 +89,14 @@ done
 
 
 
-if [ ! -d "build/help" ] ; then
-    mkdir "build/help"
-fi
+mkdir --parents "build/help"
 svg_substitutions "svg/help1.svg" > "tmp/tmp.svg"
 ./svg2png.bash -PART 1 -BACKGROUND "build/default.png" -TIME 2000 "help" "tmp/tmp.svg" "build/help/help1.png"
 svg_substitutions "svg/help2.svg" > "tmp/tmp.svg"
 ./svg2png.bash -PART 2 -BACKGROUND "build/default.png" -TIME 500 "help" "tmp/tmp.svg" "build/help/help2.png"
 
 
-if [ ! -d "build/progress" ] ; then
-    mkdir "build/progress"
-fi
+mkdir --parents "build/progress"
 svg_substitutions "svg/progress.svg" > "tmp/tmp.svg"
 for (( i=1; $i < 25; i++ )); do
     ./svg2png.bash -PART $i -BACKGROUND "build/default.png" "progress" "tmp/tmp.svg" "build/progress/progress${i}.png"
@@ -108,9 +104,7 @@ for (( i=1; $i < 25; i++ )); do
 done
 
 
-if [ ! -d "build/wait" ] ; then
-    mkdir "build/wait"
-fi
+mkdir --parents "build/wait"
 svg_substitutions "svg/wait.svg" > "tmp/tmp.svg"
 for (( i=1; $i < 37; i++ )); do
     ./svg2png.bash -PART $i "wait" "tmp/tmp.svg" "build/wait/wait${i}.png"

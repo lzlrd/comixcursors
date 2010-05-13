@@ -75,9 +75,6 @@ SHADOWSIZE=$(echo "$TMPSIZE * $SHADOWSCALE" | bc)
 RIGHT=$(echo "$TMPSIZE / $SHADOWSCALE" | bc)
 LEFT=$(echo "$TMPSIZE - $RIGHT" | bc)
 
-if [ ! -d tmp ]; then mkdir tmp ; fi
-if [ ! -d shadows ]; then mkdir shadows ; fi
-
 if [ $PART -lt 1 ]; then
 	echo "processing $NAME..."
 else
