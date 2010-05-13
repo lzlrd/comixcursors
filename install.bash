@@ -62,7 +62,7 @@ if [ ! -d "shadows" ] ; then mkdir "shadows"; fi
 for f in $FILES; do
     if [ -f "svg/$f.svg" ] ; then
         svg_substitutions "svg/$f.svg" > "tmp/tmp.svg"
-        ./svg2png.bash "$f"
+        ./svg2png.bash "$f" "tmp/tmp.svg" "build/$f.png"
     else
         echo "skipping $f: no svg file found."
     fi
@@ -81,7 +81,7 @@ no-drop
 for f in $FILES; do
     if [ -f "svg/$f.svg" ] ; then
         svg_substitutions "svg/$f.svg" > "tmp/tmp.svg"
-        ./svg2png.bash "$f" "$f" -BACKGROUND "default" -SHADOW "move"
+        ./svg2png.bash -BACKGROUND "build/default.png" "$f" "tmp/tmp.svg" "build/$f.png"
     else
         echo "skipping $f: no svg file found."
     fi
@@ -93,9 +93,9 @@ if [ ! -d "build/help" ] ; then
     mkdir "build/help"
 fi
 svg_substitutions "svg/help1.svg" > "tmp/tmp.svg"
-./svg2png.bash "help" -PART 1 -BACKGROUND "default" -SHADOW "move" -TIME 2000
+./svg2png.bash -PART 1 -BACKGROUND "build/default.png" -TIME 2000 "help" "tmp/tmp.svg" "build/help/help1.png"
 svg_substitutions "svg/help2.svg" > "tmp/tmp.svg"
-./svg2png.bash "help" -PART 2 -BACKGROUND "default" -SHADOW "move" -TIME 500
+./svg2png.bash -PART 2 -BACKGROUND "build/default.png" -TIME 500 "help" "tmp/tmp.svg" "build/help/help2.png"
 
 
 if [ ! -d "build/progress" ] ; then
@@ -103,7 +103,7 @@ if [ ! -d "build/progress" ] ; then
 fi
 svg_substitutions "svg/progress.svg" > "tmp/tmp.svg"
 for (( i=1; $i < 25; i++ )); do
-    ./svg2png.bash "progress" -PART $i -BACKGROUND "default" -SHADOW "move"
+    ./svg2png.bash -PART $i -BACKGROUND "build/default.png" "progress" "tmp/tmp.svg" "build/progress/progress${i}.png"
     patch -f --silent "tmp/tmp.svg" "svg/progress.diff" >> /dev/null
 done
 
@@ -113,7 +113,7 @@ if [ ! -d "build/wait" ] ; then
 fi
 svg_substitutions "svg/wait.svg" > "tmp/tmp.svg"
 for (( i=1; $i < 37; i++ )); do
-    ./svg2png.bash "wait" -PART $i
+    ./svg2png.bash -PART $i "wait" "tmp/tmp.svg" "build/wait/wait${i}.png"
     patch -f --silent "tmp/tmp.svg" "svg/wait.diff" >> /dev/null
 done
 
