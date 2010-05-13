@@ -21,7 +21,7 @@ if [ $# -lt 1 ]; then
   echo "Usage: $0 [options] <in name> <in file> <out file>"
   echo ""
   echo "Options:"
-  echo "    -PART <part>              animated cursors part#"
+  echo "    -FRAME <frame num>        animated cursors frame number"
   echo "    -BACKGROUND <file>        background image file"
   echo "    -TIME <milliseconds>      duration for this animation frame"
   echo ""
@@ -36,15 +36,14 @@ CURSORTRANS=0
 source CONFIG
 
 # some initialisation before argument processing
-PART=0
-FIXPART=""
+frame=0
 
 # parse argument list
 while [ "${1::1}" == "-" ]; do
     case $1 in
-	-PART)
+	-FRAME)
             shift
-	    PART=$1
+	    frame=$1
 	    ;;
 	-BACKGROUND)
 	    shift
@@ -75,12 +74,10 @@ SHADOWSIZE=$(echo "$TMPSIZE * $SHADOWSCALE" | bc)
 RIGHT=$(echo "$TMPSIZE / $SHADOWSCALE" | bc)
 LEFT=$(echo "$TMPSIZE - $RIGHT" | bc)
 
-if [ $PART -lt 1 ]; then
+if [ $frame -lt 1 ]; then
 	echo "processing $NAME..."
 else
-	echo "processing $NAME part $PART..."
-	FIXPART=$PART
-	SUBPATH="$NAME"/
+	echo "processing $NAME frame $frame..."
 fi
 
 # write the hotspot config file
@@ -96,12 +93,12 @@ HOTX=$(echo "${HOTSPOT[1]} * $SIZE / 500" | bc)
 HOTY=$(echo "${HOTSPOT[2]} * $SIZE / 500" | bc)
 
 cursorconfig="$(dirname $outfile)/${NAME}.conf"
-if [ $PART -lt 2 ]; then
+if [[ $frame < 2 ]] ; then
     if [ -e "${cursorconfig}" ]; then
         rm "${cursorconfig}"
     fi
 fi
-if [ $PART -gt 0 ]; then
+if [[ $frame > 0 ]] ; then
     echo "$SIZE $HOTX $HOTY $outfile $TIME" >> "${cursorconfig}"
 else
     echo "$SIZE $HOTX $HOTY $outfile" >> "${cursorconfig}"
