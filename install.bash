@@ -19,7 +19,7 @@ function svg_substitutions {
 }
 
 # the basic cursors
-FILES="
+names="
 all-scroll
 cell
 col-resize
@@ -59,18 +59,18 @@ if [ ! -d "cursors" ] ; then mkdir "cursors"; fi
 if [ ! -d "shadows" ] ; then mkdir "shadows"; fi
 
 
-for f in $FILES; do
-    if [ -f "svg/$f.svg" ] ; then
-        svg_substitutions "svg/$f.svg" > "tmp/tmp.svg"
-        ./svg2png.bash "$f" "tmp/tmp.svg" "build/$f.png"
+for name in $names; do
+    if [ -f "svg/${name}.svg" ] ; then
+        svg_substitutions "svg/${name}.svg" > "tmp/tmp.svg"
+        ./svg2png.bash "$name" "tmp/tmp.svg" "build/${name}.png"
     else
-        echo "skipping $f: no svg file found."
+        echo "skipping $name: no svg file found."
     fi
 done
 
 # the pointer combined cursors
 
-FILES="
+names="
 alias
 context-menu
 copy
@@ -78,12 +78,12 @@ move
 no-drop
 "
 
-for f in $FILES; do
-    if [ -f "svg/$f.svg" ] ; then
-        svg_substitutions "svg/$f.svg" > "tmp/tmp.svg"
-        ./svg2png.bash -BACKGROUND "build/default.png" "$f" "tmp/tmp.svg" "build/$f.png"
+for name in $names; do
+    if [ -f "svg/${name}.svg" ] ; then
+        svg_substitutions "svg/${name}.svg" > "tmp/tmp.svg"
+        ./svg2png.bash -BACKGROUND "build/default.png" "${name}" "tmp/tmp.svg" "build/${name}.png"
     else
-        echo "skipping $f: no svg file found."
+        echo "skipping $name: no svg file found."
     fi
 done
 
