@@ -23,7 +23,9 @@ function build_subtheme {
         printf "\nBuilding \"${subthemename}\":\n\n"
         cp "${configfile}" "CONFIG"
         cp "${themefile}" "index.theme"
-        ./install.bash
+        ./build-cursors
+        make
+        make install
         if [ -d "${destdir}" ] ; then
             rm -r "${destdir}"
         fi
