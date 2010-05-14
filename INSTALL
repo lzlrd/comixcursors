@@ -14,27 +14,31 @@ http://www.kde-look.org/content/show.php?content=32627
 
 Change into the download directory and unpack the sources:
 
-# tar -xjvf ComixCursours-0.5.0.tar.bz2
-# cd ComixCursors-0.5.0
+    $ version=0.6.1
+    $ tar -xjvf ComixCursors-${version}.tar.bz2
+    $ cd ComixCursors-${version}
 
-With the programs from ImageMagick and librsvg installed,
-build and install the custom ComixCursors:
+When you have the required programs, issue:
 
-# ./install.bash
+    $ ./build-cursors
 
-This will parse the CONFIG and HOTSPOTS files, export the 
-cursor source files in the svn directory to PNGs in the 
-build directory (using ‘rsvg’), assemble and apply some 
-effects using ImageMagick tools ‘convert’ and ‘mogrify’, create
-the xcursors in the cursors directory, and install the files
-in your ~/.icons directory. 
-Not that the shadow images will be cached to reduce building
-overhead. The shadow images are stored in the "shadows"
-directory created at build time. The files are named 
-<name>-<size>-<color>-<transparency>.png and will get used 
-by the svg2png.bash script when existing. So if you make in 
-sources (e.g. edit the svg files) you might have to clean the
-shadows directory: "# rm shadows/*" or "# make clean".
+This will read the basic cursors from the SVG files, add a blurred and
+scaled shadow, tint the icons and compose them into a single PNG
+image.
+
+After all the images have been processed, you should invoke:
+
+    $ make
+    $ make install
+
+to create the xcursor files and install them into you personal cursors
+folder (‘$HOME/.icons/’).
+
+Not that some files (e.g. the shadow images) will be cached to reduce
+building overhead. So if you make in sources (e.g. edit the svg files)
+you might have to clean the working tree:
+
+    $ make clean
 
 
 Complete Installation
