@@ -16,7 +16,7 @@ function build_subtheme {
     # Build the cursors for a particular subtheme.
     subthemename="$1"
 
-    destdir="${ICONSDIR}/$NAME-${subthemename}"
+    destdir="${ICONSDIR}/$themename-${subthemename}"
     configfile="${themename}Configs/${subthemename}.CONFIG"
     themefile="${themename}Configs/${subthemename}.theme"
     if [[ -f "${configfile}" && -f "${themefile}" ]] ; then
