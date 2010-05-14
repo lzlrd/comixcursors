@@ -21,8 +21,13 @@
 
 # Create the cursor image files from SVG source.
 
-# source the global config file
-source "./CONFIG"
+THEMENAME="${THEMENAME:-custom}"
+export THEMENAME
+
+configfile="ComixCursorsConfigs/${THEMENAME}.CONFIG"
+
+# source the theme config file
+source "${configfile}"
 
 function svg_substitutions {
     # Process an SVG file with custom substitutions.

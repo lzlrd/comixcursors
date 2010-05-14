@@ -28,12 +28,16 @@ if [ $# -lt 1 ]; then
   exit -1
 fi
 
+THEMENAME="${THEMENAME:-custom}"
+
+configfile="ComixCursorsConfigs/${THEMENAME}.CONFIG"
+
 # don't do transparency post-processing by default
 # used for ComixCursors but not for flatbedcursors
 CURSORTRANS=0
 
-# read config file .sh syntax)
-source CONFIG
+# source the theme config file
+source "${configfile}"
 
 # some initialisation before argument processing
 frame=0

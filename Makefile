@@ -23,9 +23,11 @@
 # Makefile for ComixCursors project.
 
 ICONSDIR ?= ${HOME}/.icons
+THEMENAME ?= custom
 indir = svg
-themedir = ${ICONSDIR}/ComixCursors-Custom
-cursordir = ${themedir}/cursors
+themefile = ComixCursorsConfigs/${THEMENAME}.theme
+destdir = ${ICONSDIR}/ComixCursors-${THEMENAME}
+cursordir = ${destdir}/cursors
 BUILDDIR = cursors
 
 #Define here the animation cursor directories
@@ -53,14 +55,14 @@ all: $(CURSORS) $(ANIMATIONS)
 install: all
 # Create necessary directories.
 	install -d "${ICONSDIR}" "${ICONSDIR}/default"
-	rm -rf "${themedir}"
+	rm -rf "${destdir}"
 	install -d "${cursordir}"
 
 # Install the cursors.
 	install -m u=rw,go=r "${BUILDDIR}"/* "${cursordir}"
 
 # Install the theme configuration file.
-	install -m u=rw,go=r index.theme "${themedir}"
+	install -m u=rw,go=r "${themefile}" "${destdir}"/index.theme
 
 # Install alternative name symlinks for the cursors.
 	./link-cursors "${cursordir}"
