@@ -86,26 +86,23 @@ function render_cursor_image {
     local frame_time=$4
 
     if [[ "$frame" ]] ; then
-        outdir="${builddir}/${name}"
-        frame_name="${name}${frame}"
+        image_name="${name}${frame}"
         compose_opts="${compose_opts} -FRAME $frame"
         if [[ "$frame_time" ]] ; then
             compose_opts="${compose_opts} -TIME $frame_time"
         fi
     else
         frame=0
-        outdir="${builddir}"
-        frame_name="${name}"
+        image_name="${name}"
     fi
 
-    mkdir --parents "$outdir"
-    infile="${indir}/${frame_name}.svg"
+    infile="${indir}/${image_name}.svg"
     if [[ ! -f "$infile" ]] ; then
         echo "skipping $name; no svg file found."
         return 1
     fi
     tempfile="${workdir}/$(basename $infile)"
-    outfile="${outdir}/${frame_name}.png"
+    outfile="${builddir}/${image_name}.png"
     svg_substitutions "$infile" > "$tempfile"
     ./svg2png.bash $compose_opts "$name" "$tempfile" "$outfile"
 }

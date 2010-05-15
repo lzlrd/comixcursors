@@ -38,12 +38,10 @@ xcursor_destdir = ${destdir}/cursors
 conffiles = $(wildcard ${builddir}/*.conf)
 cursorfiles:= $(foreach conffile,$(conffiles),${xcursor_builddir}/$(subst ./,,$(subst .conf,,$(subst ${builddir}/,,$(conffile)))))
 cursornames:= $(foreach conffile,$(conffiles),$(subst ./,,$(subst .conf,,$(subst ${builddir}/,,$(conffile)))))
-animcursornames = wait progress help
-animcursorfiles := $(foreach cursorname,${animcursornames},${xcursor_builddir}/${cursorname})
 
 
 .PHONY: all
-all: ${cursorfiles} ${animcursorfiles}
+all: ${cursorfiles}
 
 .PHONY: install
 install: all
@@ -61,21 +59,8 @@ install: all
 # Install alternative name symlinks for the cursors.
 	./link-cursors "${xcursor_destdir}"
 
-# Normal Cursors
-define CURSOR_template
-${xcursor_builddir}/$(1): ${builddir}/$(1).conf ${builddir}/$(1).png
-	xcursorgen "$$<" "$$@"
-endef
-
-$(foreach cursor,${cursornames},$(eval $(call CURSOR_template,$(cursor))))
-
-# Animated Cursors
-define ANIMCURSOR_template
-${xcursor_builddir}/$(1): ${builddir}/$(1)/$(1).conf ${builddir}/$(1)/*.png
-	xcursorgen "$$<" "$$@"
-endef
-
-$(foreach anim,${animcursornames},$(eval $(call ANIMCURSOR_template,$(anim))))
+${xcursor_builddir}/%: ${builddir}/%.conf ${builddir}/%*.png
+	xcursorgen "$<" "$@"
 
 .PHONY: clean
 clean::
