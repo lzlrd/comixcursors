@@ -24,18 +24,22 @@
 
 ICONSDIR ?= ${HOME}/.icons
 THEMENAME ?= custom
+
 indir = svg
 themefile = ComixCursorsConfigs/${THEMENAME}.theme
+workdir = tmp
+builddir = build
+xcursor_builddir = cursors
+
 destdir = ${ICONSDIR}/ComixCursors-${THEMENAME}
-cursordir = ${destdir}/cursors
-BUILDDIR = cursors
+xcursor_destdir = ${destdir}/cursors
 
 # Derive cursor file names.
-conffiles = $(wildcard build/*.conf)
-cursorfiles:= $(foreach conffile,$(conffiles),$(BUILDDIR)/$(subst ./,,$(subst .conf,,$(subst build/,,$(conffile)))))
-cursornames:= $(foreach conffile,$(conffiles),$(subst ./,,$(subst .conf,,$(subst build/,,$(conffile)))))
+conffiles = $(wildcard ${builddir}/*.conf)
+cursorfiles:= $(foreach conffile,$(conffiles),${xcursor_builddir}/$(subst ./,,$(subst .conf,,$(subst ${builddir}/,,$(conffile)))))
+cursornames:= $(foreach conffile,$(conffiles),$(subst ./,,$(subst .conf,,$(subst ${builddir}/,,$(conffile)))))
 animcursornames = wait progress help
-animcursorfiles := $(foreach cursorname,${animcursornames},$(BUILDDIR)/${cursorname})
+animcursorfiles := $(foreach cursorname,${animcursornames},${xcursor_builddir}/${cursorname})
 
 
 .PHONY: all
@@ -46,20 +50,20 @@ install: all
 # Create necessary directories.
 	install -d "${ICONSDIR}" "${ICONSDIR}/default"
 	rm -rf "${destdir}"
-	install -d "${cursordir}"
+	install -d "${xcursor_destdir}"
 
 # Install the cursors.
-	install -m u=rw,go=r "${BUILDDIR}"/* "${cursordir}"
+	install -m u=rw,go=r "${xcursor_builddir}"/* "${xcursor_destdir}"
 
 # Install the theme configuration file.
 	install -m u=rw,go=r "${themefile}" "${destdir}"/index.theme
 
 # Install alternative name symlinks for the cursors.
-	./link-cursors "${cursordir}"
+	./link-cursors "${xcursor_destdir}"
 
 # Normal Cursors
 define CURSOR_template
-$(BUILDDIR)/$(1): build/$(1).conf build/$(1).png
+${xcursor_builddir}/$(1): ${builddir}/$(1).conf ${builddir}/$(1).png
 	xcursorgen "$$<" "$$@"
 endef
 
@@ -67,7 +71,7 @@ $(foreach cursor,${cursornames},$(eval $(call CURSOR_template,$(cursor))))
 
 # Animated Cursors
 define ANIMCURSOR_template
-$(BUILDDIR)/$(1): build/$(1)/$(1).conf build/$(1)/*.png
+${xcursor_builddir}/$(1): ${builddir}/$(1)/$(1).conf ${builddir}/$(1)/*.png
 	xcursorgen "$$<" "$$@"
 endef
 
@@ -79,9 +83,9 @@ clean::
 	$(RM) -r ${indir}/*.orig ${indir}/*.rej
 	$(RM) -r ${indir}/progress[0-9]*.svg
 	$(RM) -r ${indir}/wait[0-9]*.svg
-	$(RM) -r build
-	$(RM) -r cursors
-	$(RM) -r tmp
+	$(RM) -r ${builddir}
+	$(RM) -r ${xcursor_builddir}
+	$(RM) -r ${workdir}
 	$(RM) -r shadows
 
 

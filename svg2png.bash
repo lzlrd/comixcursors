@@ -96,21 +96,21 @@ HOTSPOT=( $(grep "^$hotspot_name" HOTSPOTS) )
 HOTX=$(echo "${HOTSPOT[1]} * $SIZE / 500" | bc)
 HOTY=$(echo "${HOTSPOT[2]} * $SIZE / 500" | bc)
 
-cursorconfig="$(dirname $outfile)/${NAME}.conf"
+xcursor_config="$(dirname $outfile)/${NAME}.conf"
 if [[ $frame < 2 ]] ; then
-    if [ -e "${cursorconfig}" ]; then
-        rm "${cursorconfig}"
+    if [ -e "${xcursor_config}" ]; then
+        rm "${xcursor_config}"
     fi
 fi
 if [[ $frame > 0 ]] ; then
-    echo "$SIZE $HOTX $HOTY $outfile $TIME" >> "${cursorconfig}"
+    echo "$SIZE $HOTX $HOTY $outfile $TIME" >> "${xcursor_config}"
 else
-    echo "$SIZE $HOTX $HOTY $outfile" >> "${cursorconfig}"
+    echo "$SIZE $HOTX $HOTY $outfile" >> "${xcursor_config}"
 fi
 
 SHADOWIMAGE="shadows/$NAME-$SIZE-$SHADOWCOLOR-$SHADOWTRANS.png"
-CURSORIMAGE="tmp/cursor.png"
-SCALEDIMAGE="tmp/scaledcursor.png"
+CURSORIMAGE="${workdir}/cursor.png"
+SCALEDIMAGE="${workdir}/scaledcursor.png"
 
 function svg2png {
     # Convert a single SVG image to PNG.
