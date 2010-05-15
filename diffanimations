@@ -24,16 +24,16 @@
 # cd animations
 
 function make_cumulative_patch {
-    # Make a patch file between each consecutive part of a cursor sequence.
+    # Make a patch file between each consecutive frame of a cursor sequence.
     cursorname="$1"
-    parts_count=$2
+    frames_count=$2
 
     patch_file="${cursorname}.diff"
 
-    (for this_part in $(seq $parts_count -1 2) ; do
-        prev_part=$(($this_part - 1))
-        this_file="${cursorname}${this_part}.svg"
-        prev_file="${cursorname}${prev_part}.svg"
+    (for this_frame in $(seq $frames_count -1 2) ; do
+        prev_frame=$(($this_frame - 1))
+        this_file="${cursorname}${this_frame}.svg"
+        prev_file="${cursorname}${prev_frame}.svg"
         diff "${prev_file}" "${this_file}"
     done) > "${patch_file}"
 }
