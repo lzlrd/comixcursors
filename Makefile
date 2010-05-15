@@ -30,26 +30,16 @@ destdir = ${ICONSDIR}/ComixCursors-${THEMENAME}
 cursordir = ${destdir}/cursors
 BUILDDIR = cursors
 
-#Define here the animation cursor directories
-ANIMATED_CURSORS:= wait progress help
-
-########################################################################
-
-#Find list of cursors
+# Derive cursor file names.
 conffiles = $(wildcard build/*.conf)
 cursorfiles:= $(foreach conffile,$(conffiles),$(BUILDDIR)/$(subst ./,,$(subst .conf,,$(subst build/,,$(conffile)))))
 cursornames:= $(foreach conffile,$(conffiles),$(subst ./,,$(subst .conf,,$(subst build/,,$(conffile)))))
-animcursorfiles:=$(foreach animationfile,$(ANIMATED_CURSORS),$(BUILDDIR)/$(animationfile))
-animcursornames:=$(ANIMATED_CURSORS)
-
-CURSORS = $(cursorfiles)
-CURSORNAMES= $(cursornames)
-ANIMATIONS= $(animcursorfiles)
-ANIMATIONNAMES=$(animcursornames)
+animcursornames = wait progress help
+animcursorfiles := $(foreach cursorname,${animcursornames},$(BUILDDIR)/${cursorname})
 
 
 .PHONY: all
-all: $(CURSORS) $(ANIMATIONS)
+all: ${cursorfiles} ${animcursorfiles}
 
 .PHONY: install
 install: all
@@ -73,7 +63,7 @@ $(BUILDDIR)/$(1): build/$(1).conf build/$(1).png
 	xcursorgen "$$<" "$$@"
 endef
 
-$(foreach cursor,$(CURSORNAMES),$(eval $(call CURSOR_template,$(cursor))))
+$(foreach cursor,${cursornames},$(eval $(call CURSOR_template,$(cursor))))
 
 # Animated Cursors
 define ANIMCURSOR_template
@@ -81,7 +71,7 @@ $(BUILDDIR)/$(1): build/$(1)/$(1).conf build/$(1)/*.png
 	xcursorgen "$$<" "$$@"
 endef
 
-$(foreach anim,$(ANIMATIONNAMES),$(eval $(call ANIMCURSOR_template,$(anim))))
+$(foreach anim,${animcursornames},$(eval $(call ANIMCURSOR_template,$(anim))))
 
 .PHONY: clean
 clean::
