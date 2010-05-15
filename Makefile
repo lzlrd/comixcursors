@@ -24,64 +24,43 @@
 
 ICONSDIR ?= ${HOME}/.icons
 THEMENAME ?= custom
+
 indir = svg
 themefile = ComixCursorsConfigs/${THEMENAME}.theme
+workdir = tmp
+builddir = build
+xcursor_builddir = cursors
+
 destdir = ${ICONSDIR}/ComixCursors-${THEMENAME}
-cursordir = ${destdir}/cursors
-BUILDDIR = cursors
+xcursor_destdir = ${destdir}/cursors
 
-#Define here the animation cursor directories
-ANIMATED_CURSORS:= wait progress help
-
-########################################################################
-
-#Find list of cursors
-conffiles = $(wildcard build/*.conf)
-cursorfiles:= $(foreach conffile,$(conffiles),$(BUILDDIR)/$(subst ./,,$(subst .conf,,$(subst build/,,$(conffile)))))
-cursornames:= $(foreach conffile,$(conffiles),$(subst ./,,$(subst .conf,,$(subst build/,,$(conffile)))))
-animcursorfiles:=$(foreach animationfile,$(ANIMATED_CURSORS),$(BUILDDIR)/$(animationfile))
-animcursornames:=$(ANIMATED_CURSORS)
-
-CURSORS = $(cursorfiles)
-CURSORNAMES= $(cursornames)
-ANIMATIONS= $(animcursorfiles)
-ANIMATIONNAMES=$(animcursornames)
+# Derive cursor file names.
+conffiles = $(wildcard ${builddir}/*.conf)
+cursorfiles:= $(foreach conffile,$(conffiles),${xcursor_builddir}/$(subst ./,,$(subst .conf,,$(subst ${builddir}/,,$(conffile)))))
+cursornames:= $(foreach conffile,$(conffiles),$(subst ./,,$(subst .conf,,$(subst ${builddir}/,,$(conffile)))))
 
 
 .PHONY: all
-all: $(CURSORS) $(ANIMATIONS)
+all: ${cursorfiles}
 
 .PHONY: install
 install: all
 # Create necessary directories.
 	install -d "${ICONSDIR}" "${ICONSDIR}/default"
 	rm -rf "${destdir}"
-	install -d "${cursordir}"
+	install -d "${xcursor_destdir}"
 
 # Install the cursors.
-	install -m u=rw,go=r "${BUILDDIR}"/* "${cursordir}"
+	install -m u=rw,go=r "${xcursor_builddir}"/* "${xcursor_destdir}"
 
 # Install the theme configuration file.
 	install -m u=rw,go=r "${themefile}" "${destdir}"/index.theme
 
 # Install alternative name symlinks for the cursors.
-	./link-cursors "${cursordir}"
+	./link-cursors "${xcursor_destdir}"
 
-# Normal Cursors
-define CURSOR_template
-$(BUILDDIR)/$(1): build/$(1).conf build/$(1).png
-	xcursorgen "$$<" "$$@"
-endef
-
-$(foreach cursor,$(CURSORNAMES),$(eval $(call CURSOR_template,$(cursor))))
-
-# Animated Cursors
-define ANIMCURSOR_template
-$(BUILDDIR)/$(1): build/$(1)/$(1).conf build/$(1)/*.png
-	xcursorgen "$$<" "$$@"
-endef
-
-$(foreach anim,$(ANIMATIONNAMES),$(eval $(call ANIMCURSOR_template,$(anim))))
+${xcursor_builddir}/%: ${builddir}/%.conf ${builddir}/%*.png
+	xcursorgen "$<" "$@"
 
 .PHONY: clean
 clean::
@@ -89,10 +68,9 @@ clean::
 	$(RM) -r ${indir}/*.orig ${indir}/*.rej
 	$(RM) -r ${indir}/progress[0-9]*.svg
 	$(RM) -r ${indir}/wait[0-9]*.svg
-	$(RM) -r build
-	$(RM) -r cursors
-	$(RM) -r tmp
-	$(RM) -r shadows
+	$(RM) -r ${builddir}
+	$(RM) -r ${xcursor_builddir}
+	$(RM) -r ${workdir}
 
 
 # Local Variables:

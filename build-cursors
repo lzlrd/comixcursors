@@ -45,13 +45,14 @@ function svg_substitutions {
 }
 
 indir="svg"
-tempdir="tmp"
-destdir="build"
+workdir="tmp"
+builddir="build"
+xcursor_builddir="cursors"
+export workdir builddir
 
-mkdir --parents "${destdir}"
-mkdir --parents "${tempdir}"
-mkdir --parents "cursors"
-mkdir --parents "shadows"
+mkdir --parents "${builddir}"
+mkdir --parents "${workdir}"
+mkdir --parents "${xcursor_builddir}"
 
 
 function generate_animation_source_frames {
@@ -85,26 +86,23 @@ function render_cursor_image {
     local frame_time=$4
 
     if [[ "$frame" ]] ; then
-        outdir="${destdir}/${name}"
-        frame_name="${name}${frame}"
+        image_name="${name}${frame}"
         compose_opts="${compose_opts} -FRAME $frame"
         if [[ "$frame_time" ]] ; then
             compose_opts="${compose_opts} -TIME $frame_time"
         fi
     else
         frame=0
-        outdir="${destdir}"
-        frame_name="${name}"
+        image_name="${name}"
     fi
 
-    mkdir --parents "$outdir"
-    infile="${indir}/${frame_name}.svg"
+    infile="${indir}/${image_name}.svg"
     if [[ ! -f "$infile" ]] ; then
         echo "skipping $name; no svg file found."
         return 1
     fi
-    tempfile="${tempdir}/$(basename $infile)"
-    outfile="${outdir}/${frame_name}.png"
+    tempfile="${workdir}/$(basename $infile)"
+    outfile="${builddir}/${image_name}.png"
     svg_substitutions "$infile" > "$tempfile"
     ./svg2png.bash $compose_opts "$name" "$tempfile" "$outfile"
 }
@@ -160,12 +158,12 @@ no-drop
 "
 
 for name in $names; do
-    compose_opts="-BACKGROUND ${destdir}/default.png"
+    compose_opts="-BACKGROUND ${builddir}/default.png"
     render_cursor_image "$name" "$compose_opts"
 done
 
 name="help"
-compose_opts="-BACKGROUND ${destdir}/default.png"
+compose_opts="-BACKGROUND ${builddir}/default.png"
 render_cursor_image "$name" "$compose_opts" 1 2000
 render_cursor_image "$name" "$compose_opts" 2 500
 
@@ -173,7 +171,7 @@ name="progress"
 frames_count=24
 generate_animation_source_frames "$name" $frames_count
 for frame in $(seq 1 $frames_count) ; do
-    compose_opts="-BACKGROUND ${destdir}/default.png"
+    compose_opts="-BACKGROUND ${builddir}/default.png"
     render_cursor_image "$name" "$compose_opts" $frame
 done
 
