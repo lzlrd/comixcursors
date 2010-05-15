@@ -53,7 +53,6 @@ export workdir builddir
 mkdir --parents "${builddir}"
 mkdir --parents "${workdir}"
 mkdir --parents "${xcursor_builddir}"
-mkdir --parents "shadows"
 
 
 function generate_animation_source_frames {

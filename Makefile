@@ -86,7 +86,6 @@ clean::
 	$(RM) -r ${builddir}
 	$(RM) -r ${xcursor_builddir}
 	$(RM) -r ${workdir}
-	$(RM) -r shadows
 
 
 # Local Variables:
