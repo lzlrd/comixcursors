@@ -36,8 +36,8 @@ xcursor_destdir = ${destdir}/cursors
 
 # Derive cursor file names.
 conffiles = $(wildcard ${builddir}/*.conf)
-cursorfiles:= $(foreach conffile,$(conffiles),${xcursor_builddir}/$(subst ./,,$(subst .conf,,$(subst ${builddir}/,,$(conffile)))))
-cursornames:= $(foreach conffile,$(conffiles),$(subst ./,,$(subst .conf,,$(subst ${builddir}/,,$(conffile)))))
+cursornames = $(foreach conffile,${conffiles},$(basename $(notdir ${conffile})))
+cursorfiles = $(foreach cursor,${cursornames},${xcursor_builddir}/${cursor})
 
 
 .PHONY: all
