@@ -43,6 +43,10 @@ cursornames:= $(foreach conffile,$(conffiles),$(subst ./,,$(subst .conf,,$(subst
 .PHONY: all
 all: ${cursorfiles}
 
+${xcursor_builddir}/%: ${builddir}/%.conf ${builddir}/%*.png
+	xcursorgen "$<" "$@"
+
+
 .PHONY: install
 install: all
 # Create necessary directories.
@@ -58,9 +62,6 @@ install: all
 
 # Install alternative name symlinks for the cursors.
 	./link-cursors "${xcursor_destdir}"
-
-${xcursor_builddir}/%: ${builddir}/%.conf ${builddir}/%*.png
-	xcursorgen "$<" "$@"
 
 .PHONY: clean
 clean::
