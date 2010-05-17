@@ -10,25 +10,21 @@ weights=("" "Slim")
 ICONSDIR=${ICONSDIR:-~/.icons}
 export ICONSDIR
 
-workdir="${ICONSDIR}/${themename}-Custom"
-
 function build_subtheme {
     # Build the cursors for a particular subtheme.
     subthemename="$1"
 
     destdir="${ICONSDIR}/$themename-${subthemename}"
-    configfile="${themename}Configs/${subthemename}.CONFIG"
-    themefile="${themename}Configs/${subthemename}.theme"
-    if [[ -f "${configfile}" && -f "${themefile}" ]] ; then
-        printf "\nBuilding \"${subthemename}\":\n\n"
-        cp "${configfile}" "CONFIG"
-        cp "${themefile}" "index.theme"
-        ./install.bash
-        if [ -d "${destdir}" ] ; then
-            rm -r "${destdir}"
-        fi
-        mv "${workdir}" "${destdir}"
+    if [ -d "${destdir}" ] ; then
+        rm -r "${destdir}"
     fi
+
+    THEMENAME="${subthemename}"
+    export THEMENAME
+    printf "\nBuilding \"${subthemename}\":\n\n"
+    ./build-cursors
+    make
+    make install
 }
 
 for color in "${colors[@]}" ; do
@@ -45,6 +41,3 @@ done
 
 build_subtheme "Ghost"
 build_subtheme "Christmas"
-
-cp "${themename}Configs/custom.CONFIG" "CONFIG"
-cp "${themename}Configs/custom.theme" "index.theme"
