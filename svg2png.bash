@@ -78,7 +78,7 @@ SHADOWSIZE=$(echo "$TMPSIZE * $SHADOWSCALE" | bc)
 RIGHT=$(echo "$TMPSIZE / $SHADOWSCALE" | bc)
 LEFT=$(echo "$TMPSIZE - $RIGHT" | bc)
 
-if [ $frame -lt 1 ]; then
+if [ "$frame" -lt 1 ]; then
     echo "processing $NAME..."
 else
     echo "processing $NAME frame $frame..."
@@ -97,13 +97,13 @@ HOTX=$(echo "${HOTSPOT[1]} * $SIZE / 500" | bc)
 HOTY=$(echo "${HOTSPOT[2]} * $SIZE / 500" | bc)
 
 xcursor_config="$(dirname $outfile)/${NAME}.conf"
-if [[ $frame < 2 ]] ; then
+if [ "$frame" -lt 2 ] ; then
     if [ -e "${xcursor_config}" ]; then
         rm "${xcursor_config}"
     fi
 fi
 
-if [[ $frame > 0 ]] ; then
+if [ "$frame" -gt 0 ] ; then
     echo "$SIZE $HOTX $HOTY $outfile $TIME" >> "${xcursor_config}"
 else
     echo "$SIZE $HOTX $HOTY $outfile" >> "${xcursor_config}"
