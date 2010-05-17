@@ -71,8 +71,8 @@ function generate_animation_source_frames {
     local frames_count=$2
 
     first_frame_file="${indir}/${name}.svg"
-    for frame in $(seq 1 $frames_count) ; do
-        frame_file="${indir}/${name}${frame}.svg"
+    for frame in $(seq --equal-width 1 $frames_count) ; do
+        frame_file="${indir}/${name}.frame${frame}.svg"
         case $frame in
             1)
                 cp "$first_frame_file" "$frame_file"
@@ -93,7 +93,7 @@ function render_cursor_image {
     local frame_time=$4
 
     if [[ "$frame" ]] ; then
-        image_name="${name}${frame}"
+        image_name="${name}.frame${frame}"
         compose_opts="${compose_opts} -FRAME $frame"
         if [[ "$frame_time" ]] ; then
             compose_opts="${compose_opts} -TIME $frame_time"
@@ -181,7 +181,7 @@ render_cursor_image "$name" "$compose_opts" 2 500
 name="progress"
 frames_count=24
 generate_animation_source_frames "$name" $frames_count
-for frame in $(seq 1 $frames_count) ; do
+for frame in $(seq --equal-width 1 $frames_count) ; do
     compose_opts="-BACKGROUND ${builddir}/default.png"
     render_cursor_image "$name" "$compose_opts" $frame
 done
@@ -189,7 +189,7 @@ done
 name="wait"
 frames_count=36
 generate_animation_source_frames "$name" $frames_count
-for frame in $(seq 1 $frames_count) ; do
+for frame in $(seq --equal-width 1 $frames_count) ; do
     compose_opts=""
     render_cursor_image "$name" "$compose_opts" $frame
 done

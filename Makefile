@@ -66,8 +66,7 @@ install: all
 .PHONY: clean
 clean::
 # cleanup temporary build files
-	$(RM) -r ${indir}/progress[0-9]*.svg
-	$(RM) -r ${indir}/wait[0-9]*.svg
+	$(RM) -r ${indir}/*.frame*.svg
 	$(RM) -r ${builddir}
 	$(RM) -r ${xcursor_builddir}
 	$(RM) -r ${workdir}
