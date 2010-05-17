@@ -1,60 +1,43 @@
 #! /bin/bash
 
 # the original cursors
-SIZES="Small Regular Large Huge"
-COLORS="Black Blue Green Orange Red White"
-NAME="ComixCursors"
+themename="ComixCursors"
+sizes=("Small" "Regular" "Large" "Huge")
+colors=("Black" "Blue" "Green" "Orange" "Red" "White")
+weights=("" "Slim")
 
 # Set the ICONSDIR destination to a default (if not already set).
 ICONSDIR=${ICONSDIR:-~/.icons}
 export ICONSDIR
 
-for c in $COLORS; do 
-  for s in $SIZES; do 
-    # install bold version
-    if [[ -f ComixCursorsConfigs/$c-$s.CONFIG && -f ComixCursorsConfigs/$c-$s.theme ]] ; then
-      echo -e "\ninstalling \"$c $s\":\n"
-      cp ComixCursorsConfigs/$c-$s.CONFIG CONFIG
-      cp ComixCursorsConfigs/$c-$s.theme index.theme
-      ./install.bash
-      sleep 3
-      if [ -d ${ICONSDIR}/$NAME-$c-$s ] ; then
-        rm -r ${ICONSDIR}/$NAME-$c-$s
-      fi
-      mv ${ICONSDIR}/ComixCursors-Custom ${ICONSDIR}/$NAME-$c-$s
+function build_subtheme {
+    # Build the cursors for a particular subtheme.
+    subthemename="$1"
+
+    destdir="${ICONSDIR}/$themename-${subthemename}"
+    if [ -d "${destdir}" ] ; then
+        rm -r "${destdir}"
     fi
-    # install slim version, these will use the shadows from the bold version
-    if [[ -f ComixCursorsConfigs/$c-$s-Slim.CONFIG && -f ComixCursorsConfigs/$c-$s-Slim.theme ]] ; then
-      echo -e "\ninstalling \"$c $s Slim\":\n"
-      cp ComixCursorsConfigs/$c-$s-Slim.CONFIG CONFIG
-      cp ComixCursorsConfigs/$c-$s-Slim.theme index.theme
-      ./install.bash
-      sleep 3
-      if [ -d ${ICONSDIR}/$NAME-$c-$s-Slim ] ; then
-        rm -r ${ICONSDIR}/$NAME-$c-$s-Slim
-      fi
-      mv ${ICONSDIR}/ComixCursors-Custom ${ICONSDIR}/$NAME-$c-$s-Slim
-    fi
-  done
+
+    THEMENAME="${subthemename}"
+    export THEMENAME
+    printf "\nBuilding \"${subthemename}\":\n\n"
+    ./build-cursors
+    make
+    make install
+}
+
+for color in "${colors[@]}" ; do
+    for size in "${sizes[@]}" ; do
+        for weight in "${weights[@]}" ; do
+            if [ "${weight}" ] ; then
+                build_subtheme "${color}-${size}-${weight}"
+            else
+                build_subtheme "${color}-${size}"
+            fi
+        done
+    done
 done
 
-echo -e "\ninstalling Ghost:\n"
-cp ComixCursorsConfigs/Ghost.CONFIG CONFIG
-cp ComixCursorsConfigs/Ghost.theme index.theme
-./install.bash
-if [ -d ${ICONSDIR}/$NAME-Ghost ] ; then
-  rm -r ${ICONSDIR}/$NAME-Ghost
-fi
-mv ${ICONSDIR}/ComixCursors-Custom ${ICONSDIR}/$NAME-Ghost
-
-echo -e "\ninstalling Christmas:\n"
-cp ComixCursorsConfigs/Christmas.CONFIG CONFIG
-cp ComixCursorsConfigs/Christmas.theme index.theme
-./install.bash
-if [ -d ${ICONSDIR}/$NAME-Christmas ] ; then
-  rm -r ${ICONSDIR}/$NAME-Christmas
-fi
-mv ${ICONSDIR}/ComixCursors-Custom ${ICONSDIR}/$NAME-Christmas
-
-cp ComixCursorsConfigs/custom.CONFIG CONFIG
-cp ComixCursorsConfigs/custom.theme index.theme
+build_subtheme "Ghost"
+build_subtheme "Christmas"

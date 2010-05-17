@@ -23,7 +23,7 @@ DISTDIR=$PWD/dist
 ICONSDIR=${ICONSDIR:-~/.icons}
 export ICONSDIR
 
-if [ ! -d $DISTDIR ] ; then mkdir $DISTDIR; fi
+mkdir --parents $DISTDIR
 rm -rf $DISTDIR/*
 
 for PKG in $PKGS; do
@@ -55,7 +55,7 @@ for PKG in $PKGS; do
 
   cd $SUBDIR
   ./install-all.sh
-  cp link-cursors.sh ${ICONSDIR}/
+  cp cursorlinks ${ICONSDIR}/
 
   #
   # cursors packages
@@ -68,7 +68,7 @@ for PKG in $PKGS; do
   cd ${ICONSDIR}/ 
   TARFILE=$PKG-$VERSION.tar.bz2
   if [ -f $TARFILE ] ; then rm $TARFILE; fi
-  tar -cjhf $TARFILE $PKG* link-cursors.sh
+  tar -cjhf $TARFILE $PKG* cursorlinks
   mv $TARFILE $DISTDIR
   rm -rf $PKG*
 

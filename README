@@ -2,41 +2,54 @@
 # The original Comix Cursors sources README
 #
 
+COPYRIGHT
+
+ComixCursors, and all its file contents, comprise a work that is
+copyright © 2006–2010 Jens Luetkens and others. For a full list of
+authors and contributors, see the ‘AUTHORS’ file.
+
+ComixCursors is licensed to all under the terms of the LGPL:
+
+    This work is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Lesser General Public License as
+    published by the Free Software Foundation, either version 3 of the
+    License, or (at your option) any later version.
+
+    This work is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Lesser General Public License for more details.
+
+    You should have received a copy of the GNU Lesser General Public
+    License along with this work.
+    If not, see <http://www.gnu.org/licenses/>.
+
+The license terms are in the files ‘LICENSE.LGPL’ and ‘LICENSE.GPL’.
+
+
 INSTALLATION
 
 Refer to the ‘INSTALL’ file for requirements and detailed instructions
 to build and install.
 
-If you have the required programs, issue
-
-# ./install.bash
-
-This will read the basic cursors from the svg files, add
-a blurred and scaled shadow, tint the icons and compose 
-them into a single png image. After all the images have
-bee processed, the script will invoke "make" and "make 
-install", to create the xcursor files and install them 
-into you personal cursors folder (~/.icons/). 
-Thanks to uga and the RedDot cursor theme for the basic
-skeleton and Makefile. 
-
-Read the file INSTALLATION for installation details. 
-
 
 CUSTOMIZE YOUR CURSORS
 
-Despite the actual svg files a lot of customization can be
-done while composing the images. 
+Apart from the actual SVG files, a lot of customization can be done
+while composing the images.
 
-All configuration options are in the "CONFIG" file, which gets
-processed by the install and svg2png scripts. Some options
-can also get passed to the svg2png script, issue "./svg2png.bash"
-for a list of them.
+All configuration options are in the ‘….CONFIG’ file for each theme.
+Each theme has one, and there is a ‘custom.CONFIG’ which allows you to
+build a custom theme.
 
-The "svg2png.bash" script is used by the "install.bash"
-script, so when you want to batch-process you svgs you can 
-either add as many options to the command line as you want, 
-or edit the default values in the CONFIG file.
+The ‘….CONFIG’ file for a particular theme gets processed by the
+‘svg2png.bash’ program. Run the program with no parameters for a list
+of options that can be specified.
+
+The ‘svg2png.bash’ program is used by the ‘build-cursors’ program, so
+when you want to batch-process the SVG source images you can either
+add as many options to the command line as you want, or edit the
+default values in the ‘custom.CONFIG’ file.
 
 Pitfalls:
 
