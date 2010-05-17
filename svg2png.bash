@@ -102,6 +102,7 @@ if [[ $frame < 2 ]] ; then
         rm "${xcursor_config}"
     fi
 fi
+
 if [[ $frame > 0 ]] ; then
     echo "$SIZE $HOTX $HOTY $outfile $TIME" >> "${xcursor_config}"
 else
