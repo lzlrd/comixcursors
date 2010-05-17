@@ -173,6 +173,8 @@ done
 
 name="help"
 compose_opts="-BACKGROUND ${builddir}/default.png"
+frames_count=2
+generate_animation_source_frames "$name" $frames_count
 render_cursor_image "$name" "$compose_opts" 1 2000
 render_cursor_image "$name" "$compose_opts" 2 500
 
