@@ -1,55 +1,141 @@
-2009-11-02: v. 0.6.1
+Version 0.6.1
+=============
+
+:Released: 2009-11-02
+
 - fix install script to process all files correctly
 
-2009-06-19: v. 0.6.0
+
+Version 0.6.0
+=============
+
+:Released: 2009-06-19
+
 - license changed to LGPLv3
+
 - added red cursors
+
 - fix some firefox cursor hashes (thanx to tks)
 
-2008-05-28: v. 0.5.1
+
+Version 0.5.1
+=============
+
+:Released: 2008-05-28
+
 - progress animation expanded to 24 frames
+
 - wait cursor fixes
+
 - zoom cursor fixes
 
-2007-09-14: v. 0.5.0
+
+Version 0.5.0
+=============
+
+:Released: 2007-09-14
+
 - optimized build script caching shadow files
+
 - svgs and HOTSPOTS scaled to 500x500 to match svg2png script
+
 - slight svg fixes and cleanup
+
 - opaque versions
 
-2006-09-14: v. 0.4.3
+
+Version 0.4.3
+=============
+
+:Released: 2006-09-14
+
 - fixed .theme file syntax (=), thanks to Sune Vuorela
 
-2006-07-14: v. 0.4.2
+
+Version 0.4.2
+=============
+
+:Released: 2006-07-14
+
 - added Huge cursor size
+
 - rpm installation now into /usr/share/icons
 
-2006-02-09: v. 0.4.1
+
+Version 0.4.1
+=============
+
+:Released: 2006-02-09
+
 - additional dnd cursors for gnome (and firefox)
 
-2006-02-08: packages
 - left-handed packages (-LH)
 
-2006-02-08: v. 0.4
+
+Version 0.4
+===========
+
+:Released: 2006-02-08
+
 - freedesktop cursor names
+
 - additional mozilla cursors
 
-2005-12-23: v. 0.3.2
+
+version 0.3.2
+=============
+
+:Released: 2005-12-23
+
 - grab hand fix (firefox)
 
-2005-12-22: v. 0.3.1
+
+version 0.3.1
+=============
+
+:Released: 2005-12-22
+
 - mozilla/firefox fix
 
-2005-12-22: v. 0.3
+
+Version 0.3
+===========
+
+:Released: 2005-12-22
+
 - added black (and christmas)
+
 - single configuration file
+
 - cleanup
 
-2005-12-19: v. 0.2
+
+Version 0.2
+===========
+
+:Released: 2005-12-19
+
 - four colors (and ghost)
+
 - three sizes
+
 - sources
+
 - customization script
 
-2005-12-17: v. 0.1
+
+Version 0.1
+===========
+
+:Released: 2005-12-17
+
 - initial release (white)
+
+
+..
+    Local variables:
+    coding: utf-8
+    mode: text
+    mode: rst
+    End:
+    vim: fileencoding=utf-8 filetype=rst :
