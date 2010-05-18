@@ -3,7 +3,7 @@ Version 0.6.1
 
 :Released: 2009-11-02
 
-- fix install script to process all files correctly
+* fix install script to process all files correctly
 
 
 Version 0.6.0
@@ -11,11 +11,11 @@ Version 0.6.0
 
 :Released: 2009-06-19
 
-- license changed to LGPLv3
+* license changed to LGPLv3
 
-- added red cursors
+* added red cursors
 
-- fix some firefox cursor hashes (thanx to tks)
+* fix some firefox cursor hashes (thanx to tks)
 
 
 Version 0.5.1
@@ -23,11 +23,11 @@ Version 0.5.1
 
 :Released: 2008-05-28
 
-- progress animation expanded to 24 frames
+* progress animation expanded to 24 frames
 
-- wait cursor fixes
+* wait cursor fixes
 
-- zoom cursor fixes
+* zoom cursor fixes
 
 
 Version 0.5.0
@@ -35,13 +35,13 @@ Version 0.5.0
 
 :Released: 2007-09-14
 
-- optimized build script caching shadow files
+* optimized build script caching shadow files
 
-- svgs and HOTSPOTS scaled to 500x500 to match svg2png script
+* svgs and HOTSPOTS scaled to 500x500 to match svg2png script
 
-- slight svg fixes and cleanup
+* slight svg fixes and cleanup
 
-- opaque versions
+* opaque versions
 
 
 Version 0.4.3
@@ -49,7 +49,7 @@ Version 0.4.3
 
 :Released: 2006-09-14
 
-- fixed .theme file syntax (=), thanks to Sune Vuorela
+* fixed .theme file syntax (=), thanks to Sune Vuorela
 
 
 Version 0.4.2
@@ -57,9 +57,9 @@ Version 0.4.2
 
 :Released: 2006-07-14
 
-- added Huge cursor size
+* added Huge cursor size
 
-- rpm installation now into /usr/share/icons
+* rpm installation now into /usr/share/icons
 
 
 Version 0.4.1
@@ -67,9 +67,9 @@ Version 0.4.1
 
 :Released: 2006-02-09
 
-- additional dnd cursors for gnome (and firefox)
+* additional dnd cursors for gnome (and firefox)
 
-- left-handed packages (-LH)
+* left-handed packages (-LH)
 
 
 Version 0.4
@@ -77,9 +77,9 @@ Version 0.4
 
 :Released: 2006-02-08
 
-- freedesktop cursor names
+* freedesktop cursor names
 
-- additional mozilla cursors
+* additional mozilla cursors
 
 
 version 0.3.2
@@ -87,7 +87,7 @@ version 0.3.2
 
 :Released: 2005-12-23
 
-- grab hand fix (firefox)
+* grab hand fix (firefox)
 
 
 version 0.3.1
@@ -95,7 +95,7 @@ version 0.3.1
 
 :Released: 2005-12-22
 
-- mozilla/firefox fix
+* mozilla/firefox fix
 
 
 Version 0.3
@@ -103,11 +103,11 @@ Version 0.3
 
 :Released: 2005-12-22
 
-- added black (and christmas)
+* added black (and christmas)
 
-- single configuration file
+* single configuration file
 
-- cleanup
+* cleanup
 
 
 Version 0.2
@@ -115,13 +115,13 @@ Version 0.2
 
 :Released: 2005-12-19
 
-- four colors (and ghost)
+* four colors (and ghost)
 
-- three sizes
+* three sizes
 
-- sources
+* sources
 
-- customization script
+* customization script
 
 
 Version 0.1
@@ -129,7 +129,7 @@ Version 0.1
 
 :Released: 2005-12-17
 
-- initial release (white)
+* initial release (white)
 
 
 ..
