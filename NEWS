@@ -26,30 +26,30 @@
 
 2006-02-09: v. 0.4.1
 - additional dnd cursors for gnome (and firefox)
- 
+
 2006-02-08: packages
 - left-handed packages (-LH)
- 
+
 2006-02-08: v. 0.4
 - freedesktop cursor names
 - additional mozilla cursors
- 
+
 2005-12-23: v. 0.3.2
 - grab hand fix (firefox)
- 
+
 2005-12-22: v. 0.3.1
 - mozilla/firefox fix
- 
+
 2005-12-22: v. 0.3
 - added black (and christmas)
 - single configuration file
 - cleanup
- 
+
 2005-12-19: v. 0.2
 - four colors (and ghost)
 - three sizes
 - sources
 - customization script
- 
+
 2005-12-17: v. 0.1
 - initial release (white)
