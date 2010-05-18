@@ -44,6 +44,16 @@ function svg_substitutions {
         "$infile"
 }
 
+function svg_rotate {
+    # Apply rotation angle.
+    local infile="$1"
+    local angle="$2"
+
+    sed \
+        -e "s/rotate([0-9]*,/rotate($angle,/" \
+        "$infile"
+}
+
 indir="svg"
 workdir="tmp"
 builddir="build"
@@ -61,20 +71,17 @@ function generate_animation_source_frames {
     local frames_count=$2
 
     first_frame_file="${indir}/${name}.svg"
-    patch_file="${indir}/${name}.diff"
-    for frame in $(seq 1 $frames_count) ; do
-        frame_file="${indir}/${name}${frame}.svg"
+    for frame in $(seq --equal-width 1 $frames_count) ; do
+        frame_file="${indir}/${name}.frame${frame}.svg"
         case $frame in
             1)
                 cp "$first_frame_file" "$frame_file"
                 ;;
             *)
-                cp "$prev_frame_file" "$frame_file"
-                patch --force --silent \
-                    "$frame_file" < "$patch_file" > /dev/null
+	        angle=$(echo "360 / $frames_count * ($frame - 1)" | bc)
+		svg_rotate "$first_frame_file" $angle > "$frame_file"
                 ;;
         esac
-        prev_frame_file="$frame_file"
     done
 }
 
@@ -86,7 +93,7 @@ function render_cursor_image {
     local frame_time=$4
 
     if [[ "$frame" ]] ; then
-        image_name="${name}${frame}"
+        image_name="${name}.frame${frame}"
         compose_opts="${compose_opts} -FRAME $frame"
         if [[ "$frame_time" ]] ; then
             compose_opts="${compose_opts} -TIME $frame_time"
@@ -162,15 +169,19 @@ for name in $names; do
     render_cursor_image "$name" "$compose_opts"
 done
 
+# the animated cursors 
+
 name="help"
 compose_opts="-BACKGROUND ${builddir}/default.png"
+frames_count=2
+generate_animation_source_frames "$name" $frames_count
 render_cursor_image "$name" "$compose_opts" 1 2000
 render_cursor_image "$name" "$compose_opts" 2 500
 
 name="progress"
 frames_count=24
 generate_animation_source_frames "$name" $frames_count
-for frame in $(seq 1 $frames_count) ; do
+for frame in $(seq --equal-width 1 $frames_count) ; do
     compose_opts="-BACKGROUND ${builddir}/default.png"
     render_cursor_image "$name" "$compose_opts" $frame
 done
@@ -178,7 +189,7 @@ done
 name="wait"
 frames_count=36
 generate_animation_source_frames "$name" $frames_count
-for frame in $(seq 1 $frames_count) ; do
+for frame in $(seq --equal-width 1 $frames_count) ; do
     compose_opts=""
     render_cursor_image "$name" "$compose_opts" $frame
 done
