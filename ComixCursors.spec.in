@@ -1,0 +1,54 @@
+Name:           ComixCursors
+Version:        0.6.1
+Release:        1%{?dist}
+Summary:        The original Comix Cursors
+
+Group:          System/X11/Icons
+License:        LGPLv3
+URL:            http://kde-look.org/content/show.php?content=32627
+Source0:        %{name}-%{version}.tar.bz2
+BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-buildroot
+BuildArch:	noarch
+
+Requires: 	XFree86
+
+Packager:	Jens Luetkens <j.luetkens@hamburg.de>
+Distribution:	generic
+
+prefix: /usr/share
+
+%description
+X11 mouse theme with a comics feeling.
+ Package comes with 50 different mouse themes for X11.
+ 6 colors (black, blue, green, orange, red and white)
+ 4 different sizes (small, regular, large and huge)
+ 2 different weights (slim and normal)
+ ..
+ and one for christmas and one with ghost
+
+%prep
+%setup -q -c %{name}-%{version} -n %{name}-%{version}
+
+%build
+
+%install
+[ "%{buildroot}" != / ] && rm -rf "%{buildroot}"
+
+install -d %{buildroot}%{prefix}/icons
+
+for d in %{name}-*; do
+    ./link-cursors "$d/cursors"
+    cp -R $d %{buildroot}%{prefix}/icons
+done
+
+
+%clean
+[ "%{buildroot}" != / ] && rm -rf "%{buildroot}"
+
+%files
+%defattr(-,root,root,-)
+#%doc AUTHORS COPYING README ChangeLog
+%dir %{prefix}/icons/%{name}-*
+%{prefix}/icons/%{name}-*/*
+
+%changelog
