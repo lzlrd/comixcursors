@@ -1,3 +1,18 @@
+Version NEXT
+============
+
+:Released: FUTURE
+
+* Render images using ‘rsvg’ (faster than Inkscape).
+
+* Generate animation frames from starting image using SVG transform
+  attributes (not ‘patch’).
+
+* Easier to customise install location.
+
+* Maintainability improvements of build system and programs.
+
+
 Version 0.6.1
 =============
 
