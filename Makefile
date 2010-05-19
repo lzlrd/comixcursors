@@ -79,6 +79,10 @@ install: all
 # Install alternative name symlinks for the cursors.
 	./link-cursors "${xcursor_destdir}"
 
+.PHONY: uninstall
+uninstall:
+	$(RM) -r ${destdir}
+
 
 .PHONY: rpm
 rpm: ${rpm_spec_file}

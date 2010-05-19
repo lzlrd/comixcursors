@@ -40,6 +40,11 @@ you might have to clean the working tree:
 
     $ make clean
 
+If you want to remove the cursor theme from its installed location,
+invoke:
+
+    $ make uninstall
+
 
 Complete Installation
 =====================
