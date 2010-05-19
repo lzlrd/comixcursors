@@ -25,6 +25,8 @@
 ICONSDIR ?= ${HOME}/.icons
 THEMENAME ?= custom
 
+GENERATED_FILES :=
+
 indir = svg
 themefile = ComixCursorsConfigs/${THEMENAME}.theme
 workdir = tmp
@@ -38,6 +40,10 @@ xcursor_destdir = ${destdir}/cursors
 conffiles = $(wildcard ${builddir}/*.conf)
 cursornames = $(foreach conffile,${conffiles},$(basename $(notdir ${conffile})))
 cursorfiles = $(foreach cursor,${cursornames},${xcursor_builddir}/${cursor})
+
+GENERATED_FILES += ${indir}/*.frame*.svg
+GENERATED_FILES += ${workdir}
+GENERATED_FILES += ${builddir}
 
 
 .PHONY: all
@@ -64,12 +70,8 @@ install: all
 	./link-cursors "${xcursor_destdir}"
 
 .PHONY: clean
-clean::
-# cleanup temporary build files
-	$(RM) -r ${indir}/*.frame*.svg
-	$(RM) -r ${builddir}
-	$(RM) -r ${xcursor_builddir}
-	$(RM) -r ${workdir}
+clean:
+	$(RM) -r ${GENERATED_FILES}
 
 
 # Local Variables:
