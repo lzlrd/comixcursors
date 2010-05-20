@@ -4,27 +4,8 @@
 
 COPYRIGHT
 
-ComixCursors, and all its file contents, comprise a work that is
-copyright © 2006–2010 Jens Luetkens and others. For a full list of
-authors and contributors, see the ‘AUTHORS’ file.
-
-ComixCursors is licensed to all under the terms of the LGPL:
-
-    This work is free software: you can redistribute it and/or modify
-    it under the terms of the GNU Lesser General Public License as
-    published by the Free Software Foundation, either version 3 of the
-    License, or (at your option) any later version.
-
-    This work is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU Lesser General Public License for more details.
-
-    You should have received a copy of the GNU Lesser General Public
-    License along with this work.
-    If not, see <http://www.gnu.org/licenses/>.
-
-The license terms are in the files ‘LICENSE.LGPL’ and ‘LICENSE.GPL’.
+Refer to the ‘COPYING’ file for copyright statement and grant of
+license.
 
 
 INSTALLATION
@@ -39,8 +20,20 @@ Apart from the actual SVG files, a lot of customization can be done
 while composing the images.
 
 All configuration options are in the ‘….CONFIG’ file for each theme.
-Each theme has one, and there is a ‘custom.CONFIG’ which allows you to
-build a custom theme.
+Each theme has one, and there is a ‘custom.CONFIG’ which is a template
+for you to copy and customise to build a custom theme.
+
+To start making a custom theme, choose a name and invoke:
+
+    $ export THEMENAME="Purple-and-Green"
+    $ make custom-theme
+
+The environment variable ‘THEMENAME’ will be used by each of the
+programs to know which theme you have specified. (This is why the
+‘export’ command is necessary.) The above step will make the files
+‘Purple-and-Green.CONFIG’ and ‘Purple-and-Green.theme’ in the
+‘ComixCursorsConfigs/’ directory, if they did not already exist. Edit
+each of these files to customise your new theme.
 
 The ‘….CONFIG’ file for a particular theme gets processed by the
 ‘svg2png.bash’ program. Run the program with no parameters for a list
