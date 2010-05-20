@@ -22,11 +22,17 @@
 
 # Makefile for ComixCursors project.
 
+SHELL=/bin/bash
+
 ICONSDIR ?= ${HOME}/.icons
 THEMENAME ?= custom
 
+GENERATED_FILES :=
+
 indir = svg
-themefile = ComixCursorsConfigs/${THEMENAME}.theme
+configdir = ComixCursorsConfigs
+configfile = ${configdir}/${THEMENAME}.CONFIG
+themefile = ${configdir}/${THEMENAME}.theme
 workdir = tmp
 builddir = build
 xcursor_builddir = cursors
@@ -34,10 +40,25 @@ xcursor_builddir = cursors
 destdir = ${ICONSDIR}/ComixCursors-${THEMENAME}
 xcursor_destdir = ${destdir}/cursors
 
+template_configfile = ${configdir}/custom.CONFIG
+template_themefile = ${configdir}/custom.theme
+
 # Derive cursor file names.
 conffiles = $(wildcard ${builddir}/*.conf)
 cursornames = $(foreach conffile,${conffiles},$(basename $(notdir ${conffile})))
 cursorfiles = $(foreach cursor,${cursornames},${xcursor_builddir}/${cursor})
+
+GENERATED_FILES += ${indir}/*.frame*.svg
+GENERATED_FILES += ${workdir}
+GENERATED_FILES += ${builddir}
+
+# Packaging files.
+news_file = NEWS
+news_content = NEWS.content.txt
+rpm_spec_file = ComixCursors.spec
+rpm_spec_template = ${rpm_spec_file}.in
+
+GENERATED_FILES += ${news_content} ${rpm_spec_file}
 
 
 .PHONY: all
@@ -63,15 +84,40 @@ install: all
 # Install alternative name symlinks for the cursors.
 	./link-cursors "${xcursor_destdir}"
 
+.PHONY: uninstall
+uninstall:
+	$(RM) -r ${destdir}
+
+
+.PHONY: custom-theme
+custom-theme: ${configfile} ${themefile}
+
+${configfile}: ${template_configfile}
+	cp "$<" "$@"
+
+${themefile}: ${template_themefile}
+	cp "$<" "$@"
+
+
+.PHONY: rpm
+rpm: ${rpm_spec_file}
+
+${news_content}: ${news_file}
+	# Get only the news entries from the news file.
+	tac "$<" \
+	| awk ' \
+		{ text_buffer = text_buffer $$0 ORS ; if (formfeed_seen) print } \
+		/^\x0c/ { if (!formfeed_seen) { formfeed_seen = 1 ; next } } \
+		END { if (!formfeed_seen) { ORS = "" ; print text_buffer } }' \
+	| tac > "$@"
+
+${rpm_spec_file}: ${rpm_spec_template} ${news_content}
+	cat "$<" "${news_content}" > "$@"
+
+
 .PHONY: clean
-clean::
-# cleanup temporary build files
-	$(RM) -r ${indir}/*.orig ${indir}/*.rej
-	$(RM) -r ${indir}/progress[0-9]*.svg
-	$(RM) -r ${indir}/wait[0-9]*.svg
-	$(RM) -r ${builddir}
-	$(RM) -r ${xcursor_builddir}
-	$(RM) -r ${workdir}
+clean:
+	$(RM) -r ${GENERATED_FILES}
 
 
 # Local Variables:

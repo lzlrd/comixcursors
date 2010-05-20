@@ -1,0 +1,160 @@
+Version NEXT
+============
+
+:Released: FUTURE
+
+- Licence changing to GPLv3.
+
+* Uninstallation of current/custom/all cursors from sources. 
+
+* Render images using ‘rsvg’ (faster than Inkscape).
+
+* Generate animation frames from starting image using SVG transform
+  attributes (not ‘patch’).
+
+* Easier to customise install location.
+
+* Maintainability improvements of build system and programs.
+
+
+Version 0.6.1
+=============
+
+:Released: 2009-11-02
+
+* Fix install script to process all files correctly.
+
+
+Version 0.6.0
+=============
+
+:Released: 2009-06-19
+
+* License changed to LGPLv3.
+
+* Added red cursors.
+
+* Fix some firefox cursor hashes (thanx to tks).
+
+
+Version 0.5.1
+=============
+
+:Released: 2008-05-28
+
+* Progress animation expanded to 24 frames.
+
+* Wait cursor fixes.
+
+* Zoom cursor fixes.
+
+
+Version 0.5.0
+=============
+
+:Released: 2007-09-14
+
+* Optimized build script caching shadow files.
+
+* SVGs and HOTSPOTS scaled to 500x500 to match svg2png script.
+
+* Slight svg fixes and cleanup.
+
+* Opaque versions.
+
+
+Version 0.4.3
+=============
+
+:Released: 2006-09-14
+
+* Fixed .theme file syntax (=), thanks to Sune Vuorela.
+
+
+Version 0.4.2
+=============
+
+:Released: 2006-07-14
+
+* Added Huge cursor size.
+
+* RPM installation now into /usr/share/icons.
+
+
+Version 0.4.1
+=============
+
+:Released: 2006-02-09
+
+* Additional dnd cursors for gnome (and firefox).
+
+* Left-handed packages (-LH).
+
+
+Version 0.4
+===========
+
+:Released: 2006-02-08
+
+* Freedesktop cursor names.
+
+* Additional mozilla cursors.
+
+
+version 0.3.2
+=============
+
+:Released: 2005-12-23
+
+* Grab hand fix (firefox).
+
+
+version 0.3.1
+=============
+
+:Released: 2005-12-22
+
+* Mozilla/firefox fix.
+
+
+Version 0.3
+===========
+
+:Released: 2005-12-22
+
+* Added black (and christmas).
+
+* Single configuration file.
+
+* Cleanup.
+
+
+Version 0.2
+===========
+
+:Released: 2005-12-19
+
+* Four colors (and ghost).
+
+* Three sizes.
+
+* Sources.
+
+* Customization script.
+
+
+Version 0.1
+===========
+
+:Released: 2005-12-17
+
+* Initial release (white).
+
+
+..
+    Local variables:
+    coding: utf-8
+    mode: text
+    mode: rst
+    End:
+    vim: fileencoding=utf-8 filetype=rst :
