@@ -30,13 +30,18 @@ THEMENAME ?= custom
 GENERATED_FILES :=
 
 indir = svg
-themefile = ComixCursorsConfigs/${THEMENAME}.theme
+configdir = ComixCursorsConfigs
+configfile = ${configdir}/${THEMENAME}.CONFIG
+themefile = ${configdir}/${THEMENAME}.theme
 workdir = tmp
 builddir = build
 xcursor_builddir = cursors
 
 destdir = ${ICONSDIR}/ComixCursors-${THEMENAME}
 xcursor_destdir = ${destdir}/cursors
+
+template_configfile = ${configdir}/custom.CONFIG
+template_themefile = ${configdir}/custom.theme
 
 # Derive cursor file names.
 conffiles = $(wildcard ${builddir}/*.conf)
@@ -48,7 +53,7 @@ GENERATED_FILES += ${workdir}
 GENERATED_FILES += ${builddir}
 
 # Packaging files.
-news_file = test/NEWS-4.txt
+news_file = NEWS
 news_content = NEWS.content.txt
 rpm_spec_file = ComixCursors.spec
 rpm_spec_template = ${rpm_spec_file}.in
@@ -82,6 +87,16 @@ install: all
 .PHONY: uninstall
 uninstall:
 	$(RM) -r ${destdir}
+
+
+.PHONY: custom-theme
+custom-theme: ${configfile} ${themefile}
+
+${configfile}: ${template_configfile}
+	cp "$<" "$@"
+
+${themefile}: ${template_themefile}
+	cp "$<" "$@"
 
 
 .PHONY: rpm

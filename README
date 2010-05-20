@@ -20,8 +20,20 @@ Apart from the actual SVG files, a lot of customization can be done
 while composing the images.
 
 All configuration options are in the ‘….CONFIG’ file for each theme.
-Each theme has one, and there is a ‘custom.CONFIG’ which allows you to
-build a custom theme.
+Each theme has one, and there is a ‘custom.CONFIG’ which is a template
+for you to copy and customise to build a custom theme.
+
+To start making a custom theme, choose a name and invoke:
+
+    $ export THEMENAME="Purple-and-Green"
+    $ make custom-theme
+
+The environment variable ‘THEMENAME’ will be used by each of the
+programs to know which theme you have specified. (This is why the
+‘export’ command is necessary.) The above step will make the files
+‘Purple-and-Green.CONFIG’ and ‘Purple-and-Green.theme’ in the
+‘ComixCursorsConfigs/’ directory, if they did not already exist. Edit
+each of these files to customise your new theme.
 
 The ‘….CONFIG’ file for a particular theme gets processed by the
 ‘svg2png.bash’ program. Run the program with no parameters for a list
