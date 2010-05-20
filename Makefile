@@ -48,7 +48,7 @@ GENERATED_FILES += ${workdir}
 GENERATED_FILES += ${builddir}
 
 # Packaging files.
-news_file = test/NEWS-4.txt
+news_file = NEWS
 news_content = NEWS.content.txt
 rpm_spec_file = ComixCursors.spec
 rpm_spec_template = ${rpm_spec_file}.in
