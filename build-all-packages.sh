@@ -1,6 +1,23 @@
-#!/bin/sh
-
+#! /bin/sh
+# build-all-packages.sh
+# Part of ComixCursors, a desktop cursor theme.
 #
+# Copyright © 2010 Ben Finney <ben+gnome@benfinney.id.au>
+# Copyright © 2006–2010 Jens Luetkens <j.luetkens@hamburg.de>
+#
+# This work is free software: you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This work is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+# General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this work. If not, see <http://www.gnu.org/licenses/>.
+
 # This script creates all four packages of ComixCursors for distribution
 # from the sources. 
 # It's ment to be run from the directory containig the sources e.g.
@@ -11,8 +28,6 @@
 # drwxr-xr-x 8 user users  4096 20. Jun 11:56 ComixCursors-LH-sources-0.6.1
 # drwxr-xr-x 8 user users  4096 20. Jun 11:56 ComixCursors-opaque-sources-0.6.1
 # drwxr-xr-x 8 user users  4096 20. Jun 12:06 ComixCursors-sources-0.6.1
-#
-# 
 
 VERSION="0.6.1"
 PKGS="ComixCursors-LH-opaque ComixCursors-LH ComixCursors-opaque ComixCursors"
@@ -89,5 +104,3 @@ for PKG in $PKGS; do
   fi
 
 done
-
-
