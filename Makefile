@@ -51,6 +51,7 @@ cursorfiles = $(foreach cursor,${cursornames},${xcursor_builddir}/${cursor})
 GENERATED_FILES += ${indir}/*.frame*.svg
 GENERATED_FILES += ${workdir}
 GENERATED_FILES += ${builddir}
+GENERATED_FILES += ${xcursor_builddir}
 
 # Packaging files.
 news_file = NEWS
