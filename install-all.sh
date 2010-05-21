@@ -20,7 +20,7 @@
 # along with this work. If not, see <http://www.gnu.org/licenses/>.
 
 # the original cursors
-themename_root="ComixCursors"
+themename_stem="ComixCursors"
 sizes=("Small" "Regular" "Large" "Huge")
 colors=("Black" "Blue" "Green" "Orange" "Red" "White")
 weights=("" "Slim")
@@ -60,7 +60,7 @@ function build_theme {
     # Build the cursors for a particular theme.
     THEMENAME="$1"
 
-    destdir="${ICONSDIR}/${themename_root}-${THEMENAME}"
+    destdir="${ICONSDIR}/${themename_stem}-${THEMENAME}"
     if [ -d "${destdir}" ] ; then
         rm -r "${destdir}"
     fi
