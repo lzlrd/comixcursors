@@ -49,7 +49,7 @@ function svg_rotate {
     local angle="$2"
 
     sed \
-        -e "s/rotate([0-9]*,/rotate($angle,/" \
+        -e "s/rotate(0,/rotate($angle,/" \
         "$infile"
 }
 
