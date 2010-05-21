@@ -16,6 +16,8 @@ Version NEXT
 
 * Maintainability improvements of build system and programs.
 
+* Include “Opaque” alternatives in primary source package.
+
 
 Version 0.6.1
 =============
