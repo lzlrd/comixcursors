@@ -20,7 +20,7 @@
 # along with this work. If not, see <http://www.gnu.org/licenses/>.
 
 # the original cursors
-themename="ComixCursors"
+themename_root="ComixCursors"
 sizes=("Small" "Regular" "Large" "Huge")
 colors=("Black" "Blue" "Green" "Orange" "Red" "White")
 weights=("" "Slim")
@@ -56,24 +56,23 @@ while getopts ":uh" opt; do
   esac
 done
 
-function build_subtheme {
-    # Build the cursors for a particular subtheme.
-    subthemename="$1"
+function build_theme {
+    # Build the cursors for a particular theme.
+    THEMENAME="$1"
 
-    destdir="${ICONSDIR}/$themename-${subthemename}"
+    destdir="${ICONSDIR}/${themename_root}-${THEMENAME}"
     if [ -d "${destdir}" ] ; then
         rm -r "${destdir}"
     fi
 
-    THEMENAME="${subthemename}"
     export THEMENAME
     if [ $UNINSTALL ] ; then
-      make uninstall
+        make uninstall
     else
-       printf "\nBuilding \"${subthemename}\":\n\n"
-      ./build-cursors
-      make
-      make install
+        printf "\nBuilding \"${THEMENAME}\":\n\n"
+        ./build-cursors
+        make
+        make install
     fi
 }
 
@@ -81,13 +80,13 @@ for color in "${colors[@]}" ; do
     for size in "${sizes[@]}" ; do
         for weight in "${weights[@]}" ; do
             if [ "${weight}" ] ; then
-                build_subtheme "${color}-${size}-${weight}"
+                build_theme "${color}-${size}-${weight}"
             else
-                build_subtheme "${color}-${size}"
+                build_theme "${color}-${size}"
             fi
         done
     done
 done
 
-build_subtheme "Ghost"
-build_subtheme "Christmas"
+build_theme "Ghost"
+build_theme "Christmas"
