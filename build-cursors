@@ -32,14 +32,17 @@ function svg_substitutions {
     # Process an SVG file with custom substitutions.
     local infile="$1"
 
-    sed \
-        -e "s/#000000/$OUTLINECOLOR/g" \
-        -e "s/stroke-width:20/stroke-width:$OUTLINE/g" \
-        -e "s/#999999/$CURSORCOLORHI/g" \
-        -e "s/#555555/$CURSORCOLORLO/g" \
-        -e "s/#999933/$HILIGHTHI/g" \
-        -e "s/#666600/$HILIGHTLO/g" \
-        -e "s/#010101/$HAIR/g" \
+    substitutions=(
+        "s/#000000/$OUTLINECOLOR/g"
+        "s/stroke-width:20/stroke-width:$OUTLINE/g"
+        "s/#999999/$CURSORCOLORHI/g"
+        "s/#555555/$CURSORCOLORLO/g"
+        "s/#999933/$HILIGHTHI/g"
+        "s/#666600/$HILIGHTLO/g"
+        "s/#010101/$HAIR/g"
+        )
+
+    sed $(for subst in "${substitutions[@]}" ; do printf " -e ${subst}" ; done) \
         "$infile"
 }
 
