@@ -10,6 +10,33 @@ weights=("" "Slim")
 ICONSDIR=${ICONSDIR:-~/.icons}
 export ICONSDIR
 
+# argument processing and usage
+function usage {
+  echo ""
+  echo "  $0 [OPTION]"
+  echo "  Install the ComixCursors mouse theme."
+  echo "  OPTIONS:"
+  echo "    -h:    Display this help."
+  echo "    -u:    Uninstall the ComixCursors mouse theme."
+  echo ""
+  exit
+}
+
+while getopts ":uh" opt; do
+  case $opt in
+    h)
+      usage
+      ;;
+    u)
+      UNINSTALL=true
+      ;;
+    *)
+      echo "Invalid option: -$OPTARG" >&2
+      usage
+      ;;
+  esac
+done
+
 function build_subtheme {
     # Build the cursors for a particular subtheme.
     subthemename="$1"
@@ -21,10 +48,14 @@ function build_subtheme {
 
     THEMENAME="${subthemename}"
     export THEMENAME
-    printf "\nBuilding \"${subthemename}\":\n\n"
-    ./build-cursors
-    make
-    make install
+    if [ $UNINSTALL ] ; then
+      make uninstall
+    else
+       printf "\nBuilding \"${subthemename}\":\n\n"
+      ./build-cursors
+      make
+      make install
+    fi
 }
 
 for color in "${colors[@]}" ; do

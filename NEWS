@@ -3,6 +3,10 @@ Version NEXT
 
 :Released: FUTURE
 
+* Licence changing to GPLv3.
+
+* Uninstallation of current/custom/all cursors from sources.
+
 * Render images using ‘rsvg’ (faster than Inkscape).
 
 * Generate animation frames from starting image using SVG transform
@@ -18,7 +22,7 @@ Version 0.6.1
 
 :Released: 2009-11-02
 
-* fix install script to process all files correctly
+* Fix install script to process all files correctly.
 
 
 Version 0.6.0
@@ -26,11 +30,11 @@ Version 0.6.0
 
 :Released: 2009-06-19
 
-* license changed to LGPLv3
+* License changed to LGPLv3.
 
-* added red cursors
+* Added red cursors.
 
-* fix some firefox cursor hashes (thanx to tks)
+* Fix some firefox cursor hashes (thanx to tks).
 
 
 Version 0.5.1
@@ -38,11 +42,11 @@ Version 0.5.1
 
 :Released: 2008-05-28
 
-* progress animation expanded to 24 frames
+* Progress animation expanded to 24 frames.
 
-* wait cursor fixes
+* Wait cursor fixes.
 
-* zoom cursor fixes
+* Zoom cursor fixes.
 
 
 Version 0.5.0
@@ -50,13 +54,13 @@ Version 0.5.0
 
 :Released: 2007-09-14
 
-* optimized build script caching shadow files
+* Optimized build script caching shadow files.
 
-* svgs and HOTSPOTS scaled to 500x500 to match svg2png script
+* SVGs and HOTSPOTS scaled to 500x500 to match svg2png script.
 
-* slight svg fixes and cleanup
+* Slight svg fixes and cleanup.
 
-* opaque versions
+* Opaque versions.
 
 
 Version 0.4.3
@@ -64,7 +68,7 @@ Version 0.4.3
 
 :Released: 2006-09-14
 
-* fixed .theme file syntax (=), thanks to Sune Vuorela
+* Fixed .theme file syntax (=), thanks to Sune Vuorela.
 
 
 Version 0.4.2
@@ -72,9 +76,9 @@ Version 0.4.2
 
 :Released: 2006-07-14
 
-* added Huge cursor size
+* Added Huge cursor size.
 
-* rpm installation now into /usr/share/icons
+* RPM installation now into /usr/share/icons.
 
 
 Version 0.4.1
@@ -82,9 +86,9 @@ Version 0.4.1
 
 :Released: 2006-02-09
 
-* additional dnd cursors for gnome (and firefox)
+* Additional dnd cursors for gnome (and firefox).
 
-* left-handed packages (-LH)
+* Left-handed packages (-LH).
 
 
 Version 0.4
@@ -92,9 +96,9 @@ Version 0.4
 
 :Released: 2006-02-08
 
-* freedesktop cursor names
+* Freedesktop cursor names.
 
-* additional mozilla cursors
+* Additional mozilla cursors.
 
 
 version 0.3.2
@@ -102,7 +106,7 @@ version 0.3.2
 
 :Released: 2005-12-23
 
-* grab hand fix (firefox)
+* Grab hand fix (firefox).
 
 
 version 0.3.1
@@ -110,7 +114,7 @@ version 0.3.1
 
 :Released: 2005-12-22
 
-* mozilla/firefox fix
+* Mozilla/firefox fix.
 
 
 Version 0.3
@@ -118,11 +122,11 @@ Version 0.3
 
 :Released: 2005-12-22
 
-* added black (and christmas)
+* Added black (and christmas).
 
-* single configuration file
+* Single configuration file.
 
-* cleanup
+* Cleanup.
 
 
 Version 0.2
@@ -130,13 +134,13 @@ Version 0.2
 
 :Released: 2005-12-19
 
-* four colors (and ghost)
+* Four colors (and ghost).
 
-* three sizes
+* Three sizes.
 
-* sources
+* Sources.
 
-* customization script
+* Customization script.
 
 
 Version 0.1
@@ -144,7 +148,7 @@ Version 0.1
 
 :Released: 2005-12-17
 
-* initial release (white)
+* Initial release (white).
 
 
 ..
