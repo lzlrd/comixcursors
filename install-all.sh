@@ -19,11 +19,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this work. If not, see <http://www.gnu.org/licenses/>.
 
-# the original cursors
 themename_stem="ComixCursors"
-sizes=("Small" "Regular" "Large" "Huge")
-colors=("Black" "Blue" "Green" "Orange" "Red" "White")
-weights=("" "Slim")
+configfile_dir="${themename_stem}Configs"
+configfile_template_name="custom"
 
 # Set the ICONSDIR destination to a default (if not already set).
 ICONSDIR=${ICONSDIR:-~/.icons}
@@ -76,17 +74,13 @@ function build_theme {
     fi
 }
 
-for color in "${colors[@]}" ; do
-    for size in "${sizes[@]}" ; do
-        for weight in "${weights[@]}" ; do
-            if [ "${weight}" ] ; then
-                build_theme "${color}-${size}-${weight}"
-            else
-                build_theme "${color}-${size}"
-            fi
-        done
-    done
+for configfile in "${configfile_dir}"/*.CONFIG ; do
+    # Each config file represents a theme to be built.
+    configfile_name=$(basename "$configfile")
+    themename="${configfile_name%.CONFIG}"
+    if [ "$themename" == "$configfile_template_name" ] ; then
+        # The template isn't a theme we want to build.
+        continue
+    fi
+    build_theme "$themename"
 done
-
-build_theme "Ghost"
-build_theme "Christmas"
