@@ -1,0 +1,195 @@
+#! /bin/bash
+# build-cursors
+# Part of ComixCursors, a desktop cursor theme.
+#
+# Copyright © 2010 Ben Finney <ben+gnome@benfinney.id.au>
+# Copyright © 2006–2010 Jens Luetkens <j.luetkens@hamburg.de>
+#
+# This work is free software: you can redistribute it and/or modify it
+# under the terms of the GNU Lesser General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
+#
+# This work is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+# Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public
+# License along with this work.
+# If not, see <http://www.gnu.org/licenses/>.
+
+# Create the cursor image files from SVG source.
+
+THEMENAME="${THEMENAME:-custom}"
+export THEMENAME
+
+configfile="ComixCursorsConfigs/${THEMENAME}.CONFIG"
+
+# source the theme config file
+source "${configfile}"
+
+function svg_substitutions {
+    # Process an SVG file with custom substitutions.
+    local infile="$1"
+
+    sed \
+        -e "s/#000000/$OUTLINECOLOR/g" \
+        -e "s/stroke-width:20/stroke-width:$OUTLINE/g" \
+        -e "s/#999999/$CURSORCOLORHI/g" \
+        -e "s/#555555/$CURSORCOLORLO/g" \
+        -e "s/#999933/$HILIGHTHI/g" \
+        -e "s/#666600/$HILIGHTLO/g" \
+        -e "s/#010101/$HAIR/g" \
+        "$infile"
+}
+
+function svg_rotate {
+    # Apply rotation angle.
+    local infile="$1"
+    local angle="$2"
+
+    sed \
+        -e "s/rotate([0-9]*,/rotate($angle,/" \
+        "$infile"
+}
+
+indir="svg"
+workdir="tmp"
+builddir="build"
+xcursor_builddir="cursors"
+export workdir builddir
+
+mkdir --parents "${builddir}"
+mkdir --parents "${workdir}"
+mkdir --parents "${xcursor_builddir}"
+
+
+function generate_animation_source_frames {
+    # Generate the source frame images for an animation.
+    local name="$1"
+    local frames_count=$2
+
+    first_frame_file="${indir}/${name}.svg"
+    for frame in $(seq --equal-width 1 $frames_count) ; do
+        frame_file="${indir}/${name}.frame${frame}.svg"
+        case $frame in
+            1)
+                cp "$first_frame_file" "$frame_file"
+                ;;
+            *)
+	        angle=$(echo "360 / $frames_count * ($frame - 1)" | bc)
+		svg_rotate "$first_frame_file" $angle > "$frame_file"
+                ;;
+        esac
+    done
+}
+
+function render_cursor_image {
+    # Render SVG source image to finished PNG image.
+    local name="$1"
+    local compose_opts="$2"
+    local frame=$3
+    local frame_time=$4
+
+    if [[ "$frame" ]] ; then
+        image_name="${name}.frame${frame}"
+        compose_opts="${compose_opts} -FRAME $frame"
+        if [[ "$frame_time" ]] ; then
+            compose_opts="${compose_opts} -TIME $frame_time"
+        fi
+    else
+        frame=0
+        image_name="${name}"
+    fi
+
+    infile="${indir}/${image_name}.svg"
+    if [[ ! -f "$infile" ]] ; then
+        echo "skipping $name; no svg file found."
+        return 1
+    fi
+    tempfile="${workdir}/$(basename $infile)"
+    outfile="${builddir}/${image_name}.png"
+    svg_substitutions "$infile" > "$tempfile"
+    ./svg2png.bash $compose_opts "$name" "$tempfile" "$outfile"
+}
+
+
+# the basic cursors
+names="
+all-scroll
+cell
+col-resize
+crosshair
+default
+e-resize
+ew-resize
+grabbing
+n-resize
+ne-resize
+nesw-resize
+not-allowed
+ns-resize
+nw-resize
+nwse-resize
+pencil
+pirate
+pointer
+right-arrow
+row-resize
+s-resize
+se-resize
+sw-resize
+text
+up-arrow
+vertical-text
+w-resize
+X-cursor
+zoom-in
+zoom-out
+"
+
+for name in $names; do
+    compose_opts=""
+    render_cursor_image "$name" "$compose_opts"
+done
+
+# the pointer combined cursors
+
+names="
+alias
+context-menu
+copy
+move
+no-drop
+"
+
+for name in $names; do
+    compose_opts="-BACKGROUND ${builddir}/default.png"
+    render_cursor_image "$name" "$compose_opts"
+done
+
+# the animated cursors 
+
+name="help"
+compose_opts="-BACKGROUND ${builddir}/default.png"
+frames_count=2
+generate_animation_source_frames "$name" $frames_count
+render_cursor_image "$name" "$compose_opts" 1 2000
+render_cursor_image "$name" "$compose_opts" 2 500
+
+name="progress"
+frames_count=24
+generate_animation_source_frames "$name" $frames_count
+for frame in $(seq --equal-width 1 $frames_count) ; do
+    compose_opts="-BACKGROUND ${builddir}/default.png"
+    render_cursor_image "$name" "$compose_opts" $frame
+done
+
+name="wait"
+frames_count=36
+generate_animation_source_frames "$name" $frames_count
+for frame in $(seq --equal-width 1 $frames_count) ; do
+    compose_opts=""
+    render_cursor_image "$name" "$compose_opts" $frame
+done

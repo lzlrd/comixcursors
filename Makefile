@@ -22,85 +22,102 @@
 
 # Makefile for ComixCursors project.
 
+SHELL=/bin/bash
+
 ICONSDIR ?= ${HOME}/.icons
-CURSORDIR = ${ICONSDIR}/ComixCursors-Custom
-BUILDDIR = cursors
+THEMENAME ?= custom
 
-#Define here the animation cursor directories
-ANIMATED_CURSORS:= wait progress help
+GENERATED_FILES :=
 
-########################################################################
+indir = svg
+configdir = ComixCursorsConfigs
+configfile = ${configdir}/${THEMENAME}.CONFIG
+themefile = ${configdir}/${THEMENAME}.theme
+workdir = tmp
+builddir = build
+xcursor_builddir = cursors
 
-#Find list of cursors
-conffiles = $(wildcard build/*.conf)
-cursorfiles:= $(foreach conffile,$(conffiles),$(BUILDDIR)/$(subst ./,,$(subst .conf,,$(subst build/,,$(conffile)))))
-cursornames:= $(foreach conffile,$(conffiles),$(subst ./,,$(subst .conf,,$(subst build/,,$(conffile)))))
-animcursorfiles:=$(foreach animationfile,$(ANIMATED_CURSORS),$(BUILDDIR)/$(animationfile))
-animcursornames:=$(ANIMATED_CURSORS)
+destdir = ${ICONSDIR}/ComixCursors-${THEMENAME}
+xcursor_destdir = ${destdir}/cursors
 
-CURSORS = $(cursorfiles)
-CURSORNAMES= $(cursornames)
-ANIMATIONS= $(animcursorfiles)
-ANIMATIONNAMES=$(animcursornames)
+template_configfile = ${configdir}/custom.CONFIG
+template_themefile = ${configdir}/custom.theme
 
+# Derive cursor file names.
+conffiles = $(wildcard ${builddir}/*.conf)
+cursornames = $(foreach conffile,${conffiles},$(basename $(notdir ${conffile})))
+cursorfiles = $(foreach cursor,${cursornames},${xcursor_builddir}/${cursor})
 
+GENERATED_FILES += ${indir}/*.frame*.svg
+GENERATED_FILES += ${workdir}
+GENERATED_FILES += ${builddir}
+
+# Packaging files.
+news_file = NEWS
+news_content = NEWS.content.txt
+rpm_spec_file = ComixCursors.spec
+rpm_spec_template = ${rpm_spec_file}.in
+
+GENERATED_FILES += ${news_content} ${rpm_spec_file}
+
+
 .PHONY: all
+all: ${cursorfiles}
 
-all: $(CURSORS) $(ANIMATIONS)
+${xcursor_builddir}/%: ${builddir}/%.conf ${builddir}/%*.png
+	xcursorgen "$<" "$@"
 
+
+.PHONY: install
 install: all
-#	Create necessary directories
-	if test ! -d ${ICONSDIR} ;then mkdir ${ICONSDIR}; fi
-	if test ! -d ${ICONSDIR}/default ;then mkdir ${ICONSDIR}/default;fi
-	if test -d $(CURSORDIR) ;then rm -rf $(CURSORDIR); fi
-	if test ! -d $(CURSORDIR) ;then mkdir $(CURSORDIR); fi
-	if test ! -d $(CURSORDIR)/cursors ;then mkdir $(CURSORDIR)/cursors; fi
+# Create necessary directories.
+	install -d "${ICONSDIR}" "${ICONSDIR}/default"
+	rm -rf "${destdir}"
+	install -d "${xcursor_destdir}"
 
-#	Copy the cursors
-	cp -Rf $(BUILDDIR)/* $(CURSORDIR)/cursors
+# Install the cursors.
+	install -m u=rw,go=r "${xcursor_builddir}"/* "${xcursor_destdir}"
 
-#	Copy the configuration file
-	cp -f  index.theme $(CURSORDIR)
+# Install the theme configuration file.
+	install -m u=rw,go=r "${themefile}" "${destdir}"/index.theme
 
-	sh link-cursors.sh $(CURSORDIR)/cursors
+# Install alternative name symlinks for the cursors.
+	./link-cursors "${xcursor_destdir}"
 
-#Normal Cursors
-define CURSOR_template
-$(BUILDDIR)/$(1): build/$(1).png build/$(1).conf
-	xcursorgen build/$(1).conf $(BUILDDIR)/$(1)
-endef
+.PHONY: uninstall
+uninstall:
+	$(RM) -r ${destdir}
 
-$(foreach cursor,$(CURSORNAMES),$(eval $(call CURSOR_template,$(cursor))))
+
+.PHONY: custom-theme
+custom-theme: ${configfile} ${themefile}
 
-#Animated Cursors
-define ANIMCURSOR_template
-$(BUILDDIR)/$(1):  build/$(1)/$(1).conf build/$(1)/*.png
-	xcursorgen build/$(1)/$(1).conf $(BUILDDIR)/$(1)
-endef
+${configfile}: ${template_configfile}
+	cp "$<" "$@"
 
-$(foreach anim,$(ANIMATIONNAMES),$(eval $(call ANIMCURSOR_template,$(anim))))
+${themefile}: ${template_themefile}
+	cp "$<" "$@"
 
+
+.PHONY: rpm
+rpm: ${rpm_spec_file}
+
+${news_content}: ${news_file}
+	# Get only the news entries from the news file.
+	tac "$<" \
+	| awk ' \
+		{ text_buffer = text_buffer $$0 ORS ; if (formfeed_seen) print } \
+		/^\x0c/ { if (!formfeed_seen) { formfeed_seen = 1 ; next } } \
+		END { if (!formfeed_seen) { ORS = "" ; print text_buffer } }' \
+	| tac > "$@"
+
+${rpm_spec_file}: ${rpm_spec_template} ${news_content}
+	cat "$<" "${news_content}" > "$@"
+
+
 .PHONY: clean
-clean:: clean-all
-
-.PHONY: clean-all
-clean-all:: clean-build clean-cursors clean-tmp clean-shadows
-
-.PHONY: clean-build
-clean-build::
-	$(RM) -r build
-
-.PHONY: clean-cursors
-clean-cursors::
-	$(RM) -r cursors
-
-.PHONY: clean-tmp
-clean-tmp::
-	$(RM) -r tmp
-
-.PHONY: clean-shadows
-clean-shadows::
-	$(RM) -r shadows
+clean:
+	$(RM) -r ${GENERATED_FILES}
 
 
 # Local Variables:
