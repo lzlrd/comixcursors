@@ -1,11 +1,23 @@
-#!/bin/bash
-##########################################################
+#! /bin/bash
 # svg2png.bash
-# Copyright © 2010 Ben Finney <ben+debian@benfinney.id.au>
-# Copyright © 2006 Jens Luetkens <j.luetkens@limitland.de>
-# version: ComixCursors 0.5.0
-#          flatbedcursors 0.1 (compatible)
+# Part of ComixCursors, a desktop cursor theme.
 #
+# Copyright © 2010 Ben Finney <ben+gnome@benfinney.id.au>
+# Copyright © 2006–2010 Jens Luetkens <j.luetkens@hamburg.de>
+#
+# This work is free software: you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This work is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+# General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this work. If not, see <http://www.gnu.org/licenses/>.
+
 # Take a simple svg file, export it to an image,
 # do some image magig, generate a shadow, scale
 # and merge it to a single image.
@@ -13,8 +25,6 @@
 # Required tools:
 # ImageMagick:  http://www.imagemagick.org/
 # librsvg:      http://librsvg.sourceforge.net/
-#
-##########################################################
 
 if [ $# -lt 1 ]; then
   echo ""
