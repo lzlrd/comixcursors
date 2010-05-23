@@ -10,28 +10,22 @@
    viewBox="0 0 1000 1000"
    id="page"
    xml:space="preserve"><defs
-   id="defs38"><linearGradient
-   id="linearGradient1312"><stop
-     style="stop-color:#999999;stop-opacity:1"
-     offset="0"
-     id="stop1314" /><stop
-     style="stop-color:#555555;stop-opacity:1"
-     offset="1"
-     id="stop1316" /></linearGradient><linearGradient
-   x1="525.33698"
-   y1="85.616997"
-   x2="525.33698"
-   y2="465.60999"
-   id="linearGradient1317"
-   xlink:href="#linearGradient1312"
-   gradientUnits="userSpaceOnUse" />
-</defs>
-<g
-   transform="translate(-102.3354,111.5472)"
-   style="fill-opacity:1;stroke:#000000"
-   id="g1435">
-				<path
-   d="M 895.332,275.618 C 895.328,375.024 814.746,455.615 715.331,455.61 C 615.92,455.617 535.336,375.024 535.337,275.615 C 535.335,176.202 615.922,95.611 715.337,95.617 C 814.745,95.613 895.341,176.197 895.332,275.618 z "
-   style="fill:url(#linearGradient1317);fill-opacity:1;stroke-width:20;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:3.13260007"
-   id="path1439" />
-			</g></svg>
+     id="defs38"><linearGradient
+       id="linearGradient1312"><stop
+         id="stop1314"
+         style="stop-color:#999999;stop-opacity:1"
+         offset="0" /><stop
+         id="stop1316"
+         style="stop-color:#555555;stop-opacity:1"
+         offset="1" /></linearGradient><linearGradient
+       x1="525.33698"
+       y1="85.616997"
+       x2="525.33698"
+       y2="465.60999"
+       id="linearGradient6415"
+       xlink:href="#linearGradient1312"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="translate(-102.3354,111.5472)" /></defs><path
+     d="M 792.9966,387.1652 C 792.9926,486.5712 712.4106,567.1622 612.9956,567.1572 C 513.5846,567.1642 433.0006,486.5712 433.0016,387.1622 C 432.9996,287.7492 513.5866,207.1582 613.0016,207.1642 C 712.4096,207.1602 793.0056,287.7442 792.9966,387.1652 z"
+     id="path1439"
+     style="fill:url(#linearGradient6415);fill-opacity:1;stroke:#000000;stroke-width:20;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:3.13260007" /></svg>
