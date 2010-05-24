@@ -41,6 +41,7 @@ fi
 THEMENAME="${THEMENAME:-custom}"
 
 configfile="ComixCursorsConfigs/${THEMENAME}.CONFIG"
+hotspotsfile="svg$LH/HOTSPOTS"
 
 # don't do transparency post-processing by default
 # used for ComixCursors but not for flatbedcursors
@@ -101,7 +102,7 @@ if [ "$background_image" ] ; then
 else
     hotspot_name="$NAME"
 fi
-HOTSPOT=( $(grep "^$hotspot_name" HOTSPOTS) )
+HOTSPOT=( $(grep "^$hotspot_name" "$hotspotsfile") )
 
 HOTX=$(echo "${HOTSPOT[1]} * $SIZE / 500" | bc)
 HOTY=$(echo "${HOTSPOT[2]} * $SIZE / 500" | bc)
@@ -120,7 +121,9 @@ else
 fi
 
 bare_image="${outfile%.png}.bare.png"
-shadow_image="${outfile%.png}.shadow.png"
+shadow_image="${outfile%.png}"
+shadow_image="${shadow_image%.frame*}"
+shadow_image+="${LH}.${SIZE}.${SHADOWCOLOR}.${SHADOWTRANS}.shadow.png"
 silhouette_image="${outfile%.png}.silhouette.png"
 
 function svg2png {
@@ -140,26 +143,30 @@ function svg2png {
 svg2png "$infile" "$bare_image" $TMPSIZE
 
 # Make the shadow image from an extract of the bare image.
+# Use caching of the shadow images
+if [ ! -f "$shadow_image" ] ; then
 
-convert \
-    -extract ${SHADOWSIZE}x${SHADOWSIZE}+${LEFT}+${LEFT} \
-    -resize ${TMPSIZE}x${TMPSIZE} \
-    "$bare_image" "$silhouette_image"
+    convert \
+        -extract ${SHADOWSIZE}x${SHADOWSIZE}+${LEFT}+${LEFT} \
+        -resize ${TMPSIZE}x${TMPSIZE} \
+        "$bare_image" "$silhouette_image"
 
-convert -modulate 0 \
-    -fill "$SHADOWCOLOR" \
-    -colorize 100 \
-    -channel Alpha \
-    -fx \'a-$SHADOWTRANS\' \
-    "$silhouette_image" "$shadow_image"
+    convert -modulate 0 \
+        -fill "$SHADOWCOLOR" \
+        -colorize 100 \
+        -channel Alpha \
+        -fx \'a-$SHADOWTRANS\' \
+        "$silhouette_image" "$shadow_image"
 
-mogrify -channel Alpha \
-    -blur ${SCALEBLUR}x${SCALEBLUR} \
-    -resize 50% \
-    "$shadow_image"
+    mogrify -channel Alpha \
+        -blur ${SCALEBLUR}x${SCALEBLUR} \
+        -resize 50% \
+        "$shadow_image"
 
-mogrify -roll +${XMOVE}+${YMOVE} \
-    "$shadow_image"
+    mogrify -roll +${XMOVE}+${YMOVE} \
+        "$shadow_image"
+
+fi
 
 # Apply alpha-channel opacity to the bare image.
 
