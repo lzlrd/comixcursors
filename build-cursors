@@ -56,7 +56,7 @@ function svg_rotate {
         "$infile"
 }
 
-indir="svg"
+indir="svg$LH"
 workdir="tmp"
 builddir="build"
 xcursor_builddir="cursors"

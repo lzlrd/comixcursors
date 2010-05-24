@@ -63,7 +63,16 @@ function build_theme {
         rm -r "${destdir}"
     fi
 
+    # left-handed cursors
+    if [[ "$THEMENAME" == *-LH* ]] ; then
+	LH="-LH"
+    else 
+	LH=""
+    fi
+
     export THEMENAME
+    export LH
+
     if [ $UNINSTALL ] ; then
         make uninstall
     else
