@@ -64,7 +64,7 @@ function build_theme {
     fi
 
     # left-handed cursors
-    if [[ "$THEMENAME" == *-LH* ]] ; then
+    if [[ "$THEMENAME" == LH-* ]] ; then
 	LH="-LH"
     else 
 	LH=""

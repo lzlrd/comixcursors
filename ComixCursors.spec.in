@@ -1,13 +1,12 @@
-Name:           ComixCursors
-Version:        0.6.1
+Name:           CURSORSNAME
+Version:        VERSION
 Release:        1%{?dist}
-Summary:        The original Comix Cursors
+Summary:        SUMMARY
 
 Group:          System/X11/Icons
-License:        LGPLv3
-URL:            http://kde-look.org/content/show.php?content=32627
+License:        GPLv3
+URL:            http://www.opendesktop.org/content/show.php?content=32627
 Source0:        %{name}-%{version}.tar.bz2
-BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-buildroot
 BuildArch:	noarch
 
 Requires: 	XFree86
@@ -35,19 +34,14 @@ X11 mouse theme with a comics feeling.
 [ "%{buildroot}" != / ] && rm -rf "%{buildroot}"
 
 install -d %{buildroot}%{prefix}/icons
-
-for d in %{name}-*; do
-    ./link-cursors "$d/cursors"
-    cp -R $d %{buildroot}%{prefix}/icons
-done
-
+cp -r %{name}-* %{buildroot}%{prefix}/icons
 
 %clean
 [ "%{buildroot}" != / ] && rm -rf "%{buildroot}"
 
 %files
 %defattr(-,root,root,-)
-#%doc AUTHORS COPYING README ChangeLog
+#%doc AUTHORS License.GPL README NEWS
 %dir %{prefix}/icons/%{name}-*
 %{prefix}/icons/%{name}-*/*
 

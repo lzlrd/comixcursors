@@ -1,7 +1,7 @@
 #! /usr/bin/make -f
 #
 # Makefile
-# Part of ComixCursors, a desktop cursor theme.
+# Part of ${CURSORSNAME}, a desktop cursor theme.
 #
 # Copyright © 2010 Ben Finney <ben+gnome@benfinney.id.au>
 # Copyright © 2006–2010 Jens Luetkens <j.luetkens@hamburg.de>
@@ -20,10 +20,12 @@
 # You should have received a copy of the GNU General Public License
 # along with this work. If not, see <http://www.gnu.org/licenses/>.
 
-# Makefile for ComixCursors project.
+# Makefile for ${CURSORSNAME} project.
 
 SHELL=/bin/bash
 
+CURSORSNAME = ComixCursors
+VERSION = 0.7
 ICONSDIR ?= ${HOME}/.icons
 THEMENAME ?= custom
 
@@ -37,7 +39,7 @@ workdir = tmp
 builddir = build
 xcursor_builddir = cursors
 
-destdir = ${ICONSDIR}/ComixCursors-${THEMENAME}
+destdir = ${ICONSDIR}/${CURSORSNAME}-${THEMENAME}
 xcursor_destdir = ${destdir}/cursors
 
 template_configfile = ${configdir}/custom.CONFIG
@@ -57,10 +59,10 @@ GENERATED_FILES += ${xcursor_builddir}
 # Packaging files.
 news_file = NEWS
 news_content = NEWS.content.txt
-rpm_spec_file = ComixCursors.spec
-rpm_spec_template = ${rpm_spec_file}.in
+rpm_spec_file = ${CURSORSNAME}.spec
+rpm_spec_template = ComixCursors.spec.in
 
-GENERATED_FILES += ${news_content} ${rpm_spec_file}
+GENERATED_FILES += ${news_content} *.spec
 
 
 .PHONY: all
