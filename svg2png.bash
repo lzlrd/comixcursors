@@ -137,40 +137,46 @@ function svg2png {
         "$infile" "$outfile"
 }
 
-# Render the bare cursor image.
+function make_shadow_image {
+    # Make the shadow image from a bare image and a silhouette.
+    local infile="$1"
+    local silhouette_image="$2"
+    local shadow_image="$3"
 
+    convert \
+        -extract ${SHADOWSIZE}x${SHADOWSIZE}+${LEFT}+${LEFT} \
+        -resize ${TMPSIZE}x${TMPSIZE} \
+        "$bare_image" "$silhouette_image"
+
+    convert -modulate 0 \
+        -fill "$SHADOWCOLOR" \
+        -colorize 100 \
+        -channel Alpha \
+        -fx \'a-$SHADOWTRANS\' \
+        "$silhouette_image" "$shadow_image"
+
+    mogrify -channel Alpha \
+        -blur ${SCALEBLUR}x${SCALEBLUR} \
+        -resize 50% \
+        "$shadow_image"
+
+    mogrify -roll +${XMOVE}+${YMOVE} \
+        "$shadow_image"
+
+}
+
+# Render the bare cursor image.
 svg2png "$infile" "$bare_image" $TMPSIZE
 
-# Make the shadow image from an extract of the bare image.
-
-convert \
-    -extract ${SHADOWSIZE}x${SHADOWSIZE}+${LEFT}+${LEFT} \
-    -resize ${TMPSIZE}x${TMPSIZE} \
-    "$bare_image" "$silhouette_image"
-
-convert -modulate 0 \
-    -fill "$SHADOWCOLOR" \
-    -colorize 100 \
-    -channel Alpha \
-    -fx \'a-$SHADOWTRANS\' \
-    "$silhouette_image" "$shadow_image"
-
-mogrify -channel Alpha \
-    -blur ${SCALEBLUR}x${SCALEBLUR} \
-    -resize 50% \
-    "$shadow_image"
-
-mogrify -roll +${XMOVE}+${YMOVE} \
-    "$shadow_image"
+# Make the shadow image.
+make_shadow_image "$bare_image" "$silhouette_image" "$shadow_image"
 
 # Apply alpha-channel opacity to the bare image.
-
 if [ $(echo "$CURSORTRANS > 0" | bc) -gt 0 ]; then
     convert -channel Alpha -fx \'a-$CURSORTRANS\' "$bare_image" "$bare_image"
 fi
 
 # Compose the final image.
-
 composite -geometry ${SIZE}x${SIZE} "$bare_image" "$shadow_image" "$outfile"
 
 if [ "$background_image" ]; then
