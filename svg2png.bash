@@ -95,16 +95,17 @@ else
 fi
 
 # write the hotspot config file
+hotspots_file="$(dirname $infile)/HOTSPOTS"
 if [ "$background_image" ] ; then
     background_filename="$(basename $background_image)"
     hotspot_name="${background_filename%.png}"
 else
     hotspot_name="$NAME"
 fi
-HOTSPOT=( $(grep "^$hotspot_name" HOTSPOTS) )
+hotspot=( $(grep "^$hotspot_name" "$hotspots_file") )
 
-HOTX=$(echo "${HOTSPOT[1]} * $SIZE / 500" | bc)
-HOTY=$(echo "${HOTSPOT[2]} * $SIZE / 500" | bc)
+hotx=$(echo "${hotspot[1]} * $SIZE / 500" | bc)
+hoty=$(echo "${hotspot[2]} * $SIZE / 500" | bc)
 
 xcursor_config="$(dirname $outfile)/${NAME}.conf"
 if [ "$frame" -lt 2 ] ; then
@@ -114,9 +115,9 @@ if [ "$frame" -lt 2 ] ; then
 fi
 
 if [ "$frame" -gt 0 ] ; then
-    echo "$SIZE $HOTX $HOTY $outfile $TIME" >> "${xcursor_config}"
+    echo "$SIZE $hotx $hoty $outfile $TIME" >> "${xcursor_config}"
 else
-    echo "$SIZE $HOTX $HOTY $outfile" >> "${xcursor_config}"
+    echo "$SIZE $hotx $hoty $outfile" >> "${xcursor_config}"
 fi
 
 image_name="${outfile%.png}"
