@@ -34,7 +34,6 @@ ifeq (@LH-,$(findstring @LH-,@${THEMENAME}))
 else
 	orientation = RightHanded
 endif
-$(info ${orientation})
 
 svgdir = svg
 indir = ${svgdir}/${orientation}
