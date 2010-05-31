@@ -29,7 +29,15 @@ THEMENAME ?= custom
 
 GENERATED_FILES :=
 
-indir = svg
+ifeq (@LH-,$(findstring @LH-,@${THEMENAME}))
+	orientation = LeftHanded
+else
+	orientation = RightHanded
+endif
+$(info ${orientation})
+
+svgdir = svg
+indir = ${svgdir}/${orientation}
 configdir = ComixCursorsConfigs
 configfile = ${configdir}/${THEMENAME}.CONFIG
 themefile = ${configdir}/${THEMENAME}.theme
