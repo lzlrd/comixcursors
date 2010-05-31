@@ -168,8 +168,11 @@ function make_shadow_image {
 # Render the bare cursor image.
 svg2png "$infile" "$bare_image" $TMPSIZE
 
-# Make the shadow image.
-make_shadow_image "$bare_image" "$silhouette_image" "$shadow_image"
+# Check whether the shadow image is cached.
+if [ ! -f "$shadow_image" ] ; then
+    # Make the shadow image.
+    make_shadow_image "$bare_image" "$silhouette_image" "$shadow_image"
+fi
 
 # Apply alpha-channel opacity to the bare image.
 if [ $(echo "$CURSORTRANS > 0" | bc) -gt 0 ]; then
