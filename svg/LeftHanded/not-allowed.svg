@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   version="1.0"
+   width="500"
+   height="500"
+   viewBox="0 0 1000 1000"
+   id="page"
+   xml:space="preserve"><defs
+     id="defs38"><linearGradient
+       id="linearGradient2312"><stop
+         id="stop2314"
+         style="stop-color:#ff2222;stop-opacity:1"
+         offset="0" /><stop
+         id="stop2316"
+         style="stop-color:#dd0000;stop-opacity:1"
+         offset="1" /></linearGradient><linearGradient
+       x1="15.319938"
+       y1="10"
+       x2="15.319938"
+       y2="471.00101"
+       id="linearGradient6918"
+       xlink:href="#linearGradient2312"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="translate(254.18256,111.6501)" /></defs><path
+     d="M 720.4975,352.1511 C 720.5005,473.9281 621.7775,572.6511 499.9995,572.6511 C 378.2205,572.6511 279.4995,473.9291 279.5025,352.1501 C 279.5005,230.3751 378.2205,131.6511 499.9995,131.6501 C 621.7755,131.6501 720.4995,230.3751 720.4975,352.1511 z"
+     id="path1396"
+     style="fill:url(#linearGradient6918);fill-opacity:1;stroke:#000000;stroke-width:20;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:3.13260007" /><path
+     d="M 500,402.34376 C 505.942,408.28576 533.84798,436.1585 542.25,444.5625 C 575.865,478.17748 580.05248,474.00998 601.0625,453 C 617.8695,436.194 626.30248,427.8025 592.6875,394.1875 C 584.2825,385.7825 562.51,364.01002 550.625,352.125 C 556.569,346.182 584.2855,318.52898 592.6875,310.125 C 626.3025,276.509 622.07048,272.3215 601.0625,251.3125 C 584.2545,234.5055 575.86498,226.07248 542.25,259.6875 C 533.845,268.0915 512.133,289.86602 500.25,301.75 C 494.306,295.807 466.5905,268.0915 458.1875,259.6875 C 440.32954,241.83006 430.8106,234.66202 422.625,235 C 415.4024,235.29822 409.22296,241.46454 399.375,251.3125 C 382.568,268.1185 374.1975,276.51 407.8125,310.125 C 416.12896,318.44146 437.41464,339.72718 449.375,351.6875 C 443.432,357.6295 415.7165,385.28348 407.3125,393.6875 C 373.6975,427.3025 377.9285,431.49 398.9375,452.5 C 415.7445,469.30798 424.13502,477.73898 457.75,444.125 C 466.154,435.72 488.115,414.22672 500,402.34376 z"
+     id="path2333"
+     style="fill:#ffffff;stroke:#000000;stroke-width:20;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:1;stroke-dasharray:none" /></svg>

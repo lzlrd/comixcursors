@@ -56,7 +56,7 @@ conffiles = $(wildcard ${builddir}/*.conf)
 cursornames = $(foreach conffile,${conffiles},$(basename $(notdir ${conffile})))
 cursorfiles = $(foreach cursor,${cursornames},${xcursor_builddir}/${cursor})
 
-GENERATED_FILES += ${indir}/*.frame*.svg
+GENERATED_FILES += ${svgdir}/*/*.frame*.svg
 GENERATED_FILES += ${workdir}
 GENERATED_FILES += ${builddir}
 GENERATED_FILES += ${xcursor_builddir}

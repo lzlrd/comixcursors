@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   version="1.0"
+   width="500"
+   height="500"
+   viewBox="0 0 1000 1000"
+   id="page"
+   xml:space="preserve"><defs
+     id="defs38"><linearGradient
+       id="linearGradient2218"><stop
+         id="stop2220"
+         style="stop-color:#999999;stop-opacity:1"
+         offset="0" /><stop
+         id="stop2222"
+         style="stop-color:#555555;stop-opacity:1"
+         offset="1" /></linearGradient><linearGradient
+       x1="274"
+       y1="129.785"
+       x2="274"
+       y2="581.78497"
+       id="linearGradient3385"
+       xlink:href="#linearGradient2218"
+       gradientUnits="userSpaceOnUse" /></defs><path
+     d="M 445.9995,409.285 C 445.9995,422.014 445.999,481.785 445.999,499.785 C 445.999,571.785 454.999,571.785 499.999,571.785 C 535.999,571.785 553.999,571.785 553.999,499.785 C 553.999,481.784 554,435.24 553.9995,409.785 C 566.729,409.785 626,409.785 644,409.785 C 716,409.785 716,400.785 716,355.785 C 716,319.785 716,301.785 644,301.785 C 625.999,301.785 579.455,301.784 554,301.785 C 554,289.056 554,229.785 554,211.785 C 554,139.785 545,139.785 500,139.785 C 464,139.785 446,139.785 446,211.785 C 446,229.785 445.999,276.33 446,301.285 C 433.271,300.785 374,300.785 356,300.785 C 284,300.785 284,309.785 284,354.785 C 284,390.785 284,408.785 356,408.785 C 374.001,408.785 420.5445,409.286 445.9995,409.285 z"
+     id="path1438"
+     style="fill:url(#linearGradient3385);fill-opacity:1;stroke:#000000;stroke-width:20;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:1" /></svg>
