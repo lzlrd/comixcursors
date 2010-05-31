@@ -119,9 +119,11 @@ else
     echo "$SIZE $HOTX $HOTY $outfile" >> "${xcursor_config}"
 fi
 
-bare_image="${outfile%.png}.bare.png"
-shadow_image="${outfile%.png}.shadow.png"
-silhouette_image="${outfile%.png}.silhouette.png"
+image_name="${outfile%.png}"
+bare_image="${image_name}.bare.png"
+shadow_name="${image_name%.frame*}"
+shadow_image="${shadow_name}.${SIZE}.${SHADOWCOLOR}.${SHADOWTRANS}.shadow.png"
+silhouette_image="${image_name}.silhouette.png"
 
 function svg2png {
     # Convert a single SVG image to PNG.
