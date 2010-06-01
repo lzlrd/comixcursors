@@ -18,25 +18,30 @@
 # You should have received a copy of the GNU General Public License
 # along with this work. If not, see <http://www.gnu.org/licenses/>.
 
-# Take a simple svg file, export it to an image,
-# do some image magig, generate a shadow, scale
-# and merge it to a single image.
+# Generate a PNG cursor image from SVG source.
 #
 # Required tools:
 # ImageMagick:  http://www.imagemagick.org/
 # librsvg:      http://librsvg.sourceforge.net/
 
-if [ $# -lt 1 ]; then
-  echo ""
-  echo "Usage: $0 [options] <in name> <in file> <out file>"
-  echo ""
-  echo "Options:"
-  echo "    -FRAME <frame num>        animated cursors frame number"
-  echo "    -BACKGROUND <file>        background image file"
-  echo "    -TIME <milliseconds>      duration for this animation frame"
-  echo ""
-  exit -1
-fi
+function usage {
+    cat <<_EOT_
+Usage: $0 [options] <in name> <in file> <out file>
+
+Generate a PNG cursor image from SVG source.
+
+Take a simple SVG file, export it to PNG, do some image magic,
+generate a shadow, composite with a background image, scale and merge
+it to a single PNG image.
+
+Options:
+    --help                    Show this help text, then exit.
+    --frame <frame num>       Specify frame number of animated cursor.
+    --time <milliseconds>     Duration for this animation frame.
+    --background <file>       Background image file for compositing.
+
+_EOT_
+}
 
 THEMENAME="${THEMENAME:-custom}"
 
@@ -54,22 +59,36 @@ frame=0
 
 # parse argument list
 while [ "${1::1}" == "-" ]; do
-    case $1 in
-	-FRAME)
+    case "$1" in
+        --help)
+            usage
+            exit
+            ;;
+	--frame)
             shift
 	    frame=$1
 	    ;;
-	-BACKGROUND)
+	--background)
 	    shift
 	    background_image="$1"
 	    ;;
-	-TIME)
+	--time)
 	    shift
 	    TIME=$1
 	    ;;
+        *)
+            printf "Unexpected option: %q\n" "$1" >&2
+            usage
+            exit 2
+            ;;
     esac
     shift
 done
+
+if [ $# -lt 3 ]; then
+    usage
+    exit 2
+fi
 
 NAME="$1"
 infile="$2"

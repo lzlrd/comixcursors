@@ -110,9 +110,9 @@ function render_cursor_image {
 
     if [[ "$frame" ]] ; then
         image_name="${name}.frame${frame}"
-        compose_opts="${compose_opts} -FRAME $frame"
+        compose_opts="${compose_opts} --frame $frame"
         if [[ "$frame_time" ]] ; then
-            compose_opts="${compose_opts} -TIME $frame_time"
+            compose_opts="${compose_opts} --time $frame_time"
         fi
     else
         frame=0
@@ -181,14 +181,14 @@ no-drop
 "
 
 for name in $names; do
-    compose_opts="-BACKGROUND ${builddir}/default.png"
+    compose_opts="--background ${builddir}/default.png"
     render_cursor_image "$name" "$compose_opts"
 done
 
 # the animated cursors 
 
 name="help"
-compose_opts="-BACKGROUND ${builddir}/default.png"
+compose_opts="--background ${builddir}/default.png"
 frames_count=2
 generate_animation_source_frames "$name" $frames_count
 render_cursor_image "$name" "$compose_opts" 1 2000
@@ -198,7 +198,7 @@ name="progress"
 frames_count=24
 generate_animation_source_frames "$name" $frames_count
 for frame in $(seq --equal-width 1 $frames_count) ; do
-    compose_opts="-BACKGROUND ${builddir}/default.png"
+    compose_opts="--background ${builddir}/default.png"
     render_cursor_image "$name" "$compose_opts" $frame
 done
 
