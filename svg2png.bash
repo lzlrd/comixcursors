@@ -41,6 +41,7 @@ fi
 THEMENAME="${THEMENAME:-custom}"
 
 configfile="ComixCursorsConfigs/${THEMENAME}.CONFIG"
+hotspotsfile="svg$LH/HOTSPOTS"
 
 # don't do transparency post-processing by default
 # used for ComixCursors but not for flatbedcursors
@@ -101,7 +102,7 @@ if [ "$background_image" ] ; then
 else
     hotspot_name="$NAME"
 fi
-HOTSPOT=( $(grep "^$hotspot_name" HOTSPOTS) )
+HOTSPOT=( $(grep "^$hotspot_name" "$hotspotsfile") )
 
 HOTX=$(echo "${HOTSPOT[1]} * $SIZE / 500" | bc)
 HOTY=$(echo "${HOTSPOT[2]} * $SIZE / 500" | bc)
@@ -122,7 +123,7 @@ fi
 image_name="${outfile%.png}"
 bare_image="${image_name}.bare.png"
 shadow_name="${image_name%.frame*}"
-shadow_image="${shadow_name}.${SIZE}.${SHADOWCOLOR}.${SHADOWTRANS}.shadow.png"
+shadow_image="${shadow_name}${LH}.${SIZE}.${SHADOWCOLOR}.${SHADOWTRANS}.shadow.png"
 silhouette_image="${image_name}.silhouette.png"
 
 function svg2png {
