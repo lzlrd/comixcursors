@@ -30,40 +30,40 @@ DISTDIR="${PWD}/dist"
 ICONSDIR="${ICONSDIR:-~/.icons}"
 export ICONSDIR
 
+#
+# start
+#
+
+printf "Packaging ComixCursors $VERSION...\n"
+
+workdir="$(mktemp -t -d)"
+
+#
+# source package
+#
+printf "Creating source package...\n"
+
+make clean
+srcname="ComixCursors-sources-${VERSION}"
+srcdir="${workdir}/${srcname}"
+mkdir --parents "${srcdir}"
+cp -a "$BASEDIR"/. "$srcdir"/.
+
 mkdir --parents "$DISTDIR"
 rm -rf "$DISTDIR"/*
 
+tarfile="${DISTDIR}/${srcname}.tar.bz2"
+if [ -f "$tarfile" ] ; then rm "$tarfile"; fi
+tar -cjf "$tarfile" --exclude-vcs --directory "$workdir" "$srcname"/
+
+#
+# Now build the cursors for packaging.
+#
+printf "Installing cursor files...\n"
+
+./install-all.sh
+
 for PKG in $PKGS ; do
-
-    cd "$BASEDIR"
-    SUBDIR="$PKG-sources-$VERSION"
-
-    if [ ! -d "$SUBDIR" ] ; then
-        printf "Error: directory $SUBDIR not found, exiting.\n" >&2
-        exit 1
-    fi
-
-    printf "Packaging $PKG $VERSION...\n"
-
-    #
-    # source packages
-    #
-    printf "Creating source package...\n"
-
-    cd "$SUBDIR"
-    make clean
-    cd "$BASEDIR"
-    TARFILE="$SUBDIR.tar.bz2"
-    if [ -f "$TARFILE" ] ; then rm "$TARFILE" ; fi
-    tar -cjf "$TARFILE" "$SUBDIR"
-    mv "$TARFILE" "$DISTDIR"
-
-    printf "Installing cursor files...\n"
-
-    cd "$SUBDIR"
-    ./install-all.sh
-    cp cursorlinks "${ICONSDIR}"/
-
     #
     # cursors packages
     #

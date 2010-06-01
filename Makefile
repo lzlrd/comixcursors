@@ -43,6 +43,7 @@ themefile = ${configdir}/${THEMENAME}.theme
 workdir = tmp
 builddir = build
 xcursor_builddir = cursors
+distdir = dist
 
 destdir = ${ICONSDIR}/ComixCursors-${THEMENAME}
 xcursor_destdir = ${destdir}/cursors
@@ -59,6 +60,7 @@ GENERATED_FILES += ${svgdir}/*/*.frame*.svg
 GENERATED_FILES += ${workdir}
 GENERATED_FILES += ${builddir}
 GENERATED_FILES += ${xcursor_builddir}
+GENERATED_FILES += ${distdir}
 
 # Packaging files.
 news_file = NEWS
