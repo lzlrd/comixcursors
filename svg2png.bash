@@ -36,8 +36,9 @@ it to a single PNG image.
 
 Options:
     --help                    Show this help text, then exit.
+    --orientation <facing>    Specify the orientation of this cursor.
     --frame <frame num>       Specify frame number of animated cursor.
-    --time <milliseconds>     Duration for this animation frame.
+    --duration <duration>     Duration (in milliseconds) for this frame.
     --background <file>       Background image file for compositing.
 
 _EOT_
@@ -55,6 +56,7 @@ CURSORTRANS=0
 source "${configfile}"
 
 # some initialisation before argument processing
+orientation="RightHanded"
 frame=0
 
 # parse argument list
@@ -64,17 +66,21 @@ while [ "${1::1}" == "-" ]; do
             usage
             exit
             ;;
+        --orientation)
+            shift
+            orientation="$1"
+            ;;
 	--frame)
             shift
 	    frame=$1
 	    ;;
+	--duration)
+	    shift
+	    duration=$1
+	    ;;
 	--background)
 	    shift
 	    background_image="$1"
-	    ;;
-	--time)
-	    shift
-	    TIME=$1
 	    ;;
         *)
             printf "Unexpected option: %q\n" "$1" >&2
@@ -134,7 +140,7 @@ if [ "$frame" -lt 2 ] ; then
 fi
 
 if [ "$frame" -gt 0 ] ; then
-    echo "$SIZE $hotx $hoty $outfile $TIME" >> "${xcursor_config}"
+    echo "$SIZE $hotx $hoty $outfile $duration" >> "${xcursor_config}"
 else
     echo "$SIZE $hotx $hoty $outfile" >> "${xcursor_config}"
 fi
@@ -142,7 +148,7 @@ fi
 image_name="${outfile%.png}"
 bare_image="${image_name}.bare.png"
 shadow_name="${image_name%.frame*}"
-shadow_image="${shadow_name}.${SIZE}.${SHADOWCOLOR}.${SHADOWTRANS}.shadow.png"
+shadow_image="${shadow_name}.${orientation}.${SIZE}.${SHADOWCOLOR}.${SHADOWTRANS}.shadow.png"
 silhouette_image="${image_name}.silhouette.png"
 
 function svg2png {

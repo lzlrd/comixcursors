@@ -106,13 +106,15 @@ function render_cursor_image {
     local name="$1"
     local compose_opts="$2"
     local frame=$3
-    local frame_time=$4
+    local frame_duration=$4
+
+    compose_opts="${compose_opts} --orientation $orientation"
 
     if [[ "$frame" ]] ; then
         image_name="${name}.frame${frame}"
         compose_opts="${compose_opts} --frame $frame"
-        if [[ "$frame_time" ]] ; then
-            compose_opts="${compose_opts} --time $frame_time"
+        if [[ "$frame_duration" ]] ; then
+            compose_opts="${compose_opts} --duration $frame_duration"
         fi
     else
         frame=0
