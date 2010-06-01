@@ -21,20 +21,20 @@
 # This script creates all four packages of ComixCursors for distribution
 # from the sources. Run it as root from inside the sources directory.
 
-VERSION="0.6.1"
-PKGS="ComixCursors-LH-opaque ComixCursors-LH ComixCursors-opaque ComixCursors"
-BASEDIR="$PWD"
-DISTDIR="${PWD}/dist"
+set -o errexit
 
-# Set the ICONSDIR destination to a default (if not already set).
-ICONSDIR="${ICONSDIR:-~/.icons}"
-export ICONSDIR
+VERSION="0.6.1"
+export VERSION
+
+themename_root="ComixCursors"
+variants=("LH-Opaque" "LH" "Opaque" "")
+distdir="${PWD}/dist"
 
 #
 # start
 #
 
-printf "Packaging ComixCursors $VERSION...\n"
+printf "Packaging %s %s...\n" "$themename_root" $VERSION
 
 workdir="$(mktemp -t -d)"
 
@@ -44,55 +44,78 @@ workdir="$(mktemp -t -d)"
 printf "Creating source package...\n"
 
 make clean
-srcname="ComixCursors-sources-${VERSION}"
+srcname="${themename_root}-sources-${VERSION}"
 srcdir="${workdir}/${srcname}"
 mkdir --parents "${srcdir}"
-cp -a "$BASEDIR"/. "$srcdir"/.
+cp -a . "$srcdir"/.
 
-mkdir --parents "$DISTDIR"
-rm -rf "$DISTDIR"/*
+mkdir --parents "$distdir"
+rm -rf "$distdir"/*
 
-tarfile="${DISTDIR}/${srcname}.tar.bz2"
+tarfile="${distdir}/${srcname}.tar.bz2"
 if [ -f "$tarfile" ] ; then rm "$tarfile"; fi
 tar -cjf "$tarfile" --exclude-vcs --directory "$workdir" "$srcname"/
 
 #
 # Now build the cursors for packaging.
 #
+
 printf "Installing cursor files...\n"
+
+# Make a temporary directory for installing icons into.
+ICONSDIR="${workdir}/icons"
+export ICONSDIR
+mkdir --parents "${ICONSDIR}"
 
 ./install-all.sh
 
-for PKG in $PKGS ; do
+for variant in "${variants[@]}" ; do
     #
     # cursors packages
     #
-    printf "Creating cursors package...\n"
+    if [ -n "$variant" ] ; then
+        packagename="${themename_root}-${variant}"
+    else
+        packagename="${themename_root}"
+    fi
 
-    # now it's important that the $PKGS get processed in an "reverse" order,
-    # so only directories matching package name get packed.
+    printf "Creating cursors package %s...\n" "$packagename"
 
-    cd "${ICONSDIR}"/
-    TARFILE="$PKG-$VERSION.tar.bz2"
-    if [ -f "$TARFILE" ] ; then rm "$TARFILE" ; fi
-    tar -cjhf "$TARFILE" "$PKG"* cursorlinks
-    mv "$TARFILE" "$DISTDIR"
-    rm -rf "$PKG"*
+    # now it's important that the $variants get processed in an
+    # "reverse" order, so only directories matching package name get
+    # moved and packaged.
+
+    packagedir="${workdir}/${packagename}"
+    mkdir --parents "$packagedir"
+    mv "${ICONSDIR}/${packagename}"* "$packagedir"/.
+
+    tarfile="${distdir}/${packagename}-${VERSION}.tar.bz2"
+    if [ -f "$tarfile" ] ; then rm "$tarfile" ; fi
+    tar -cjf "$tarfile" --directory "$packagedir" "$packagedir"/*
 
     #
     # RPM packages
     #
-    PKGDIR="/usr/src/packages"
-    if [ -d "$PKGDIR" ] ; then
+    rpmdir="/usr/src/packages"
+    if [ -d "$rpmdir" ] ; then
         printf "Creating RPM package...\n"
-        cd "$BASEDIR"
-        cp "$SUBDIR/$PKG.spec" "$PKGDIR/SPECS/$PKG.spec"
-        cp "$DISTDIR/$PKG-$VERSION.tar.bz2" "$PKGDIR/SOURCES/$PKG-$VERSION.tar.bz2"
-        cd "$PKGDIR/SOURCES"/
-        rpmbuild -bb "$PKGDIR/SPECS/$PKG.spec"
-        mv "$PKGDIR/RPMS/noarch/$PKG"* "$DISTDIR"
+        specfile="${rpmdir}/SPECS/${packagename}.spec"
+        rpmsourcesdir="${rpmdir}/SOURCES"
+        make "${themename_root}.spec"
+        cp "${themename_root}.spec" "$specfile" 
+        cp "$tarfile" "${rpmsourcesdir}"/.
+        (
+            cd "$rpmsourcesdir"
+            rpmbuild -bb "$specfile"
+        )
+        mv "${rpmdir}/RPMS/noarch/${packagename}"* "$distdir"/.
     else
-        printf "Directory $PKGDIR not found, skipping RPM packaging.\n"
+        printf "Directory $rpmdir not found, skipping RPM packaging.\n"
     fi
 
 done
+
+printf "Cleaning up temporary working area...\n"
+rm -r "$workdir"
+
+printf "Done.\n"
