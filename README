@@ -1,5 +1,8 @@
 The original Comix Cursors sources README
-=========================================
+#########################################
+
+The official ComixCursors releases can be found on opendesktop.org:
+<http://opendesktop.org/content/show.php/ComixCursors?content=32627>
 
 COPYRIGHT
 =========
@@ -15,13 +18,31 @@ Refer to the ‘INSTALL’ file for requirements and detailed instructions
 to build and install.
 
 
-Pitfalls:
+KNOWN ISSUES
+============
+
+- nVIDIA graphics cards:
+
+  If you experience the cursor shadow looking strange, e.g. with the i
+  christmas theme, or the whole cursor appear gray when it's supposed to be 
+  white, disable hardware cursor rendering.
+
+  In the xorg.conf file in the device section insert the HWCursor line
+  below::
+
+      Section "Device"
+      Driver "nvidia"
+      ...
+      Option "HWCursor" "off"
+      EndSection
 
 - If you are using KDE version prior to 4.0 you might experience that
   KDE's control center Mouse Theme Installation does not support symlinks
   in the packed archives (tar). Consider updating KDE.
+
 - Gnome supports multiple cursor sizes in one cursor theme, but only
   distinct sizes: 16,24,32 and 48 px.
+
 - If you are missing some cursors issue "# export XCURSOR_DISCOVER=1"
   and re-start the application to find the corresponding cursor hash.
   Report it to us or link it yourself in the ~/.icons directory.
@@ -30,9 +51,13 @@ Pitfalls:
 NAMING CURSORS
 ==============
 
-There is the current cursor conventions specification:
+The cursors are named according to the current freedesktop.org cursor 
+conventions specification (draft):
 
-    http://www.freedesktop.org/Standards/cursor-spec
+    <http://www.freedesktop.org/Standards/cursor-spec>
+
+Other cursors are provided as symlinks by name or hash. 
+
 
     X-cursor           The X window system logo.
     default            Default cursor. Indicates the interface is idle and prepared to accept commands from the user. Used to manipulate basic user interface elements like buttons and scrollbars. Usually a left pointing diagonal arrow.
@@ -303,3 +328,11 @@ CSS3 Cursors (http://www.w3.org/TR/css3-ui/#cursor0)
     row-resize         Indicates that the item/row can be resized vertically. Often rendered as arrows pointing up and down with a horizontal bar separating them.
     all-scroll         Indicates that the something can be scrolled in any direction. Often rendered as arrows pointing up, down, left, and right with a dot in the middle.
 
+
+..
+    Local variables:
+    coding: utf-8
+    mode: text
+    mode: rst
+    End:
+    vim: fileencoding=utf-8 filetype=rst :
