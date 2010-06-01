@@ -27,7 +27,6 @@ VERSION="0.6.1"
 export VERSION
 
 themename_root="ComixCursors"
-variants=("LH-Opaque" "LH" "Opaque" "")
 distdir="${PWD}/dist"
 
 #
@@ -69,10 +68,10 @@ mkdir --parents "${ICONSDIR}"
 
 ./install-all.sh
 
-for variant in "${variants[@]}" ; do
-    #
-    # cursors packages
-    #
+function package_variant {
+    # Package the tarball for a specific variant of the cursors.
+    local variant="$1"
+
     if [ -n "$variant" ] ; then
         packagename="${themename_root}-${variant}"
     else
@@ -81,7 +80,7 @@ for variant in "${variants[@]}" ; do
 
     printf "Creating cursors package %s...\n" "$packagename"
 
-    # now it's important that the $variants get processed in an
+    # Now it's important that the variants get processed in an
     # "reverse" order, so only directories matching package name get
     # moved and packaged.
 
@@ -112,7 +111,11 @@ for variant in "${variants[@]}" ; do
     else
         printf "Directory $rpmdir not found, skipping RPM packaging.\n"
     fi
+}
 
+variants=("LH-Opaque" "LH" "Opaque" "")
+for variant in "${variants[@]}" ; do
+    package_variant "$variant"
 done
 
 printf "Cleaning up temporary working area...\n"
