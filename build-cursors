@@ -6,18 +6,17 @@
 # Copyright © 2006–2010 Jens Luetkens <j.luetkens@hamburg.de>
 #
 # This work is free software: you can redistribute it and/or modify it
-# under the terms of the GNU Lesser General Public License as
-# published by the Free Software Foundation, either version 3 of the
-# License, or (at your option) any later version.
+# under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
 #
 # This work is distributed in the hope that it will be useful, but
 # WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
-# Lesser General Public License for more details.
+# General Public License for more details.
 #
-# You should have received a copy of the GNU Lesser General Public
-# License along with this work.
-# If not, see <http://www.gnu.org/licenses/>.
+# You should have received a copy of the GNU General Public License
+# along with this work. If not, see <http://www.gnu.org/licenses/>.
 
 # Create the cursor image files from SVG source.
 
@@ -33,14 +32,17 @@ function svg_substitutions {
     # Process an SVG file with custom substitutions.
     local infile="$1"
 
-    sed \
-        -e "s/#000000/$OUTLINECOLOR/g" \
-        -e "s/stroke-width:20/stroke-width:$OUTLINE/g" \
-        -e "s/#999999/$CURSORCOLORHI/g" \
-        -e "s/#555555/$CURSORCOLORLO/g" \
-        -e "s/#999933/$HILIGHTHI/g" \
-        -e "s/#666600/$HILIGHTLO/g" \
-        -e "s/#010101/$HAIR/g" \
+    substitutions=(
+        "s/#000000/$OUTLINECOLOR/g"
+        "s/stroke-width:20/stroke-width:$OUTLINE/g"
+        "s/#999999/$CURSORCOLORHI/g"
+        "s/#555555/$CURSORCOLORLO/g"
+        "s/#999933/$HILIGHTHI/g"
+        "s/#666600/$HILIGHTLO/g"
+        "s/#010101/$HAIR/g"
+        )
+
+    sed $(for subst in "${substitutions[@]}" ; do printf " -e ${subst}" ; done) \
         "$infile"
 }
 
@@ -50,7 +52,7 @@ function svg_rotate {
     local angle="$2"
 
     sed \
-        -e "s/rotate([0-9]*,/rotate($angle,/" \
+        -e "s/rotate(0,/rotate($angle,/" \
         "$infile"
 }
 
