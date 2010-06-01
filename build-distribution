@@ -52,7 +52,6 @@ mkdir --parents "$distdir"
 rm -rf "$distdir"/*
 
 tarfile="${distdir}/${srcname}.tar.bz2"
-if [ -f "$tarfile" ] ; then rm "$tarfile"; fi
 tar -cjf "$tarfile" --exclude-vcs --directory "$workdir" "$srcname"/
 
 #
@@ -89,8 +88,10 @@ function package_variant {
     mv "${ICONSDIR}/${packagename}"* "$packagedir"/.
 
     tarfile="${distdir}/${packagename}-${VERSION}.tar.bz2"
-    if [ -f "$tarfile" ] ; then rm "$tarfile" ; fi
-    tar -cjf "$tarfile" --directory "$packagedir" "$packagedir"/*
+    tar -cjf "$tarfile" --directory "$packagedir" --files-from <(
+        cd "$packagedir"
+        ls
+    )
 
     #
     # RPM packages
