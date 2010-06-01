@@ -20,7 +20,7 @@ Change into the download directory and unpack the sources::
 
 When you have the required programs, issue::
 
-    $ ./build-cursors
+    $ ./bin/build-cursors
 
 This will read the basic cursors from the SVG files, add a blurred and
 scaled shadow, tint the icons and compose them into a single PNG

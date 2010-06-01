@@ -1,5 +1,6 @@
 #! /bin/bash
-# build-cursors
+#
+# bin/build-cursors
 # Part of ComixCursors, a desktop cursor theme.
 #
 # Copyright © 2010 Ben Finney <ben+gnome@benfinney.id.au>
@@ -22,6 +23,8 @@
 
 THEMENAME="${THEMENAME:-custom}"
 export THEMENAME
+
+bindir="$(dirname $0)"
 
 configfile="ComixCursorsConfigs/${THEMENAME}.CONFIG"
 
@@ -113,7 +116,7 @@ function render_cursor_image {
     tempfile="${workdir}/$(basename $infile)"
     outfile="${builddir}/${image_name}.png"
     svg_substitutions "$infile" > "$tempfile"
-    ./svg2png.bash $compose_opts "$name" "$tempfile" "$outfile"
+    "${bindir}"/render-cursor-image $compose_opts "$name" "$tempfile" "$outfile"
 }
 
 

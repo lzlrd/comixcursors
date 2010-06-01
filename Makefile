@@ -22,12 +22,14 @@
 
 # Makefile for ComixCursors project.
 
-SHELL=/bin/bash
+SHELL = /bin/bash
 
 ICONSDIR ?= ${HOME}/.icons
 THEMENAME ?= custom
 
 GENERATED_FILES :=
+
+bindir = bin
 
 indir = svg
 configdir = ComixCursorsConfigs
@@ -61,6 +63,8 @@ rpm_spec_template = ${rpm_spec_file}.in
 
 GENERATED_FILES += ${news_content} ${rpm_spec_file}
 
+LINK_CURSORS = "${bindir}"/link-cursors
+
 
 .PHONY: all
 all: ${cursorfiles}
@@ -73,7 +77,7 @@ ${xcursor_builddir}/%: ${builddir}/%.conf ${builddir}/%*.png
 install: all
 # Create necessary directories.
 	install -d "${ICONSDIR}" "${ICONSDIR}/default"
-	rm -rf "${destdir}"
+	$(RM) -r "${destdir}"
 	install -d "${xcursor_destdir}"
 
 # Install the cursors.
@@ -83,11 +87,11 @@ install: all
 	install -m u=rw,go=r "${themefile}" "${destdir}"/index.theme
 
 # Install alternative name symlinks for the cursors.
-	./link-cursors "${xcursor_destdir}"
+	$(LINK_CURSORS) "${xcursor_destdir}"
 
 .PHONY: uninstall
 uninstall:
-	$(RM) -r ${destdir}
+	$(RM) -r "${destdir}"
 
 
 .PHONY: custom-theme

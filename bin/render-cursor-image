@@ -1,5 +1,6 @@
 #! /bin/bash
-# svg2png.bash
+#
+# bin/render-cursor-image
 # Part of ComixCursors, a desktop cursor theme.
 #
 # Copyright © 2010 Ben Finney <ben+gnome@benfinney.id.au>

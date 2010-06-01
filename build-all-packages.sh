@@ -1,4 +1,5 @@
 #! /bin/sh
+#
 # build-all-packages.sh
 # Part of ComixCursors, a desktop cursor theme.
 #
@@ -69,7 +70,7 @@ for PKG in $PKGS; do
   echo "Installing cursor files..."
 
   cd $SUBDIR
-  ./install-all.sh
+  ./install-all
   cp cursorlinks ${ICONSDIR}/
 
   #
