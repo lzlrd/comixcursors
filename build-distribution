@@ -39,16 +39,16 @@ for PKG in $PKGS ; do
     SUBDIR="$PKG-sources-$VERSION"
 
     if [ ! -d "$SUBDIR" ] ; then
-        echo "Error: directory $SUBDIR not found, exiting."
-        break
+        printf "Error: directory $SUBDIR not found, exiting.\n" >&2
+        exit 1
     fi
 
-    echo "Packaging $PKG $VERSION..."
+    printf "Packaging $PKG $VERSION...\n"
 
     #
     # source packages
     #
-    echo "Creating source package..."
+    printf "Creating source package...\n"
 
     cd "$SUBDIR"
     make clean
@@ -58,7 +58,7 @@ for PKG in $PKGS ; do
     tar -cjf "$TARFILE" "$SUBDIR"
     mv "$TARFILE" "$DISTDIR"
 
-    echo "Installing cursor files..."
+    printf "Installing cursor files...\n"
 
     cd "$SUBDIR"
     ./install-all.sh
@@ -67,7 +67,7 @@ for PKG in $PKGS ; do
     #
     # cursors packages
     #
-    echo "Creating cursors package..."
+    printf "Creating cursors package...\n"
 
     # now it's important that the $PKGS get processed in an "reverse" order,
     # so only directories matching package name get packed.
@@ -84,7 +84,7 @@ for PKG in $PKGS ; do
     #
     PKGDIR="/usr/src/packages"
     if [ -d "$PKGDIR" ] ; then
-        echo "Creating RPM package..."
+        printf "Creating RPM package...\n"
         cd "$BASEDIR"
         cp "$SUBDIR/$PKG.spec" "$PKGDIR/SPECS/$PKG.spec"
         cp "$DISTDIR/$PKG-$VERSION.tar.bz2" "$PKGDIR/SOURCES/$PKG-$VERSION.tar.bz2"
@@ -92,7 +92,7 @@ for PKG in $PKGS ; do
         rpmbuild -bb "$PKGDIR/SPECS/$PKG.spec"
         mv "$PKGDIR/RPMS/noarch/$PKG"* "$DISTDIR"
     else
-        echo "Directory $PKGDIR not found, skipping RPM packaging."
+        printf "Directory $PKGDIR not found, skipping RPM packaging.\n"
     fi
 
 done
