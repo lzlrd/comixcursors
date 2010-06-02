@@ -75,6 +75,7 @@ rpm_spec_template = ${CURSORSNAME}.spec.in
 GENERATED_FILES += ${news_content} *.spec
 
 LINK_CURSORS = "${bindir}"/link-cursors
+MAKE_SPECFILE = "${bindir}"/make-specfile
 
 
 .PHONY: all
@@ -128,7 +129,7 @@ ${news_content}: ${news_file}
 	| tac > "$@"
 
 ${rpm_spec_file}: ${rpm_spec_template} ${news_content}
-	bash ./build-specfile.sh
+	$(MAKE_SPECFILE)
 
 
 .PHONY: clean
