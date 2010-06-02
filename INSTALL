@@ -14,7 +14,7 @@ http://www.kde-look.org/content/show.php?content=32627
 
 Change into the download directory and unpack the sources:
 
-    $ version=0.6.1
+    $ version=0.7.0
     $ tar -xjvf ComixCursors-${version}.tar.bz2
     $ cd ComixCursors-${version}
 
@@ -117,10 +117,10 @@ System Installation
 For system-wide installation you need to copy the cursor-
 directories to you X11 lib directory. As root issue:
 
-# whereis X11
-# man 3 xcursor
-# cd /usr/share/icons
-# cp -r ~/.icons/ComixCursors* .
+    # whereis X11
+    # man 3 xcursor
+    # cd /usr/share/icons
+    # cp -r ~/.icons/ComixCursors* .
 
 Now this will interfere with the cursor theme in your ~/.icons
 directory, which will have precedence. You will want to rename
@@ -136,6 +136,7 @@ or whatever your (custom) cursors directory is named.
 
 You can also download the rpms from kde-look.org site above
 and install them with
-# rpm -Uv ComixCursors-<version>.noarch.rpm
+
+    # rpm -Uv ComixCursors-<version>.noarch.rpm
 
 

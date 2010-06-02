@@ -23,7 +23,7 @@
 
 set -o errexit
 
-VERSION="0.6.1"
+VERSION="0.7"
 export VERSION
 
 themename_root="ComixCursors"
@@ -70,24 +70,25 @@ mkdir --parents "${ICONSDIR}"
 function package_variant {
     # Package the tarball for a specific variant of the cursors.
     local variant="$1"
+    local SUMMARY="$2"
 
     if [ -n "$variant" ] ; then
-        packagename="${themename_root}-${variant}"
+        PACKAGENAME="${themename_root}-${variant}"
     else
-        packagename="${themename_root}"
+        PACKAGENAME="${themename_root}"
     fi
 
-    printf "Creating cursors package %s...\n" "$packagename"
+    printf "Creating cursors package %s...\n" "$PACKAGENAME"
 
     # Now it's important that the variants get processed in an
     # "reverse" order, so only directories matching package name get
     # moved and packaged.
 
-    packagedir="${workdir}/${packagename}"
+    packagedir="${workdir}/${PACKAGENAME}"
     mkdir --parents "$packagedir"
-    mv "${ICONSDIR}/${packagename}"* "$packagedir"/.
+    mv "${ICONSDIR}/${PACKAGENAME}"* "$packagedir"/.
 
-    tarfile="${distdir}/${packagename}-${VERSION}.tar.bz2"
+    tarfile="${distdir}/${PACKAGENAME}-${VERSION}.tar.bz2"
     tar -cjf "$tarfile" --directory "$packagedir" --files-from <(
         cd "$packagedir"
         ls
@@ -99,25 +100,27 @@ function package_variant {
     rpmdir="/usr/src/packages"
     if [ -d "$rpmdir" ] ; then
         printf "Creating RPM package...\n"
-        specfile="${rpmdir}/SPECS/${packagename}.spec"
+        specfilename="${PACKAGENAME}.spec"
+        specfile="${rpmdir}/SPECS/${specfilename}"
         rpmsourcesdir="${rpmdir}/SOURCES"
-        make "${themename_root}.spec"
-        cp "${themename_root}.spec" "$specfile" 
+        export PACKAGENAME SUMMARY
+        make "$specfilename"
+        cp "$specfilename" "$specfile"
         cp "$tarfile" "${rpmsourcesdir}"/.
         (
             cd "$rpmsourcesdir"
             rpmbuild -bb "$specfile"
         )
-        mv "${rpmdir}/RPMS/noarch/${packagename}"* "$distdir"/.
+        mv "${rpmdir}/RPMS/noarch/${PACKAGENAME}"* "$distdir"/.
     else
         printf "Directory $rpmdir not found, skipping RPM packaging.\n"
     fi
 }
 
-variants=("LH-Opaque" "LH" "Opaque" "")
-for variant in "${variants[@]}" ; do
-    package_variant "$variant"
-done
+package_variant "LH-Opaque" "The opaque left-handed Comix Cursors"
+package_variant "LH" "The left-handed Comix Cursors"
+package_variant "Opaque" "The opaque Comix Cursors"
+package_variant "" "The original Comix Cursors"
 
 printf "Cleaning up temporary working area...\n"
 rm -r "$workdir"

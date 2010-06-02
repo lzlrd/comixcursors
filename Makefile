@@ -24,6 +24,9 @@
 
 SHELL=/bin/bash
 
+CURSORSNAME = ComixCursors
+PACKAGENAME ?= ${CURSORSNAME}
+SUMMARY ?= The original Comix Cursors
 ICONSDIR ?= ${HOME}/.icons
 THEMENAME ?= custom
 
@@ -45,7 +48,7 @@ builddir = build
 xcursor_builddir = cursors
 distdir = dist
 
-destdir = ${ICONSDIR}/ComixCursors-${THEMENAME}
+destdir = ${ICONSDIR}/${CURSORSNAME}-${THEMENAME}
 xcursor_destdir = ${destdir}/cursors
 
 template_configfile = ${configdir}/custom.CONFIG
@@ -65,10 +68,10 @@ GENERATED_FILES += ${distdir}
 # Packaging files.
 news_file = NEWS
 news_content = NEWS.content.txt
-rpm_spec_file = ComixCursors.spec
-rpm_spec_template = ${rpm_spec_file}.in
+rpm_spec_file = ${PACKAGENAME}.spec
+rpm_spec_template = ${CURSORSNAME}.spec.in
 
-GENERATED_FILES += ${news_content} ${rpm_spec_file}
+GENERATED_FILES += ${news_content} *.spec
 
 
 .PHONY: all
@@ -122,7 +125,7 @@ ${news_content}: ${news_file}
 	| tac > "$@"
 
 ${rpm_spec_file}: ${rpm_spec_template} ${news_content}
-	cat "$<" "${news_content}" > "$@"
+	bash ./build-specfile.sh
 
 
 .PHONY: clean
