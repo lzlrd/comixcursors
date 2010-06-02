@@ -1,5 +1,6 @@
 #! /bin/bash
-# svg2png.bash
+#
+# bin/render-cursor-image
 # Part of ComixCursors, a desktop cursor theme.
 #
 # Copyright © 2010 Ben Finney <ben+gnome@benfinney.id.au>
@@ -24,7 +25,7 @@
 # ImageMagick:  http://www.imagemagick.org/
 # librsvg:      http://librsvg.sourceforge.net/
 
-function usage {
+function show_usage_message {
     cat <<_EOT_
 Usage: $0 [options] <in name> <in file> <out file>
 
@@ -63,7 +64,7 @@ frame=0
 while [ "${1::1}" == "-" ]; do
     case "$1" in
         --help)
-            usage
+            show_usage_message
             exit
             ;;
         --orientation)
@@ -84,7 +85,7 @@ while [ "${1::1}" == "-" ]; do
 	    ;;
         *)
             printf "Unexpected option: %q\n" "$1" >&2
-            usage
+            show_usage_message
             exit 2
             ;;
     esac
@@ -92,7 +93,7 @@ while [ "${1::1}" == "-" ]; do
 done
 
 if [ $# -lt 3 ]; then
-    usage
+    show_usage_message
     exit 2
 fi
 

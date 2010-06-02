@@ -5,7 +5,7 @@ Summary:        SUMMARY
 
 Group:          System/X11/Icons
 License:        GPLv3
-URL:            http://www.opendesktop.org/content/show.php?content=32627
+URL:            http://opendesktop.org/content/show.php/ComixCursors?content=32627
 Source0:        %{name}-%{version}.tar.bz2
 BuildArch:	noarch
 

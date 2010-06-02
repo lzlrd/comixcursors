@@ -1,6 +1,6 @@
 #! /bin/bash
 #
-# install-all.sh
+# install-all
 # Part of ComixCursors, a desktop cursor theme.
 #
 # Copyright © 2010 Ben Finney <ben+gnome@benfinney.id.au>
@@ -19,16 +19,20 @@
 # You should have received a copy of the GNU General Public License
 # along with this work. If not, see <http://www.gnu.org/licenses/>.
 
+# Build and install all the ComixCursors themes.
+
 themename_stem="ComixCursors"
 configfile_dir="${themename_stem}Configs"
 configfile_template_name="custom"
+
+bindir="$(dirname $0)"/bin
 
 # Set the ICONSDIR destination to a default (if not already set).
 ICONSDIR=${ICONSDIR:-~/.icons}
 export ICONSDIR
 
 # argument processing and usage
-function usage {
+function show_usage_message {
     cat <<_EOT_
 Usage: $0 [option]
 
@@ -44,7 +48,7 @@ _EOT_
 while getopts ":uh" opt; do
     case $opt in
         h)
-            usage
+            show_usage_message
             exit
             ;;
         u)
@@ -52,7 +56,7 @@ while getopts ":uh" opt; do
             ;;
         *)
             printf "Unexpected option: -%s\n" "$OPTARG" >&2
-            usage
+            show_usage_message
             exit 2
             ;;
     esac
@@ -72,7 +76,7 @@ function build_theme {
         make uninstall
     else
         printf "\nBuilding \"${THEMENAME}\":\n\n"
-        ./build-cursors
+        "${bindir}"/build-cursors
         make
         make install
     fi

@@ -22,7 +22,7 @@
 
 # Makefile for ComixCursors project.
 
-SHELL=/bin/bash
+SHELL = /bin/bash
 
 CURSORSNAME = ComixCursors
 PACKAGENAME ?= ${CURSORSNAME}
@@ -38,6 +38,7 @@ else
 	orientation = RightHanded
 endif
 
+bindir = bin
 svgdir = svg
 indir = ${svgdir}/${orientation}
 configdir = ComixCursorsConfigs
@@ -73,6 +74,9 @@ rpm_spec_template = ${CURSORSNAME}.spec.in
 
 GENERATED_FILES += ${news_content} *.spec
 
+LINK_CURSORS = "${bindir}"/link-cursors
+MAKE_SPECFILE = "${bindir}"/make-specfile
+
 
 .PHONY: all
 all: ${cursorfiles}
@@ -85,7 +89,7 @@ ${xcursor_builddir}/%: ${builddir}/%.conf ${builddir}/%*.png
 install: all
 # Create necessary directories.
 	install -d "${ICONSDIR}" "${ICONSDIR}/default"
-	rm -rf "${destdir}"
+	$(RM) -r "${destdir}"
 	install -d "${xcursor_destdir}"
 
 # Install the cursors.
@@ -95,11 +99,11 @@ install: all
 	install -m u=rw,go=r "${themefile}" "${destdir}"/index.theme
 
 # Install alternative name symlinks for the cursors.
-	./link-cursors "${xcursor_destdir}"
+	$(LINK_CURSORS) "${xcursor_destdir}"
 
 .PHONY: uninstall
 uninstall:
-	$(RM) -r ${destdir}
+	$(RM) -r "${destdir}"
 
 
 .PHONY: custom-theme
@@ -125,7 +129,7 @@ ${news_content}: ${news_file}
 	| tac > "$@"
 
 ${rpm_spec_file}: ${rpm_spec_template} ${news_content}
-	bash ./build-specfile.sh
+	$(MAKE_SPECFILE)
 
 
 .PHONY: clean
