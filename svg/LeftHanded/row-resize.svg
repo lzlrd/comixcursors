@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   version="1.0"
+   width="500"
+   height="500"
+   viewBox="0 0 1000 1000"
+   id="page"
+   xml:space="preserve"><defs
+     id="defs38"><linearGradient
+       id="linearGradient2218"><stop
+         id="stop2220"
+         style="stop-color:#999999;stop-opacity:1"
+         offset="0" /><stop
+         id="stop2222"
+         style="stop-color:#555555;stop-opacity:1"
+         offset="1" /></linearGradient><linearGradient
+       x1="127.94212"
+       y1="25.5625"
+       x2="127.94212"
+       y2="376.8125"
+       id="linearGradient3031"
+       xlink:href="#linearGradient2218"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="scale(2,2)" /></defs><path
+     d="M 703.875,438.375 C 743.49562,438.25244 743.49562,366.49758 703.875,366.375 C 664.25438,366.25242 554,365.25 554,357.375 C 554,344.647 550.20948,290.22598 562.9375,277.5 C 575.6655,264.771 613.46602,252.4705 627.125,238.8125 C 640.206,225.7285 513.52648,61.126 499.3125,61.125 C 486.5855,61.125 358.47048,225.786 371.1875,238.5 C 383.9165,251.229 422.9595,264.772 435.6875,277.5 C 448.4155,290.228 454.999,331.91998 455,357.375 C 455,365.25 333.82102,366.25194 295,366.375 C 256.17898,366.49806 256.17898,438.25196 295,438.375 C 333.82102,438.49804 455.00002,439.5 455,447.375 C 454.999,472.83 448.4165,514.52202 435.6875,527.25 C 422.9585,539.979 383.9165,553.52102 371.1875,566.25 C 358.4705,578.964 486.5845,743.62502 499.3125,743.625 C 513.5265,743.625 640.20602,579.02052 627.125,565.9375 C 613.465,552.2785 575.66548,539.97902 562.9375,527.25 C 550.2085,514.523 553.99998,460.10298 554,447.375 C 554,439.5 664.25438,438.49756 703.875,438.375 z"
+     id="path4052"
+     style="opacity:1;fill:url(#linearGradient3031);fill-opacity:1;stroke:#000000;stroke-width:20;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:1;stroke-dasharray:none" /></svg>

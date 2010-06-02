@@ -24,22 +24,32 @@
 
 SHELL = /bin/bash
 
+CURSORSNAME = ComixCursors
+PACKAGENAME ?= ${CURSORSNAME}
+SUMMARY ?= The original Comix Cursors
 ICONSDIR ?= ${HOME}/.icons
 THEMENAME ?= custom
 
 GENERATED_FILES :=
 
-bindir = bin
+ifeq (@LH-,$(findstring @LH-,@${THEMENAME}))
+	orientation = LeftHanded
+else
+	orientation = RightHanded
+endif
 
-indir = svg
+bindir = bin
+svgdir = svg
+indir = ${svgdir}/${orientation}
 configdir = ComixCursorsConfigs
 configfile = ${configdir}/${THEMENAME}.CONFIG
 themefile = ${configdir}/${THEMENAME}.theme
 workdir = tmp
 builddir = build
 xcursor_builddir = cursors
+distdir = dist
 
-destdir = ${ICONSDIR}/ComixCursors-${THEMENAME}
+destdir = ${ICONSDIR}/${CURSORSNAME}-${THEMENAME}
 xcursor_destdir = ${destdir}/cursors
 
 template_configfile = ${configdir}/custom.CONFIG
@@ -50,18 +60,19 @@ conffiles = $(wildcard ${builddir}/*.conf)
 cursornames = $(foreach conffile,${conffiles},$(basename $(notdir ${conffile})))
 cursorfiles = $(foreach cursor,${cursornames},${xcursor_builddir}/${cursor})
 
-GENERATED_FILES += ${indir}/*.frame*.svg
+GENERATED_FILES += ${svgdir}/*/*.frame*.svg
 GENERATED_FILES += ${workdir}
 GENERATED_FILES += ${builddir}
 GENERATED_FILES += ${xcursor_builddir}
+GENERATED_FILES += ${distdir}
 
 # Packaging files.
 news_file = NEWS
 news_content = NEWS.content.txt
-rpm_spec_file = ComixCursors.spec
-rpm_spec_template = ${rpm_spec_file}.in
+rpm_spec_file = ${PACKAGENAME}.spec
+rpm_spec_template = ${CURSORSNAME}.spec.in
 
-GENERATED_FILES += ${news_content} ${rpm_spec_file}
+GENERATED_FILES += ${news_content} *.spec
 
 LINK_CURSORS = "${bindir}"/link-cursors
 
@@ -117,7 +128,7 @@ ${news_content}: ${news_file}
 	| tac > "$@"
 
 ${rpm_spec_file}: ${rpm_spec_template} ${news_content}
-	cat "$<" "${news_content}" > "$@"
+	bash ./build-specfile.sh
 
 
 .PHONY: clean

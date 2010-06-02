@@ -21,7 +21,7 @@ to build and install.
 KNOWN ISSUES
 ============
 
-- nVIDIA graphics cards:
+* nVIDIA graphics cards:
 
   If you experience the cursor shadow looking strange, e.g. with the i
   christmas theme, or the whole cursor appear gray when it's supposed to be 
@@ -36,14 +36,14 @@ KNOWN ISSUES
       Option "HWCursor" "off"
       EndSection
 
-- If you are using KDE version prior to 4.0 you might experience that
+* If you are using KDE version prior to 4.0 you might experience that
   KDE's control center Mouse Theme Installation does not support symlinks
   in the packed archives (tar). Consider updating KDE.
 
-- Gnome supports multiple cursor sizes in one cursor theme, but only
+* Gnome supports multiple cursor sizes in one cursor theme, but only
   distinct sizes: 16,24,32 and 48 px.
 
-- If you are missing some cursors issue "# export XCURSOR_DISCOVER=1"
+* If you are missing some cursors issue "# export XCURSOR_DISCOVER=1"
   and re-start the application to find the corresponding cursor hash.
   Report it to us or link it yourself in the ~/.icons directory.
 

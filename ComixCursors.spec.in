@@ -1,7 +1,7 @@
-Name:           ComixCursors
-Version:        0.6.1
+Name:           PACKAGENAME
+Version:        VERSION
 Release:        1%{?dist}
-Summary:        The original Comix Cursors
+Summary:        SUMMARY
 
 Group:          System/X11/Icons
 License:        GPLv3

@@ -2,6 +2,7 @@ Version NEXT
 ============
 
 :Released: FUTURE
+:Maintainer: Jens Luetkens <j.luetkens@limitland.de>
 
 * Licence changed to GPLv3.
 
@@ -23,6 +24,7 @@ Version 0.6.1
 =============
 
 :Released: 2009-11-02
+:Maintainer: Jens Luetkens <j.luetkens@limitland.de>
 
 * Fix install script to process all files correctly.
 
@@ -31,6 +33,7 @@ Version 0.6.0
 =============
 
 :Released: 2009-06-19
+:Maintainer: Jens Luetkens <j.luetkens@endiancode.de>
 
 * License changed to LGPLv3.
 
@@ -43,6 +46,7 @@ Version 0.5.1
 =============
 
 :Released: 2008-05-28
+:Maintainer: Jens Luetkens <j.luetkens@endiancode.de>
 
 * Progress animation expanded to 24 frames.
 
@@ -55,6 +59,7 @@ Version 0.5.0
 =============
 
 :Released: 2007-09-14
+:Maintainer: Jens Luetkens <j.luetkens@limitland.de>
 
 * Optimized build script caching shadow files.
 
@@ -69,6 +74,7 @@ Version 0.4.3
 =============
 
 :Released: 2006-09-14
+:Maintainer: Jens Luetkens <j.luetkens@limitland.de>
 
 * Fixed .theme file syntax (=), thanks to Sune Vuorela.
 
@@ -77,6 +83,7 @@ Version 0.4.2
 =============
 
 :Released: 2006-07-14
+:Maintainer: Jens Luetkens <j.luetkens@hamburg.de>
 
 * Added Huge cursor size.
 
@@ -87,6 +94,7 @@ Version 0.4.1
 =============
 
 :Released: 2006-02-09
+:Maintainer: Jens Luetkens <j.luetkens@hamburg.de>
 
 * Additional dnd cursors for gnome (and firefox).
 
@@ -97,6 +105,7 @@ Version 0.4
 ===========
 
 :Released: 2006-02-08
+:Maintainer: Jens Luetkens <j.luetkens@hamburg.de>
 
 * Freedesktop cursor names.
 
@@ -107,6 +116,7 @@ version 0.3.2
 =============
 
 :Released: 2005-12-23
+:Maintainer: Jens Luetkens <j.luetkens@hamburg.de>
 
 * Grab hand fix (firefox).
 
@@ -115,6 +125,7 @@ version 0.3.1
 =============
 
 :Released: 2005-12-22
+:Maintainer: Jens Luetkens <j.luetkens@hamburg.de>
 
 * Mozilla/firefox fix.
 
@@ -123,6 +134,7 @@ Version 0.3
 ===========
 
 :Released: 2005-12-22
+:Maintainer: Jens Luetkens <j.luetkens@hamburg.de>
 
 * Added black (and christmas).
 
@@ -135,6 +147,7 @@ Version 0.2
 ===========
 
 :Released: 2005-12-19
+:Maintainer: Jens Luetkens <j.luetkens@hamburg.de>
 
 * Four colors (and ghost).
 
@@ -149,6 +162,7 @@ Version 0.1
 ===========
 
 :Released: 2005-12-17
+:Maintainer: Jens Luetkens <j.luetkens@hamburg.de>
 
 * Initial release (white).
 
