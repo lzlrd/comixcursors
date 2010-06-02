@@ -29,29 +29,33 @@ export ICONSDIR
 
 # argument processing and usage
 function usage {
-  echo ""
-  echo "  $0 [OPTION]"
-  echo "  Install the ComixCursors mouse theme."
-  echo "  OPTIONS:"
-  echo "    -h:    Display this help."
-  echo "    -u:    Uninstall the ComixCursors mouse theme."
-  echo ""
-  exit
+    cat <<_EOT_
+Usage: $0 [option]
+
+Install the ComixCursors mouse theme.
+
+Options:
+    -h:    Display this help text, then exit.
+    -u:    Uninstall the ComixCursors mouse theme.
+
+_EOT_
 }
 
 while getopts ":uh" opt; do
-  case $opt in
-    h)
-      usage
-      ;;
-    u)
-      UNINSTALL=true
-      ;;
-    *)
-      echo "Invalid option: -$OPTARG" >&2
-      usage
-      ;;
-  esac
+    case $opt in
+        h)
+            usage
+            exit
+            ;;
+        u)
+            UNINSTALL=true
+            ;;
+        *)
+            printf "Unexpected option: -%s\n" "$OPTARG" >&2
+            usage
+            exit 2
+            ;;
+    esac
 done
 
 function build_theme {
@@ -63,16 +67,7 @@ function build_theme {
         rm -r "${destdir}"
     fi
 
-    # left-handed cursors
-    if [[ "$THEMENAME" == LH-* ]] ; then
-	LH="-LH"
-    else 
-	LH=""
-    fi
-
     export THEMENAME
-    export LH
-
     if [ $UNINSTALL ] ; then
         make uninstall
     else

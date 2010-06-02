@@ -1,4 +1,4 @@
-Name:           CURSORSNAME
+Name:           PACKAGENAME
 Version:        VERSION
 Release:        1%{?dist}
 Summary:        SUMMARY
@@ -41,7 +41,7 @@ cp -r %{name}-* %{buildroot}%{prefix}/icons
 
 %files
 %defattr(-,root,root,-)
-#%doc AUTHORS License.GPL README NEWS
+#%doc AUTHORS COPYING LICENSE.GPL README NEWS
 %dir %{prefix}/icons/%{name}-*
 %{prefix}/icons/%{name}-*/*
 

@@ -73,12 +73,6 @@ programs to know which theme you have specified. (This is why the
 ‘ComixCursorsConfigs/’ directory, if they did not already exist. Edit
 each of these files to customise your new theme.
 
-If you want to build a left-handed theme, you want to:
-
-    $ export LH="-LH"
-
-which uses the cursor sources from the "svg-LH" directory. 
-
 The ‘.CONFIG’ file for a particular theme gets processed by the
 ‘svg2png.bash’ program. Run the program with no parameters for a list
 of options that can be specified.

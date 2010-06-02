@@ -18,30 +18,35 @@
 # You should have received a copy of the GNU General Public License
 # along with this work. If not, see <http://www.gnu.org/licenses/>.
 
-# Take a simple svg file, export it to an image,
-# do some image magig, generate a shadow, scale
-# and merge it to a single image.
+# Generate a PNG cursor image from SVG source.
 #
 # Required tools:
 # ImageMagick:  http://www.imagemagick.org/
 # librsvg:      http://librsvg.sourceforge.net/
 
-if [ $# -lt 1 ]; then
-  echo ""
-  echo "Usage: $0 [options] <in name> <in file> <out file>"
-  echo ""
-  echo "Options:"
-  echo "    -FRAME <frame num>        animated cursors frame number"
-  echo "    -BACKGROUND <file>        background image file"
-  echo "    -TIME <milliseconds>      duration for this animation frame"
-  echo ""
-  exit -1
-fi
+function usage {
+    cat <<_EOT_
+Usage: $0 [options] <in name> <in file> <out file>
+
+Generate a PNG cursor image from SVG source.
+
+Take a simple SVG file, export it to PNG, do some image magic,
+generate a shadow, composite with a background image, scale and merge
+it to a single PNG image.
+
+Options:
+    --help                    Show this help text, then exit.
+    --orientation <facing>    Specify the orientation of this cursor.
+    --frame <frame num>       Specify frame number of animated cursor.
+    --duration <duration>     Duration (in milliseconds) for this frame.
+    --background <file>       Background image file for compositing.
+
+_EOT_
+}
 
 THEMENAME="${THEMENAME:-custom}"
 
 configfile="ComixCursorsConfigs/${THEMENAME}.CONFIG"
-hotspotsfile="svg$LH/HOTSPOTS"
 
 # don't do transparency post-processing by default
 # used for ComixCursors but not for flatbedcursors
@@ -51,26 +56,45 @@ CURSORTRANS=0
 source "${configfile}"
 
 # some initialisation before argument processing
+orientation="RightHanded"
 frame=0
 
 # parse argument list
 while [ "${1::1}" == "-" ]; do
-    case $1 in
-	-FRAME)
+    case "$1" in
+        --help)
+            usage
+            exit
+            ;;
+        --orientation)
+            shift
+            orientation="$1"
+            ;;
+	--frame)
             shift
 	    frame=$1
 	    ;;
-	-BACKGROUND)
+	--duration)
+	    shift
+	    duration=$1
+	    ;;
+	--background)
 	    shift
 	    background_image="$1"
 	    ;;
-	-TIME)
-	    shift
-	    TIME=$1
-	    ;;
+        *)
+            printf "Unexpected option: %q\n" "$1" >&2
+            usage
+            exit 2
+            ;;
     esac
     shift
 done
+
+if [ $# -lt 3 ]; then
+    usage
+    exit 2
+fi
 
 NAME="$1"
 infile="$2"
@@ -96,16 +120,17 @@ else
 fi
 
 # write the hotspot config file
+hotspots_file="$(dirname $infile)/HOTSPOTS"
 if [ "$background_image" ] ; then
     background_filename="$(basename $background_image)"
     hotspot_name="${background_filename%.png}"
 else
     hotspot_name="$NAME"
 fi
-HOTSPOT=( $(grep "^$hotspot_name" "$hotspotsfile") )
+hotspot=( $(grep "^$hotspot_name" "$hotspots_file") )
 
-HOTX=$(echo "${HOTSPOT[1]} * $SIZE / 500" | bc)
-HOTY=$(echo "${HOTSPOT[2]} * $SIZE / 500" | bc)
+hotx=$(echo "${hotspot[1]} * $SIZE / 500" | bc)
+hoty=$(echo "${hotspot[2]} * $SIZE / 500" | bc)
 
 xcursor_config="$(dirname $outfile)/${NAME}.conf"
 if [ "$frame" -lt 2 ] ; then
@@ -115,15 +140,15 @@ if [ "$frame" -lt 2 ] ; then
 fi
 
 if [ "$frame" -gt 0 ] ; then
-    echo "$SIZE $HOTX $HOTY $outfile $TIME" >> "${xcursor_config}"
+    echo "$SIZE $hotx $hoty $outfile $duration" >> "${xcursor_config}"
 else
-    echo "$SIZE $HOTX $HOTY $outfile" >> "${xcursor_config}"
+    echo "$SIZE $hotx $hoty $outfile" >> "${xcursor_config}"
 fi
 
 image_name="${outfile%.png}"
 bare_image="${image_name}.bare.png"
 shadow_name="${image_name%.frame*}"
-shadow_image="${shadow_name}${LH}.${SIZE}.${SHADOWCOLOR}.${SHADOWTRANS}.shadow.png"
+shadow_image="${shadow_name}.${orientation}.${SIZE}.${SHADOWCOLOR}.${SHADOWTRANS}.shadow.png"
 silhouette_image="${image_name}.silhouette.png"
 
 function svg2png {

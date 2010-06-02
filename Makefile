@@ -1,7 +1,7 @@
 #! /usr/bin/make -f
 #
 # Makefile
-# Part of ${CURSORSNAME}, a desktop cursor theme.
+# Part of ComixCursors, a desktop cursor theme.
 #
 # Copyright © 2010 Ben Finney <ben+gnome@benfinney.id.au>
 # Copyright © 2006–2010 Jens Luetkens <j.luetkens@hamburg.de>
@@ -20,24 +20,33 @@
 # You should have received a copy of the GNU General Public License
 # along with this work. If not, see <http://www.gnu.org/licenses/>.
 
-# Makefile for ${CURSORSNAME} project.
+# Makefile for ComixCursors project.
 
 SHELL=/bin/bash
 
 CURSORSNAME = ComixCursors
-VERSION = 0.7
+PACKAGENAME ?= ${CURSORSNAME}
+SUMMARY ?= The original Comix Cursors
 ICONSDIR ?= ${HOME}/.icons
 THEMENAME ?= custom
 
 GENERATED_FILES :=
 
-indir = svg
+ifeq (@LH-,$(findstring @LH-,@${THEMENAME}))
+	orientation = LeftHanded
+else
+	orientation = RightHanded
+endif
+
+svgdir = svg
+indir = ${svgdir}/${orientation}
 configdir = ComixCursorsConfigs
 configfile = ${configdir}/${THEMENAME}.CONFIG
 themefile = ${configdir}/${THEMENAME}.theme
 workdir = tmp
 builddir = build
 xcursor_builddir = cursors
+distdir = dist
 
 destdir = ${ICONSDIR}/${CURSORSNAME}-${THEMENAME}
 xcursor_destdir = ${destdir}/cursors
@@ -50,17 +59,17 @@ conffiles = $(wildcard ${builddir}/*.conf)
 cursornames = $(foreach conffile,${conffiles},$(basename $(notdir ${conffile})))
 cursorfiles = $(foreach cursor,${cursornames},${xcursor_builddir}/${cursor})
 
-GENERATED_FILES += ${indir}/*.frame*.svg
-GENERATED_FILES += ${indir}-LH/*.frame*.svg
+GENERATED_FILES += ${svgdir}/*/*.frame*.svg
 GENERATED_FILES += ${workdir}
 GENERATED_FILES += ${builddir}
 GENERATED_FILES += ${xcursor_builddir}
+GENERATED_FILES += ${distdir}
 
 # Packaging files.
 news_file = NEWS
 news_content = NEWS.content.txt
-rpm_spec_file = ${CURSORSNAME}.spec
-rpm_spec_template = ComixCursors.spec.in
+rpm_spec_file = ${PACKAGENAME}.spec
+rpm_spec_template = ${CURSORSNAME}.spec.in
 
 GENERATED_FILES += ${news_content} *.spec
 
@@ -116,7 +125,7 @@ ${news_content}: ${news_file}
 	| tac > "$@"
 
 ${rpm_spec_file}: ${rpm_spec_template} ${news_content}
-	cat "$<" "${news_content}" > "$@"
+	bash ./build-specfile.sh
 
 
 .PHONY: clean
