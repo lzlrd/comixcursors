@@ -1,28 +1,35 @@
 #!/bin/sh
 
 # argument processing and usage
-function usage {
-    echo ""
-    echo "  $0 [OPTION]"
-    echo "  Generate the ComixCursors RPM .spec files."
-    echo "  OPTIONS:"
-    echo "    -h:    Display this help."
-    echo "    -u:    Remove the .spec files."
-    echo ""
-    exit
+function show_usage_message {
+    cat <<_EOT_
+Usage: $0 [option]
+
+Generate the ComixCursors RPM spec file.
+
+Uses the environment variables PACKAGENAME, VERSION, and SUMMARY to
+determine the parameters of the spec file.
+
+Options:
+    -h:    Display this help text, then exit.
+    -u:    Remove the .spec file.
+
+_EOT_
 }
 
 while getopts ":uh" opt; do
     case $opt in
         h)
-            usage
+            show_usage_message
+            exit
             ;;
         u)
             UNINSTALL=true
             ;;
         *)
-            echo "Invalid option: -$OPTARG" >&2
-            usage
+            printf "Unexpected option: -%s\n" "$OPTARG" >&2
+            show_usage_message
+            exit 2
             ;;
     esac
 done
