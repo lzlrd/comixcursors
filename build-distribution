@@ -19,8 +19,12 @@
 # You should have received a copy of the GNU General Public License
 # along with this work. If not, see <http://www.gnu.org/licenses/>.
 
-# This script creates all four packages of ComixCursors for distribution
-# from the sources. Run it as root from inside the sources directory.
+# This script creates all distribution packages of ComixCursors from
+# the sources. Run it as root from inside the source VCS working tree.
+#
+# Additional requirements:
+# * Bazaar VCS program <http://bazaar.canonical.com/>
+# * RPM package building tools <http://rpm.org/>
 
 set -o errexit
 
@@ -47,7 +51,7 @@ make clean
 srcname="${themename_root}-sources-${VERSION}"
 srcdir="${workdir}/${srcname}"
 mkdir --parents "${srcdir}"
-cp -a . "$srcdir"/.
+bzr export "$srcdir"/
 
 mkdir --parents "$distdir"
 rm -rf "$distdir"/*
