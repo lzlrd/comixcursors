@@ -1,5 +1,5 @@
 Comix Cursors installation instructions
-=======================================
+#######################################
 
 Basic Installation
 ==================
@@ -10,70 +10,141 @@ Requirements:
 
 Download the ComixCursors sources from:
 
-http://www.kde-look.org/content/show.php?content=32627
+<http://opendesktop.org/content/show.php/ComixCursors?content=32627>
 
-Change into the download directory and unpack the sources:
+Change into the download directory and unpack the sources::
 
-# tar -xjvf ComixCursours-0.5.0.tar.bz2
-# cd ComixCursors-0.5.0
+    $ tar -xjvf ComixCursors-<version>.tar.bz2
+    $ cd ComixCursors-<version>
 
-With the programs from ImageMagick and librsvg installed,
-build and install the custom ComixCursors:
+where “<version>” is the version you downloaded.
 
-# ./install.bash
+When you have the required programs, issue::
 
-This will parse the CONFIG and HOTSPOTS files, export the 
-cursor source files in the svn directory to PNGs in the 
-build directory (using ‘rsvg’), assemble and apply some 
-effects using ImageMagick tools ‘convert’ and ‘mogrify’, create
-the xcursors in the cursors directory, and install the files
-in your ~/.icons directory. 
-Not that the shadow images will be cached to reduce building
-overhead. The shadow images are stored in the "shadows"
-directory created at build time. The files are named 
-<name>-<size>-<color>-<transparency>.png and will get used 
-by the svg2png.bash script when existing. So if you make in 
-sources (e.g. edit the svg files) you might have to clean the
-shadows directory: "# rm shadows/*" or "# make clean".
+    $ ./bin/build-cursors
+
+This will read the basic cursors from the SVG files, add a blurred and
+scaled shadow, tint the icons and compose them into a single PNG
+image.
+
+After all the images have been processed, you should invoke::
+
+    $ make
+    $ make install
+
+to create the xcursor files and install them into you personal cursors
+folder (‘$HOME/.icons/’).
+
+Not that some files (e.g. the shadow images) will be cached to reduce
+building overhead. So if you make changes in sources (e.g. edit the svg
+files) you might have to clean the working tree::
+
+    $ make clean
+
+Making changes in the sources is not recommended, but if you need to,
+make sure to match colors and transformations as processed by the
+'build-cursors' script. Read 'Customizing Cursors' below if you want to
+build a custom Cursor theme.
+
+If you want to remove the custom cursor theme from its installed location,
+invoke::
+
+    $ make uninstall
+
+
+Customizing Cursors
+===================
+
+Apart from the actual SVG files, a lot of customization can be done
+while composing the images.
+
+All configuration options are in the ‘.CONFIG’ file for each theme.
+Each theme has one, and there is a ‘custom.CONFIG’ which is a template
+for you to copy and customise to build a custom theme.
+
+To start making a custom theme, choose a name and invoke::
+
+    $ export THEMENAME="Purple-and-Green"
+    $ make custom-theme
+
+The environment variable ‘THEMENAME’ will be used by each of the
+programs to know which theme you have specified. (This is why the
+‘export’ command is necessary.) The above step will make the files
+‘Purple-and-Green.CONFIG’ and ‘Purple-and-Green.theme’ in the
+‘ComixCursorsConfigs/’ directory, if they did not already exist. Edit
+each of these files to customise your new theme.
+
+The ‘.CONFIG’ file for a particular theme gets processed by the
+‘svg2png.bash’ program. Run the program with no parameters for a list
+of options that can be specified.
+
+The ‘svg2png.bash’ program is used by the ‘build-cursors’ program, so
+when you want to batch-process the SVG source images you can either
+add as many options to the command line as you want, or edit the
+default values in the ‘custom.CONFIG’ file.
+
+Edit the .CONFIG and .theme files to your likings and build and install
+your custom cursor theme invoking::
+
+    $ make
+    $ make install
+
+If you want to remove your custom cursor theme from its installed location,
+invoke::
+
+    $ make uninstall
 
 
 Complete Installation
 =====================
 
-To install all the original ComixCursors issue:
+To install all the original ComixCursors issue::
 
-# ./install-all
+    $ ./install-all
 
-which will process all the configurations in the 
+which will process all the configurations in the
 ComixCursorsConfigs directory and install all 42 cursor
 sets provided into your ~/.icons directory.
+
+If you want to remove all the original ComixCursors from its installed
+location, invoke::
+
+    $ ./install-all -u
 
 
 System Installation
 ===================
 
 For system-wide installation you need to copy the cursor-
-directories to you X11 lib directory. As root:
+directories to you X11 lib directory. Issue these commands::
 
-## whereis X11
-## man 3 xcursor
-# cd /usr/share/icons
-# cp -r ~/.icons/ComixCursors* .
+    $ whereis X11
+    $ man 3 xcursor
+    $ cd /usr/share/icons
+    $ sudo cp -r ~/.icons/ComixCursors* .
 
 Now this will interfere with the cursor theme in your ~/.icons
 directory, which will have precedence. You will want to rename
-the cursors directory and edit the index.theme file inside. 
+the cursors directory and edit the index.theme file inside.
 
 If you want to make this theme the system-wide default, edit
-the file /etc/sysconfig/windowmanager to read:
+the file /etc/sysconfig/windowmanager to read::
 
-X_MOUSE_CURSOR="ComixCursors-White-Regular-Slim"
+    X_MOUSE_CURSOR="ComixCursors-White-Regular-Slim"
 
-or whatever you renamed that cursors directory to.
-
-
-You could also download the rpms from kde-look.org site above
-and install them with 
-# rpm -Uv ComixCursors-0.5.0-1.noarch.rpm
+or whatever your (custom) cursors directory is named.
 
 
+You can also download pre-built RPMs from the opendesktop.org site
+above and install them with::
+
+    $ sudo rpm -Uv ComixCursors-<version>.noarch.rpm
+
+
+..
+    Local variables:
+    coding: utf-8
+    mode: text
+    mode: rst
+    End:
+    vim: fileencoding=utf-8 filetype=rst :

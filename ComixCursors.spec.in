@@ -1,0 +1,48 @@
+Name:           PACKAGENAME
+Version:        VERSION
+Release:        1%{?dist}
+Summary:        SUMMARY
+
+Group:          System/X11/Icons
+License:        GPLv3
+URL:            http://opendesktop.org/content/show.php/ComixCursors?content=32627
+Source0:        %{name}-%{version}.tar.bz2
+BuildArch:	noarch
+
+Requires: 	XFree86
+
+Packager:	Jens Luetkens <j.luetkens@hamburg.de>
+Distribution:	generic
+
+prefix: /usr/share
+
+%description
+X11 mouse theme with a comics feeling.
+ Package comes with 50 different mouse themes for X11.
+ 6 colors (black, blue, green, orange, red and white)
+ 4 different sizes (small, regular, large and huge)
+ 2 different weights (slim and normal)
+ ..
+ and one for christmas and one with ghost
+
+%prep
+%setup -q -c %{name}-%{version} -n %{name}-%{version}
+
+%build
+
+%install
+[ "%{buildroot}" != / ] && rm -rf "%{buildroot}"
+
+install -d %{buildroot}%{prefix}/icons
+cp -r %{name}-* %{buildroot}%{prefix}/icons
+
+%clean
+[ "%{buildroot}" != / ] && rm -rf "%{buildroot}"
+
+%files
+%defattr(-,root,root,-)
+#%doc AUTHORS COPYING LICENSE.GPL README NEWS
+%dir %{prefix}/icons/%{name}-*
+%{prefix}/icons/%{name}-*/*
+
+%changelog

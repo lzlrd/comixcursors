@@ -1,0 +1,94 @@
+#! /bin/bash
+#
+# install-all
+# Part of ComixCursors, a desktop cursor theme.
+#
+# Copyright © 2010 Ben Finney <ben+gnome@benfinney.id.au>
+# Copyright © 2006–2010 Jens Luetkens <j.luetkens@hamburg.de>
+#
+# This work is free software: you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This work is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+# General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this work. If not, see <http://www.gnu.org/licenses/>.
+
+# Build and install all the ComixCursors themes.
+
+themename_stem="ComixCursors"
+configfile_dir="${themename_stem}Configs"
+configfile_template_name="custom"
+
+bindir="$(dirname $0)"/bin
+
+# Set the ICONSDIR destination to a default (if not already set).
+ICONSDIR=${ICONSDIR:-~/.icons}
+export ICONSDIR
+
+# argument processing and usage
+function show_usage_message {
+    cat <<_EOT_
+Usage: $0 [option]
+
+Install the ComixCursors mouse theme.
+
+Options:
+    -h:    Display this help text, then exit.
+    -u:    Uninstall the ComixCursors mouse theme.
+
+_EOT_
+}
+
+while getopts ":uh" opt; do
+    case $opt in
+        h)
+            show_usage_message
+            exit
+            ;;
+        u)
+            UNINSTALL=true
+            ;;
+        *)
+            printf "Unexpected option: -%s\n" "$OPTARG" >&2
+            show_usage_message
+            exit 2
+            ;;
+    esac
+done
+
+function build_theme {
+    # Build the cursors for a particular theme.
+    THEMENAME="$1"
+
+    destdir="${ICONSDIR}/${themename_stem}-${THEMENAME}"
+    if [ -d "${destdir}" ] ; then
+        rm -r "${destdir}"
+    fi
+
+    export THEMENAME
+    if [ $UNINSTALL ] ; then
+        make uninstall
+    else
+        printf "\nBuilding \"${THEMENAME}\":\n\n"
+        "${bindir}"/build-cursors
+        make
+        make install
+    fi
+}
+
+for configfile in "${configfile_dir}"/*.CONFIG ; do
+    # Each config file represents a theme to be built.
+    configfile_name=$(basename "$configfile")
+    themename="${configfile_name%.CONFIG}"
+    if [ "$themename" == "$configfile_template_name" ] ; then
+        # The template isn't a theme we want to build.
+        continue
+    fi
+    build_theme "$themename"
+done

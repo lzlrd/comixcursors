@@ -22,71 +22,114 @@
 
 # Makefile for ComixCursors project.
 
+SHELL = /bin/bash
+
+CURSORSNAME = ComixCursors
+PACKAGENAME ?= ${CURSORSNAME}
+SUMMARY ?= The original Comix Cursors
 ICONSDIR ?= ${HOME}/.icons
-themedir = ${ICONSDIR}/ComixCursors-Custom
-cursordir = ${themedir}/cursors
-BUILDDIR = cursors
+THEMENAME ?= custom
 
-#Define here the animation cursor directories
-ANIMATED_CURSORS:= wait progress help
+GENERATED_FILES :=
 
-########################################################################
+ifeq (@LH-,$(findstring @LH-,@${THEMENAME}))
+	orientation = LeftHanded
+else
+	orientation = RightHanded
+endif
 
-#Find list of cursors
-conffiles = $(wildcard build/*.conf)
-cursorfiles:= $(foreach conffile,$(conffiles),$(BUILDDIR)/$(subst ./,,$(subst .conf,,$(subst build/,,$(conffile)))))
-cursornames:= $(foreach conffile,$(conffiles),$(subst ./,,$(subst .conf,,$(subst build/,,$(conffile)))))
-animcursorfiles:=$(foreach animationfile,$(ANIMATED_CURSORS),$(BUILDDIR)/$(animationfile))
-animcursornames:=$(ANIMATED_CURSORS)
+bindir = bin
+svgdir = svg
+indir = ${svgdir}/${orientation}
+configdir = ComixCursorsConfigs
+configfile = ${configdir}/${THEMENAME}.CONFIG
+themefile = ${configdir}/${THEMENAME}.theme
+workdir = tmp
+builddir = build
+xcursor_builddir = cursors
+distdir = dist
 
-CURSORS = $(cursorfiles)
-CURSORNAMES= $(cursornames)
-ANIMATIONS= $(animcursorfiles)
-ANIMATIONNAMES=$(animcursornames)
+destdir = ${ICONSDIR}/${CURSORSNAME}-${THEMENAME}
+xcursor_destdir = ${destdir}/cursors
+
+template_configfile = ${configdir}/custom.CONFIG
+template_themefile = ${configdir}/custom.theme
+
+# Derive cursor file names.
+conffiles = $(wildcard ${builddir}/*.conf)
+cursornames = $(foreach conffile,${conffiles},$(basename $(notdir ${conffile})))
+cursorfiles = $(foreach cursor,${cursornames},${xcursor_builddir}/${cursor})
+
+GENERATED_FILES += ${svgdir}/*/*.frame*.svg
+GENERATED_FILES += ${workdir}
+GENERATED_FILES += ${builddir}
+GENERATED_FILES += ${xcursor_builddir}
+GENERATED_FILES += ${distdir}
+
+# Packaging files.
+news_file = NEWS
+rpm_specfile_changelog = specfile-changelog
+rpm_specfile = ${PACKAGENAME}.spec
+rpm_spec_template = ${CURSORSNAME}.spec.in
+
+GENERATED_FILES += ${rpm_specfile_changelog} *.spec
+
+LINK_CURSORS = "${bindir}"/link-cursors
+MAKE_SPECFILE_CHANGELOG = "${bindir}"/news-to-specfile-changelog
+MAKE_SPECFILE = "${bindir}"/make-specfile
 
 
 .PHONY: all
-all: $(CURSORS) $(ANIMATIONS)
+all: ${cursorfiles}
 
+${xcursor_builddir}/%: ${builddir}/%.conf ${builddir}/%*.png
+	xcursorgen "$<" "$@"
+
+
 .PHONY: install
 install: all
 # Create necessary directories.
 	install -d "${ICONSDIR}" "${ICONSDIR}/default"
-	rm -rf "${themedir}"
-	install -d "${cursordir}"
+	$(RM) -r "${destdir}"
+	install -d "${xcursor_destdir}"
 
 # Install the cursors.
-	install -m u=rw,go=r "${BUILDDIR}"/* "${cursordir}"
+	install -m u=rw,go=r "${xcursor_builddir}"/* "${xcursor_destdir}"
 
 # Install the theme configuration file.
-	install -m u=rw,go=r index.theme "${themedir}"
+	install -m u=rw,go=r "${themefile}" "${destdir}"/index.theme
 
 # Install alternative name symlinks for the cursors.
-	./link-cursors "${cursordir}"
+	$(LINK_CURSORS) "${xcursor_destdir}"
 
-# Normal Cursors
-define CURSOR_template
-$(BUILDDIR)/$(1): build/$(1).conf build/$(1).png
-	xcursorgen "$$<" "$$@"
-endef
+.PHONY: uninstall
+uninstall:
+	$(RM) -r "${destdir}"
 
-$(foreach cursor,$(CURSORNAMES),$(eval $(call CURSOR_template,$(cursor))))
+
+.PHONY: custom-theme
+custom-theme: ${configfile} ${themefile}
 
-# Animated Cursors
-define ANIMCURSOR_template
-$(BUILDDIR)/$(1): build/$(1)/$(1).conf build/$(1)/*.png
-	xcursorgen "$$<" "$$@"
-endef
+${configfile}: ${template_configfile}
+	cp "$<" "$@"
 
-$(foreach anim,$(ANIMATIONNAMES),$(eval $(call ANIMCURSOR_template,$(anim))))
+${themefile}: ${template_themefile}
+	cp "$<" "$@"
 
+
+.PHONY: rpm
+rpm: ${rpm_specfile}
+
+${rpm_specfile_changelog}: ${news_file}
+	$(MAKE_SPECFILE_CHANGELOG) < "$<" > "$@"
+
+${rpm_specfile}: ${rpm_spec_template} ${rpm_specfile_changelog}
+	$(MAKE_SPECFILE)
+
+
 .PHONY: clean
-clean::
-# cleanup temporary build files
-	$(RM) -r build
-	$(RM) -r cursors
-	$(RM) -r tmp
-	$(RM) -r shadows
+clean:
+	$(RM) -r ${GENERATED_FILES}
 
 
 # Local Variables:
