@@ -1,11 +1,11 @@
-Name:           CURSORSNAME
+Name:           PACKAGENAME
 Version:        VERSION
 Release:        1%{?dist}
 Summary:        SUMMARY
 
 Group:          System/X11/Icons
 License:        GPLv3
-URL:            http://www.opendesktop.org/content/show.php?content=32627
+URL:            http://opendesktop.org/content/show.php/ComixCursors?content=32627
 Source0:        %{name}-%{version}.tar.bz2
 BuildArch:	noarch
 
@@ -41,7 +41,7 @@ cp -r %{name}-* %{buildroot}%{prefix}/icons
 
 %files
 %defattr(-,root,root,-)
-#%doc AUTHORS License.GPL README NEWS
+#%doc AUTHORS COPYING LICENSE.GPL README NEWS
 %dir %{prefix}/icons/%{name}-*
 %{prefix}/icons/%{name}-*/*
 

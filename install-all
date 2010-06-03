@@ -1,6 +1,6 @@
 #! /bin/bash
 #
-# install-all.sh
+# install-all
 # Part of ComixCursors, a desktop cursor theme.
 #
 # Copyright © 2010 Ben Finney <ben+gnome@benfinney.id.au>
@@ -19,39 +19,47 @@
 # You should have received a copy of the GNU General Public License
 # along with this work. If not, see <http://www.gnu.org/licenses/>.
 
+# Build and install all the ComixCursors themes.
+
 themename_stem="ComixCursors"
 configfile_dir="${themename_stem}Configs"
 configfile_template_name="custom"
+
+bindir="$(dirname $0)"/bin
 
 # Set the ICONSDIR destination to a default (if not already set).
 ICONSDIR=${ICONSDIR:-~/.icons}
 export ICONSDIR
 
 # argument processing and usage
-function usage {
-  echo ""
-  echo "  $0 [OPTION]"
-  echo "  Install the ComixCursors mouse theme."
-  echo "  OPTIONS:"
-  echo "    -h:    Display this help."
-  echo "    -u:    Uninstall the ComixCursors mouse theme."
-  echo ""
-  exit
+function show_usage_message {
+    cat <<_EOT_
+Usage: $0 [option]
+
+Install the ComixCursors mouse theme.
+
+Options:
+    -h:    Display this help text, then exit.
+    -u:    Uninstall the ComixCursors mouse theme.
+
+_EOT_
 }
 
 while getopts ":uh" opt; do
-  case $opt in
-    h)
-      usage
-      ;;
-    u)
-      UNINSTALL=true
-      ;;
-    *)
-      echo "Invalid option: -$OPTARG" >&2
-      usage
-      ;;
-  esac
+    case $opt in
+        h)
+            show_usage_message
+            exit
+            ;;
+        u)
+            UNINSTALL=true
+            ;;
+        *)
+            printf "Unexpected option: -%s\n" "$OPTARG" >&2
+            show_usage_message
+            exit 2
+            ;;
+    esac
 done
 
 function build_theme {
@@ -63,21 +71,12 @@ function build_theme {
         rm -r "${destdir}"
     fi
 
-    # left-handed cursors
-    if [[ "$THEMENAME" == LH-* ]] ; then
-	LH="-LH"
-    else 
-	LH=""
-    fi
-
     export THEMENAME
-    export LH
-
     if [ $UNINSTALL ] ; then
         make uninstall
     else
         printf "\nBuilding \"${THEMENAME}\":\n\n"
-        ./build-cursors
+        "${bindir}"/build-cursors
         make
         make install
     fi

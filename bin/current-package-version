@@ -1,9 +1,9 @@
 #! /bin/bash
-# link-cursors
+#
+# bin/current-package-version
 # Part of ComixCursors, a desktop cursor theme.
 #
 # Copyright © 2010 Ben Finney <ben+gnome@benfinney.id.au>
-# Copyright © 2006–2010 Jens Luetkens <j.luetkens@hamburg.de>
 #
 # This work is free software: you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by
@@ -18,16 +18,16 @@
 # You should have received a copy of the GNU General Public License
 # along with this work. If not, see <http://www.gnu.org/licenses/>.
 
-# Create cursor name symlinks.
+# Parse the NEWS document and output the current version string.
 
-cursordir="$1"
+bindir="$(dirname $0)"
 
-linksfile="cursorlinks"
+newsfile="$(dirname ${bindir})"/NEWS
 
-sed -e 's/#.*$//' "${linksfile}" \
-    | grep -v '^[[:space:]]*$' \
-    | (cd "${cursordir}" ;
-        while read orig new ; do
-            printf "Creating symlink of %s at %s\n" "$orig" "$new" ;
-            ln -sf "$orig" "$new" ;
-        done)
+current_release_header=$(
+    "${bindir}"/news-to-specfile-changelog < "${newsfile}" | head -n 1)
+
+current_version=$(
+    printf "${current_release_header}" | sed -e 's/^.\+ \([^ ]\+\)$/\1/')
+
+printf ${current_version}

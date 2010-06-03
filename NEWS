@@ -1,78 +1,177 @@
-* Sun May 30 2010 Jens Luetkens <j.luetkens@limitland.de>
-- Version future
-- Licence changed to GPLv3.
-- Uninstallation of current/custom/all cursors from sources.
-- Render images using ‘rsvg’ (faster than Inkscape).
-- Generate animation frames from starting image using SVG transform
+Version 0.7
+============
+
+:Released: 2010-06-03
+:Maintainer: Jens Luetkens <j.luetkens@limitland.de>
+
+* Licence changed to GPLv3.
+
+* Uninstallation of current/custom/all cursors from sources.
+
+* Render images using ‘rsvg’ (faster than Inkscape).
+
+* Generate animation frames from starting image using SVG transform
   attributes (not ‘patch’).
-- Easier to customise install location.
-- Maintainability improvements of build system and programs.
-- Include “Opaque” alternatives in primary source package.
 
-* Mon Nov 02 2009 Jens Luetkens <j.luetkens@limitland.de>
-- Version 0.6.1
-- fix install script to process all files correctly
+* Easier to customise install location.
 
-* Fri Jun 19 2009 Jens Luetkens <j.luetkens@endiancode.de>
-- Version 0.6.0
-- license changed to LGPLv3
-- added red cursors
-- add mozilla css3 cursor hashes (thanx to thx)
+* Maintainability improvements of build system and programs.
 
-* Fri May 30 2008 Jens Luetkens <j.luetkens@endiancode.de>
-- Version 0.5.1
-- progress animation expanded to 24 frames
-- wait cursor fixes
-- zoom cursor fixes
+* Include “Opaque” and “Left Handed” alternatives in primary source
+  package.
 
-* Fri Sep 14 2007 Jens Luetkens <j.luetkens@limtiland.de>
-- Version 0.5.0
-- optimized build script caching shadow files
-- svgs and HOTSPOTS scaled to 500x500 to match svg2png script
-- slight svg fixes and cleanup
-- opaque versions
 
-* Thu Sep 14 2006 Jens Luetkens <j.luetkens@limitland.de>
-- Version 0.4.3
-- fixed .theme file syntax (=), thanks to Sune Vuorela
+Version 0.6.1
+=============
 
-* Fri Jul 14 2006 Jens Luetkens <j.luetkens@hamburg.de>
-- Version 0.4.2
-- added Huge cursor size
-- rpm installation now into /usr/share/icons
+:Released: 2009-11-02
+:Maintainer: Jens Luetkens <j.luetkens@limitland.de>
 
-* Fri Feb 10 2006 Jens Luetkens <j.luetkens@hamburg.de>
-- Version 0.4.1
-- additional dnd cursor links for gnome (and firefox)
+* Fix install script to process all files correctly.
 
-* Wed Feb 08 2006 Jens Luetkens <j.luetkens@hamburg.de>
-- Version 0.4
-- freedesktop cursor names
-- additional mozilla cursors
-- add left-handed packages (-LH)
 
-* Thu Dec 22 2005 Jens Luetkens <j.luetkens@hamburg.de>
-- Version 0.3.2
-- grab hand fix (firefox)
+Version 0.6.0
+=============
 
-* Thu Dec 22 2005 Jens Luetkens <j.luetkens@hamburg.de>
-- Version 0.3.1
-- mozilla/firefox fix
+:Released: 2009-06-19
+:Maintainer: Jens Luetkens <j.luetkens@endiancode.de>
 
-* Thu Dec 22 2005 Jens Luetkens <j.luetkens@hamburg.de>
-- Version 0.3
-- added black (and christmas)
-- single configuration file
-- cleanup
+* License changed to LGPLv3.
 
-* Mon Dec 19 2005 Jens Luetkens <j.luetkens@hamburg.de>
-- Version 0.2
-- four colors (and ghost)
-- three sizes
-- sources
-- customization script
+* Added red cursors.
 
-* Sat Dec 17 2005 Jens Luetkens <j.luetkens@hamburg.de>
-- Version 0.1
-- initial version white
+* Fix some firefox cursor hashes (thanx to tks).
 
+
+Version 0.5.1
+=============
+
+:Released: 2008-05-28
+:Maintainer: Jens Luetkens <j.luetkens@endiancode.de>
+
+* Progress animation expanded to 24 frames.
+
+* Wait cursor fixes.
+
+* Zoom cursor fixes.
+
+
+Version 0.5.0
+=============
+
+:Released: 2007-09-14
+:Maintainer: Jens Luetkens <j.luetkens@limitland.de>
+
+* Optimized build script caching shadow files.
+
+* SVGs and HOTSPOTS scaled to 500x500 to match svg2png script.
+
+* Slight svg fixes and cleanup.
+
+* Opaque versions.
+
+
+Version 0.4.3
+=============
+
+:Released: 2006-09-14
+:Maintainer: Jens Luetkens <j.luetkens@limitland.de>
+
+* Fixed .theme file syntax (=), thanks to Sune Vuorela.
+
+
+Version 0.4.2
+=============
+
+:Released: 2006-07-14
+:Maintainer: Jens Luetkens <j.luetkens@hamburg.de>
+
+* Added Huge cursor size.
+
+* RPM installation now into /usr/share/icons.
+
+
+Version 0.4.1
+=============
+
+:Released: 2006-02-09
+:Maintainer: Jens Luetkens <j.luetkens@hamburg.de>
+
+* Additional dnd cursors for gnome (and firefox).
+
+* Left-handed packages (-LH).
+
+
+Version 0.4
+===========
+
+:Released: 2006-02-08
+:Maintainer: Jens Luetkens <j.luetkens@hamburg.de>
+
+* Freedesktop cursor names.
+
+* Additional mozilla cursors.
+
+
+version 0.3.2
+=============
+
+:Released: 2005-12-23
+:Maintainer: Jens Luetkens <j.luetkens@hamburg.de>
+
+* Grab hand fix (firefox).
+
+
+version 0.3.1
+=============
+
+:Released: 2005-12-22
+:Maintainer: Jens Luetkens <j.luetkens@hamburg.de>
+
+* Mozilla/firefox fix.
+
+
+Version 0.3
+===========
+
+:Released: 2005-12-22
+:Maintainer: Jens Luetkens <j.luetkens@hamburg.de>
+
+* Added black (and christmas).
+
+* Single configuration file.
+
+* Cleanup.
+
+
+Version 0.2
+===========
+
+:Released: 2005-12-19
+:Maintainer: Jens Luetkens <j.luetkens@hamburg.de>
+
+* Four colors (and ghost).
+
+* Three sizes.
+
+* Sources.
+
+* Customization script.
+
+
+Version 0.1
+===========
+
+:Released: 2005-12-17
+:Maintainer: Jens Luetkens <j.luetkens@hamburg.de>
+
+* Initial release (white).
+
+
+..
+    Local variables:
+    coding: utf-8
+    mode: text
+    mode: rst
+    End:
+    vim: fileencoding=utf-8 filetype=rst :

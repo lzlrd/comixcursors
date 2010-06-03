@@ -1,7 +1,7 @@
 #! /usr/bin/make -f
 #
 # Makefile
-# Part of ${CURSORSNAME}, a desktop cursor theme.
+# Part of ComixCursors, a desktop cursor theme.
 #
 # Copyright © 2010 Ben Finney <ben+gnome@benfinney.id.au>
 # Copyright © 2006–2010 Jens Luetkens <j.luetkens@hamburg.de>
@@ -20,24 +20,34 @@
 # You should have received a copy of the GNU General Public License
 # along with this work. If not, see <http://www.gnu.org/licenses/>.
 
-# Makefile for ${CURSORSNAME} project.
+# Makefile for ComixCursors project.
 
-SHELL=/bin/bash
+SHELL = /bin/bash
 
 CURSORSNAME = ComixCursors
-VERSION = 0.7
+PACKAGENAME ?= ${CURSORSNAME}
+SUMMARY ?= The original Comix Cursors
 ICONSDIR ?= ${HOME}/.icons
 THEMENAME ?= custom
 
 GENERATED_FILES :=
 
-indir = svg
+ifeq (@LH-,$(findstring @LH-,@${THEMENAME}))
+	orientation = LeftHanded
+else
+	orientation = RightHanded
+endif
+
+bindir = bin
+svgdir = svg
+indir = ${svgdir}/${orientation}
 configdir = ComixCursorsConfigs
 configfile = ${configdir}/${THEMENAME}.CONFIG
 themefile = ${configdir}/${THEMENAME}.theme
 workdir = tmp
 builddir = build
 xcursor_builddir = cursors
+distdir = dist
 
 destdir = ${ICONSDIR}/${CURSORSNAME}-${THEMENAME}
 xcursor_destdir = ${destdir}/cursors
@@ -50,19 +60,23 @@ conffiles = $(wildcard ${builddir}/*.conf)
 cursornames = $(foreach conffile,${conffiles},$(basename $(notdir ${conffile})))
 cursorfiles = $(foreach cursor,${cursornames},${xcursor_builddir}/${cursor})
 
-GENERATED_FILES += ${indir}/*.frame*.svg
-GENERATED_FILES += ${indir}-LH/*.frame*.svg
+GENERATED_FILES += ${svgdir}/*/*.frame*.svg
 GENERATED_FILES += ${workdir}
 GENERATED_FILES += ${builddir}
 GENERATED_FILES += ${xcursor_builddir}
+GENERATED_FILES += ${distdir}
 
 # Packaging files.
 news_file = NEWS
-news_content = NEWS.content.txt
-rpm_spec_file = ${CURSORSNAME}.spec
-rpm_spec_template = ComixCursors.spec.in
+rpm_specfile_changelog = specfile-changelog
+rpm_specfile = ${PACKAGENAME}.spec
+rpm_spec_template = ${CURSORSNAME}.spec.in
 
-GENERATED_FILES += ${news_content} *.spec
+GENERATED_FILES += ${rpm_specfile_changelog} *.spec
+
+LINK_CURSORS = "${bindir}"/link-cursors
+MAKE_SPECFILE_CHANGELOG = "${bindir}"/news-to-specfile-changelog
+MAKE_SPECFILE = "${bindir}"/make-specfile
 
 
 .PHONY: all
@@ -76,7 +90,7 @@ ${xcursor_builddir}/%: ${builddir}/%.conf ${builddir}/%*.png
 install: all
 # Create necessary directories.
 	install -d "${ICONSDIR}" "${ICONSDIR}/default"
-	rm -rf "${destdir}"
+	$(RM) -r "${destdir}"
 	install -d "${xcursor_destdir}"
 
 # Install the cursors.
@@ -86,11 +100,11 @@ install: all
 	install -m u=rw,go=r "${themefile}" "${destdir}"/index.theme
 
 # Install alternative name symlinks for the cursors.
-	./link-cursors "${xcursor_destdir}"
+	$(LINK_CURSORS) "${xcursor_destdir}"
 
 .PHONY: uninstall
 uninstall:
-	$(RM) -r ${destdir}
+	$(RM) -r "${destdir}"
 
 
 .PHONY: custom-theme
@@ -104,19 +118,13 @@ ${themefile}: ${template_themefile}
 
 
 .PHONY: rpm
-rpm: ${rpm_spec_file}
+rpm: ${rpm_specfile}
 
-${news_content}: ${news_file}
-	# Get only the news entries from the news file.
-	tac "$<" \
-	| awk ' \
-		{ text_buffer = text_buffer $$0 ORS ; if (formfeed_seen) print } \
-		/^\x0c/ { if (!formfeed_seen) { formfeed_seen = 1 ; next } } \
-		END { if (!formfeed_seen) { ORS = "" ; print text_buffer } }' \
-	| tac > "$@"
+${rpm_specfile_changelog}: ${news_file}
+	$(MAKE_SPECFILE_CHANGELOG) < "$<" > "$@"
 
-${rpm_spec_file}: ${rpm_spec_template} ${news_content}
-	cat "$<" "${news_content}" > "$@"
+${rpm_specfile}: ${rpm_spec_template} ${rpm_specfile_changelog}
+	$(MAKE_SPECFILE)
 
 
 .PHONY: clean

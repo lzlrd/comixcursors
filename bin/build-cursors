@@ -1,5 +1,6 @@
 #! /bin/bash
-# build-cursors
+#
+# bin/build-cursors
 # Part of ComixCursors, a desktop cursor theme.
 #
 # Copyright © 2010 Ben Finney <ben+gnome@benfinney.id.au>
@@ -22,6 +23,8 @@
 
 THEMENAME="${THEMENAME:-custom}"
 export THEMENAME
+
+bindir="$(dirname $0)"
 
 configfile="ComixCursorsConfigs/${THEMENAME}.CONFIG"
 
@@ -56,7 +59,19 @@ function svg_rotate {
         "$infile"
 }
 
-indir="svg$LH"
+svgdir="svg"
+
+case "$THEMENAME" in
+    LH-*)
+        orientation="LeftHanded"
+        ;;
+
+    *)
+        orientation="RightHanded"
+        ;;
+esac
+
+indir="${svgdir}/${orientation}"
 workdir="tmp"
 builddir="build"
 xcursor_builddir="cursors"
@@ -66,6 +81,8 @@ mkdir --parents "${builddir}"
 mkdir --parents "${workdir}"
 mkdir --parents "${xcursor_builddir}"
 
+hotspots_file="${indir}/HOTSPOTS"
+cp "$hotspots_file" "$workdir"/.
 
 function generate_animation_source_frames {
     # Generate the source frame images for an animation.
@@ -92,13 +109,15 @@ function render_cursor_image {
     local name="$1"
     local compose_opts="$2"
     local frame=$3
-    local frame_time=$4
+    local frame_duration=$4
+
+    compose_opts="${compose_opts} --orientation $orientation"
 
     if [[ "$frame" ]] ; then
         image_name="${name}.frame${frame}"
-        compose_opts="${compose_opts} -FRAME $frame"
-        if [[ "$frame_time" ]] ; then
-            compose_opts="${compose_opts} -TIME $frame_time"
+        compose_opts="${compose_opts} --frame $frame"
+        if [[ "$frame_duration" ]] ; then
+            compose_opts="${compose_opts} --duration $frame_duration"
         fi
     else
         frame=0
@@ -113,7 +132,7 @@ function render_cursor_image {
     tempfile="${workdir}/$(basename $infile)"
     outfile="${builddir}/${image_name}.png"
     svg_substitutions "$infile" > "$tempfile"
-    ./svg2png.bash $compose_opts "$name" "$tempfile" "$outfile"
+    "${bindir}"/render-cursor-image $compose_opts "$name" "$tempfile" "$outfile"
 }
 
 
@@ -167,14 +186,14 @@ no-drop
 "
 
 for name in $names; do
-    compose_opts="-BACKGROUND ${builddir}/default.png"
+    compose_opts="--background ${builddir}/default.png"
     render_cursor_image "$name" "$compose_opts"
 done
 
 # the animated cursors 
 
 name="help"
-compose_opts="-BACKGROUND ${builddir}/default.png"
+compose_opts="--background ${builddir}/default.png"
 frames_count=2
 generate_animation_source_frames "$name" $frames_count
 render_cursor_image "$name" "$compose_opts" 1 2000
@@ -184,7 +203,7 @@ name="progress"
 frames_count=24
 generate_animation_source_frames "$name" $frames_count
 for frame in $(seq --equal-width 1 $frames_count) ; do
-    compose_opts="-BACKGROUND ${builddir}/default.png"
+    compose_opts="--background ${builddir}/default.png"
     render_cursor_image "$name" "$compose_opts" $frame
 done
 
