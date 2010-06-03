@@ -14,9 +14,10 @@ Download the ComixCursors sources from:
 
 Change into the download directory and unpack the sources::
 
-    $ version=0.7.0
-    $ tar -xjvf ComixCursors-${version}.tar.bz2
-    $ cd ComixCursors-${version}
+    $ tar -xjvf ComixCursors-<version>.tar.bz2
+    $ cd ComixCursors-<version>
+
+where “<version>” is the version you downloaded.
 
 When you have the required programs, issue::
 

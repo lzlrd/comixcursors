@@ -28,7 +28,9 @@
 
 set -o errexit
 
-VERSION="0.7"
+bindir=bin
+
+VERSION=$("${bindir}"/current-package-version)
 export VERSION
 
 themename_root="ComixCursors"

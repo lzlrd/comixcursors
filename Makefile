@@ -68,13 +68,14 @@ GENERATED_FILES += ${distdir}
 
 # Packaging files.
 news_file = NEWS
-news_content = NEWS.content.txt
-rpm_spec_file = ${PACKAGENAME}.spec
+rpm_specfile_changelog = specfile-changelog
+rpm_specfile = ${PACKAGENAME}.spec
 rpm_spec_template = ${CURSORSNAME}.spec.in
 
-GENERATED_FILES += ${news_content} *.spec
+GENERATED_FILES += ${rpm_specfile_changelog} *.spec
 
 LINK_CURSORS = "${bindir}"/link-cursors
+MAKE_SPECFILE_CHANGELOG = "${bindir}"/news-to-specfile-changelog
 MAKE_SPECFILE = "${bindir}"/make-specfile
 
 
@@ -117,18 +118,12 @@ ${themefile}: ${template_themefile}
 
 
 .PHONY: rpm
-rpm: ${rpm_spec_file}
+rpm: ${rpm_specfile}
 
-${news_content}: ${news_file}
-	# Get only the news entries from the news file.
-	tac "$<" \
-	| awk ' \
-		{ text_buffer = text_buffer $$0 ORS ; if (formfeed_seen) print } \
-		/^\x0c/ { if (!formfeed_seen) { formfeed_seen = 1 ; next } } \
-		END { if (!formfeed_seen) { ORS = "" ; print text_buffer } }' \
-	| tac > "$@"
+${rpm_specfile_changelog}: ${news_file}
+	$(MAKE_SPECFILE_CHANGELOG) < "$<" > "$@"
 
-${rpm_spec_file}: ${rpm_spec_template} ${news_content}
+${rpm_specfile}: ${rpm_spec_template} ${rpm_specfile_changelog}
 	$(MAKE_SPECFILE)
 
 
