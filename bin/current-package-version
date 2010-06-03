@@ -28,6 +28,6 @@ current_release_header=$(
     "${bindir}"/news-to-specfile-changelog < "${newsfile}" | head -n 1)
 
 current_version=$(
-    printf "${current_release_header}" | sed -e 's/^.\+ \([^ ]\+\)$/\1/')
+    printf "${current_release_header}" | sed -e 's/^.\+ - \([^ ]\+\)$/\1/')
 
 printf ${current_version}
