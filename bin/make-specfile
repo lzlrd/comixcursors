@@ -21,6 +21,8 @@
 
 # Generate the RPM spec file.
 
+bindir="$(dirname $0)"
+
 # argument processing and usage
 function show_usage_message {
     cat <<_EOT_
@@ -28,8 +30,8 @@ Usage: $0 [option]
 
 Generate the ComixCursors RPM spec file.
 
-Uses the environment variables PACKAGENAME, VERSION, and SUMMARY to
-determine the parameters of the spec file.
+Uses the environment variables PACKAGENAME and SUMMARY to determine
+the parameters of the spec file.
 
 Options:
     -h:    Display this help text, then exit.
@@ -54,10 +56,11 @@ done
 # start here
 
 packagename="$PACKAGENAME"
-version=$VERSION
+version=$("${bindir}"/current-package-version)
 summary="$SUMMARY"
 
 specfile_template="ComixCursors.spec.in"
+specfile_changelog="specfile-changelog"
 specfile="${packagename}.spec"
 
 sed \
@@ -65,4 +68,4 @@ sed \
     -e "s/VERSION/${version}/g" \
     -e "s/SUMMARY/${summary}/g" \
     < "$specfile_template" > "${specfile}"
-cat NEWS.content.txt >> "${specfile}"
+cat "${specfile_changelog}" >> "${specfile}"
