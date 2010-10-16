@@ -110,3 +110,20 @@ col-resize	043a9f68147c53184671403ffa811cc5 # col-resize
 row-resize	c07385c7190e701020ff7ffffd08103c # row-resize
 nesw-resize	50585d75b494802d0151028115016902 # nesw-resize
 nwse-resize	38c5dff7c7b8962045400281044508d2 # nwse-resize
+
+# QT4 cursors
+crosshair       cross
+progress        left_ptr_watch
+text            ibeam
+ns-resize       size_ver
+ew-resize       size_hor
+nwse-resize     size_fdiag
+nesw-resize     size_bdiag
+all-scroll      size_all
+row-resize      split_v
+col-resize      split_h
+pointer         pointing_hand
+not-allowed     forbidden
+help            whats_this
+
+
