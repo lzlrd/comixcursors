@@ -118,7 +118,7 @@ default         left_ptr
 up-arrow        up_arrow
 crosshair       cross
 text            ibeam
-wait            wait
+# wait            wait
 progress        left_ptr_watch
 not-allowed     forbidden
 pointer         pointing_hand
