@@ -5,6 +5,15 @@ Version NEXT
 :Maintainer: Jens Luetkens <j.luetkens@limitland.de>
 
 
+Version 0.7.1
+=============
+
+:Released: 2010-10-16
+:Maintainer: Jens Luetkens <j.luetkens@limitland.de>
+
+* Added Qt4 cursor links
+
+
 Version 0.7
 ===========
 
