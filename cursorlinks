@@ -1,7 +1,7 @@
 # cursorlinks
 # Part of ComixCursors, a desktop cursor theme.
 #
-# Copyright © 2010 Ben Finney <ben+gnome@benfinney.id.au>
+# Copyright © 2011 Ben Finney <ben+gnome@benfinney.id.au>
 # Copyright © 2006–2010 Jens Luetkens <j.luetkens@hamburg.de>
 #
 # This work is free software: you can redistribute it and/or modify it
@@ -111,19 +111,24 @@ row-resize	c07385c7190e701020ff7ffffd08103c # row-resize
 nesw-resize	50585d75b494802d0151028115016902 # nesw-resize
 nwse-resize	38c5dff7c7b8962045400281044508d2 # nwse-resize
 
-# QT4 cursors
+# Qt4 cursor names
+# Reference: <URL:http://doc.trolltech.com/4.6/qcursor.html#a-note-for-x11-users>
+
+default         left_ptr
+up-arrow        up_arrow
 crosshair       cross
-progress        left_ptr_watch
 text            ibeam
+wait            wait
+progress        left_ptr_watch
+not-allowed     forbidden
+pointer         pointing_hand
+help            whats_this
 ns-resize       size_ver
 ew-resize       size_hor
-nwse-resize     size_fdiag
 nesw-resize     size_bdiag
+nwse-resize     size_fdiag
 all-scroll      size_all
 row-resize      split_v
 col-resize      split_h
-pointer         pointing_hand
-not-allowed     forbidden
-help            whats_this
-
-
+all-scroll      openhand
+grabbing        closedhand
