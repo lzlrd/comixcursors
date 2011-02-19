@@ -4,6 +4,8 @@ Version NEXT
 :Released: FUTURE
 :Maintainer: Jens Luetkens <j.luetkens@limitland.de>
 
+* Added all missing cursor links from Qt4 documentation.
+
 
 Version 0.7.1
 =============
