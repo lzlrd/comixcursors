@@ -69,10 +69,13 @@ class NewsEntry(object):
         self.maintainer = maintainer
         self.body = body
 
-    def astext(self):
+    def as_specfile_changelog_entry(self):
+        """ Format the news entry as an RPM specfile changelog entry. """
+        # Reference: <URL:http://fedoraproject.org/wiki/PackagingGuidelines>
+
         released_timestamp_text = self.released.strftime("%a %b %d %Y")
         header = " ".join([
-            "*", released_timestamp_text, self.maintainer, self.version])
+            "*", released_timestamp_text, self.maintainer, "-", self.version])
         text = "\n".join([header, self.body])
         return text
 
@@ -198,7 +201,7 @@ class SpecChangelogTranslator(docutils.nodes.SparseNodeVisitor):
         self.current_entry = NewsEntry()
 
     def depart_section(self, node):
-        self.body += self.current_entry.astext() + "\n"
+        self.body += self.current_entry.as_specfile_changelog_entry() + "\n"
         self.current_entry = None
 
     def visit_title(self, node):
