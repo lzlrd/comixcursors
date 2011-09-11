@@ -74,18 +74,20 @@ programs to know which theme you have specified. (This is why the
 ‘ComixCursorsConfigs/’ directory, if they did not already exist. Edit
 each of these files to customise your new theme.
 
-The ‘.CONFIG’ file for a particular theme gets processed by the
-‘svg2png.bash’ program. Run the program with no parameters for a list
-of options that can be specified.
+The ‘$THEMENAME.CONFIG’ file configures the theme-specific behaviour of the
+‘bin/render-cursor-image’ program. Run the program with no parameters for a
+list of options that can be specified.
 
-The ‘svg2png.bash’ program is used by the ‘build-cursors’ program, so
-when you want to batch-process the SVG source images you can either
-add as many options to the command line as you want, or edit the
-default values in the ‘custom.CONFIG’ file.
+The ‘bin/render-cursor-image’ program is used by the ‘bin/build-cursors’
+program, so when you want to batch-process the SVG source images you can
+either add as many options to the command line as you want, or edit the
+default values in the ‘$THEMENAME.CONFIG’ file.
 
-Edit the .CONFIG and .theme files to your likings and build and install
-your custom cursor theme invoking::
+Edit the custom files ‘ComixCursorsConfigs/$THEMENAME.CONFIG’ and
+‘ComixCursorsConfigs/$THEMENAME.theme’ files to your liking. Then build and
+install your custom cursor theme invoking::
 
+    $ ./bin/build-cursors
     $ make
     $ make install
 
