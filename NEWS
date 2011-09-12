@@ -6,6 +6,8 @@ Version NEXT
 
 * Updated documentation for building custom themes.
 
+* Expand shell wildcards in rule dependencies.
+
 
 Version 0.7.2
 =============
