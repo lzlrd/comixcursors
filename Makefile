@@ -82,7 +82,7 @@ MAKE_SPECFILE = "${bindir}"/make-specfile
 .PHONY: all
 all: ${cursorfiles}
 
-${xcursor_builddir}/%: ${builddir}/%.conf ${builddir}/%*.png
+${xcursor_builddir}/%: ${builddir}/%.conf $(wildcard ${builddir}/%*.png)
 	xcursorgen "$<" "$@"
 
 
