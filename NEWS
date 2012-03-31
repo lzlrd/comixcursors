@@ -4,6 +4,12 @@ Version NEXT
 :Released: FUTURE
 :Maintainer: Jens Luetkens <j.luetkens@limitland.de>
 
+Version 0.7.3
+=============
+
+:Released: 2011-09-13
+:Maintainer: Jens Luetkens <j.luetkens@limitland.de>
+
 * Updated documentation for building custom themes.
 
 * Expand shell wildcards in rule dependencies.
