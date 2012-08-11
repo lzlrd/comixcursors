@@ -158,10 +158,10 @@ function svg2png {
     local outfile="$2"
     local size=$3
 
-    rsvg --format png \
+    rsvg-convert --format png \
         --dpi-x 72 --dpi-y 72 \
         --width $size --height $size \
-        "$infile" "$outfile"
+        "$infile" > "$outfile"
 }
 
 function make_shadow_image {
