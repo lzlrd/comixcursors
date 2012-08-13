@@ -1,8 +1,17 @@
-Version NEXT
-============
+--Version NEXT
+  ============
 
-:Released: FUTURE
+  :Released: FUTURE
+  :Maintainer: Jens Luetkens <j.luetkens@limitland.de>
+
+Version 0.7.4
+=============
+
+:Released: 2012-08-13
 :Maintainer: Jens Luetkens <j.luetkens@limitland.de>
+
+* Switch from deprecated ‘rsvg(1)’ to ‘rsvg-convert(1)’.
+
 
 Version 0.7.3
 =============
