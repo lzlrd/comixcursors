@@ -1,4 +1,4 @@
 #
 # override the cursor transparency for opaque cursors
 #
-CURSORTRANS=0.3
+CURSORTRANS=0.0

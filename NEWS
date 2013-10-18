@@ -5,6 +5,7 @@ Version NEXT
 :Maintainer: Jens Luetkens <j.luetkens@limitland.de>
 
 * Set orientation RightHanded if not specified.
+* Build theme variants.
 
 
 Version 0.8

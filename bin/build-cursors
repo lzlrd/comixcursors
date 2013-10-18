@@ -35,6 +35,9 @@ theme_template="${configfile_dir}/${themename_stem}.theme"
 
 # source the theme config file
 source "${configfile}"
+if [ ${THEMEINCLUDE} ] ; then
+    source "${configfile_dir}/${THEMEINCLUDE#-}.INCLUDE"
+fi
 
 SHADOWOPAQ=$(echo "1 - $SHADOWTRANS" | bc | sed 's/^\./0\./' | sed 's/\.0$//')
 CURSOROPAQ=$(echo "1 - $CURSORTRANS" | bc | sed 's/^\./0\./' | sed 's/\.0$//')
@@ -82,7 +85,7 @@ mkdir --parents "${builddir}"
 mkdir --parents "${workdir}"
 mkdir --parents "${xcursor_builddir}"
 
-# Copy the HOTSPOTS file to the working directory. 
+# Copy the HOTSPOTS file to the working directory.
 hotspots_file="${indir}/HOTSPOTS"
 cp "$hotspots_file" "$workdir"/.
 
@@ -95,13 +98,16 @@ function generate_theme {
     themename=${name//-/ }
     if [[ $ORIENTATION == "LeftHanded" ]]; then
         facing=" left-handed"
-    else 
-        facing=" original"
+    else
+        facing=""
     fi
+
+    variation=" ${THEMEINCLUDE#-}" && [ -v ${THEMEINCLUDE} ]  && variation=""
+
     if [ -f "$custom_theme" ]; then
-        sed "s/THEMENAME/$themename/g" "$custom_theme" | sed "s/SIZENAME/$sizename/g" | sed "s/ORIENTATION/$facing/g" > "$xcursor_theme"
+        sed "s/THEMENAME/$themename/g" "$custom_theme" | sed "s/ORIENTATION/$facing/g" | sed "s/SIZENAME/$sizename/g" | sed "s/VARIATION/$variation/g" > "$xcursor_theme"
     elif [ -f "$theme_template" ]; then
-        sed "s/THEMENAME/$themename/g" "$theme_template" | sed "s/SIZENAME/$sizename/g" | sed "s/ORIENTATION/$facing/g" > "$xcursor_theme"
+        sed "s/THEMENAME/$themename/g" "$theme_template" | sed "s/ORIENTATION/$facing/g" | sed "s/SIZENAME/$sizename/g" | sed "s/VARIATION/$variation/g" > "$xcursor_theme"
     fi
 }
 
@@ -157,7 +163,7 @@ function render_cursor_image {
 }
 
 # Generate the theme file. Process the size argument only if the
-# configuration has only one SIZES() item. 
+# configuration has only one SIZES() item.
 if [ ${#SIZES[@]} -eq 1 ]; then
     sizename=${SIZES[0]%%=*}
 fi
@@ -208,7 +214,7 @@ for name in $names; do
     render_cursor_image "$name" "$compose_opts"
 done
 
-# the animated cursors 
+# the animated cursors
 
 name="help"
 compose_opts=""

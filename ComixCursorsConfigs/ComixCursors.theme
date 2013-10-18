@@ -1,4 +1,4 @@
 [Icon Theme]
-Name = Comix Cursor original THEMENAME SIZENAME
-Comment = The original ORIENTATION Comix Cursors - THEMENAME SIZENAME
+Name = Comix Cursor original ORIENTATION THEMENAME SIZENAME VARIATION
+Comment = The original ORIENTATION Comix Cursors - THEMENAME SIZENAME VARIATION
 Example = default

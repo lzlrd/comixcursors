@@ -49,7 +49,7 @@ configdir = ComixCursorsConfigs
 configfile = ${configdir}/${THEMENAME}.CONFIG
 themefile = ${builddir}/${THEMENAME}.theme
 
-destdir = ${ICONSDIR}/${CURSORSNAME}-${OPTIONS}${THEMENAME}
+destdir = ${ICONSDIR}/${CURSORSNAME}-${THEMENAME}${THEMEOPTIONS}${THEMEINCLUDE}
 xcursor_destdir = ${destdir}/cursors
 
 template_configfile = ${configdir}/Custom.CONFIG
@@ -74,9 +74,9 @@ rpm_spec_template = ${CURSORSNAME}.spec.in
 
 GENERATED_FILES += ${rpm_specfile_changelog} *.spec
 
-LINK_CURSORS = "${bindir}"/link-cursors
-MAKE_SPECFILE_CHANGELOG = "${bindir}"/news-to-specfile-changelog
-MAKE_SPECFILE = "${bindir}"/make-specfile
+LINK_CURSORS = "${bindir}/link-cursors"
+MAKE_SPECFILE_CHANGELOG = "${bindir}/news-to-specfile-changelog"
+MAKE_SPECFILE = "${bindir}/make-specfile"
 
 
 .PHONY: all
@@ -97,7 +97,7 @@ install: all
 	install -m u=rw,go=r "${xcursor_builddir}"/* "${xcursor_destdir}"
 
 # Install the theme configuration file.
-	install -m u=rw,go=r "${themefile}" "${destdir}"/index.theme
+	install -m u=rw,go=r "${themefile}" "${destdir}/index.theme"
 
 # Install alternative name symlinks for the cursors.
 	$(LINK_CURSORS) "${xcursor_destdir}"
@@ -114,7 +114,7 @@ ${configfile}: ${template_configfile}
 	cp "$<" "$@"
 
 ${themefile}: ${template_themefile}
-	mkdir "${builddir}"
+	install -d "${builddir}"
 	cp "$<" "$@"
 
 
