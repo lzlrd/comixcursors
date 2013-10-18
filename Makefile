@@ -49,7 +49,7 @@ configdir = ComixCursorsConfigs
 configfile = ${configdir}/${THEMENAME}.CONFIG
 themefile = ${builddir}/${THEMENAME}.theme
 
-destdir = ${ICONSDIR}/${CURSORSNAME}-${THEMENAME}${THEMEOPTIONS}${THEMEINCLUDE}
+destdir = ${ICONSDIR}/${CURSORSNAME}-${THEMENAME}${THEMEOPTIONS}${THEMEINCLUDE}${SIZENAME}
 xcursor_destdir = ${destdir}/cursors
 
 template_configfile = ${configdir}/Custom.CONFIG

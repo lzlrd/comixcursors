@@ -21,6 +21,7 @@ where “<version>” is the version you downloaded.
 
 When you have the required programs, issue::
 
+    $ export MULTISIZE=true
     $ ./bin/build-cursors
 
 This will read the basic cursors from the SVG files, add a blurred and
@@ -77,6 +78,19 @@ each of these files to customise your new theme.
 The ‘$THEMENAME.CONFIG’ file configures the theme-specific behaviour of the
 ‘bin/render-cursor-image’ program. Run the program with no parameters for a
 list of options that can be specified.
+
+With version 0.8 teh cursors can be rendered as multisize xcursors. That's 
+why the build process requires either the "MULTISIZE" environment variable
+or the "CURSORSIZE" environment variable::
+
+For single-size cursors use::
+
+    $ unset MULTISIZE
+    $ export CURSORSIZE=40
+
+For the multisize version use::
+
+    $ export MULTISIZE=true
 
 The ‘bin/render-cursor-image’ program is used by the ‘bin/build-cursors’
 program, so when you want to batch-process the SVG source images you can

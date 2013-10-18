@@ -92,10 +92,12 @@ NAME="$1"
 infile="$2"
 outfile="$3"
 
-if [ "$frame" -lt 1 ]; then
-    echo "processing $NAME..."
-else
-    echo "processing $NAME frame $frame..."
+if [ $VERBOSE ] ; then
+    if [ "$frame" -lt 1 ]; then
+        echo "processing $NAME..."
+    else
+        echo "processing $NAME frame $frame..."
+    fi
 fi
 
 xcursor_config="${builddir}/${NAME}.conf"
@@ -140,27 +142,26 @@ function svg2png {
 }
 
 # Render the cursor image/s.
+
+xcursor_config="${builddir}/${NAME}.conf"
+
 if [ ${MULTISIZE} ]; then 
     # Render multiple sizes combined cursors per default.
     # Reset the config file (hotspots).
     reset_xcursor_config "$xcursor_config" "$frame"
     # Render multiple cursor sizes.
     for SIZENAMES in ${SIZES[@]} ; do 
-        SIZENAME=${SIZENAMES%%=*}
-        SIZE=${SIZENAMES##*=}
+        # SIZENAME=${SIZENAMES%%=*}
         # Render the cursor image.
-        svg2png "$infile" "${outfile%.*}.${SIZE}.png" $SIZE
+        SIZE="${SIZENAMES##*=}"
+        svg2png "$infile" "${outfile%.*}.${SIZE}.png" "${SIZE}"
     done
 else 
-    # Render single sized cursors.
-    for SIZENAMES in ${SIZES[@]} ; do 
-        SIZENAME=${SIZENAMES%%=*}
-        SIZE=${SIZENAMES##*=}
-        # Reset the config file (hotspots).
-        xcursor_config="${builddir}/${NAME}.conf"
-        reset_xcursor_config "$xcursor_config" "$frame"
-        # Render the cursor image.
-        svg2png "$infile" "${outfile%.*}.${SIZE}.png" $SIZE
-    done
+    # Render single sized cursors.#
+    export CURSORSIZE="${CURSORSIZE:-32}"
+    # Reset the config file (hotspots).
+    reset_xcursor_config "$xcursor_config" "$frame" "${CURSORSIZE}"
+    # Render the cursor image.
+    svg2png "$infile" "${outfile%.*}.${SIZE}.png" "${CURSORSIZE}"
 fi
 
