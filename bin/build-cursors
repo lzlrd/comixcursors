@@ -103,6 +103,7 @@ function generate_theme {
     fi
 
     variation=" ${THEMEINCLUDE#-}" && [ -v ${THEMEINCLUDE} ] && variation=""
+    variation=${variation//-/ }
 
     if [ -f "$custom_theme" ]; then
         sed "s/THEMENAME/$themename/g" "$custom_theme" | sed "s/ORIENTATION/$facing/g" | sed "s/SIZENAME/$sizename/g" | sed "s/VARIATION/$variation/g" > "$xcursor_theme"

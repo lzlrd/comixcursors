@@ -18,12 +18,10 @@ prefix: /usr/share
 
 %description
 X11 mouse theme with a comics feeling.
- Package comes with 50 different mouse themes for X11.
+ The package comes with 12 different mouse themes for X11.
  6 colors (black, blue, green, orange, red and white)
- 4 different sizes (small, regular, large and huge)
  2 different weights (slim and normal)
- ..
- and one for christmas and one with ghost
+ 4 sizes (small, regular, large and huge) are combined into multisize cursors 
 
 %prep
 %setup -q -c %{name}-%{version} -n %{name}-%{version}
@@ -34,7 +32,7 @@ X11 mouse theme with a comics feeling.
 [ "%{buildroot}" != / ] && rm -rf "%{buildroot}"
 
 install -d %{buildroot}%{prefix}/icons
-cp -r %{name}-* %{buildroot}%{prefix}/icons
+cp -r ComixCursors-* %{buildroot}%{prefix}/icons
 
 %clean
 [ "%{buildroot}" != / ] && rm -rf "%{buildroot}"
