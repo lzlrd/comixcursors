@@ -28,11 +28,11 @@ CURSORSNAME = ComixCursors
 PACKAGENAME ?= ${CURSORSNAME}
 SUMMARY ?= The original Comix Cursors
 ICONSDIR ?= ${HOME}/.icons
-THEMENAME ?= custom
+THEMENAME ?= Custom
 
 GENERATED_FILES :=
 
-ifeq (@LH-,$(findstring @LH-,@${THEMENAME}))
+ifeq (@LH-,$(findstring @LH-,@${THEMEOPTIONS}))
 	orientation = LeftHanded
 else
 	orientation = RightHanded
@@ -41,19 +41,19 @@ endif
 bindir = bin
 svgdir = svg
 indir = ${svgdir}/${orientation}
-configdir = ComixCursorsConfigs
-configfile = ${configdir}/${THEMENAME}.CONFIG
-themefile = ${configdir}/${THEMENAME}.theme
 workdir = tmp
 builddir = build
 xcursor_builddir = cursors
 distdir = dist
+configdir = ComixCursorsConfigs
+configfile = ${configdir}/${THEMENAME}.CONFIG
+themefile = ${builddir}/${THEMENAME}.theme
 
-destdir = ${ICONSDIR}/${CURSORSNAME}-${THEMENAME}
+destdir = ${ICONSDIR}/${CURSORSNAME}-${OPTIONS}${THEMENAME}
 xcursor_destdir = ${destdir}/cursors
 
-template_configfile = ${configdir}/custom.CONFIG
-template_themefile = ${configdir}/custom.theme
+template_configfile = ${configdir}/Custom.CONFIG
+template_themefile = ${configdir}/Custom.theme
 
 # Derive cursor file names.
 conffiles = $(wildcard ${builddir}/*.conf)

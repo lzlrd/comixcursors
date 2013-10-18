@@ -29,3 +29,10 @@ wait 250 180
 X-cursor 250 180
 zoom-in 275 190
 zoom-out 275 190
+alias 400 60
+context-menu 400 60
+copy 400 60
+move 400 60
+no-drop 400 60
+help 400 60
+progress 400 60

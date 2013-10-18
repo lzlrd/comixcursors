@@ -1,8 +1,11 @@
---Version NEXT
-  ============
+Version NEXT
+============
 
-  :Released: FUTURE
-  :Maintainer: Jens Luetkens <j.luetkens@limitland.de>
+:Released: FUTURE
+:Maintainer: Jens Luetkens <j.luetkens@limitland.de>
+
+* Use multisize cursors.
+
 
 Version 0.7.4
 =============

@@ -31,30 +31,25 @@ Usage: $0 [options] <in name> <in file> <out file>
 
 Generate a PNG cursor image from SVG source.
 
-Take a simple SVG file, export it to PNG, do some image magic,
-generate a shadow, composite with a background image, scale and merge
-it to a single PNG image.
+Take a simple SVG file, export it to PNG.
 
 Options:
     --help                    Show this help text, then exit.
     --orientation <facing>    Specify the orientation of this cursor.
     --frame <frame num>       Specify frame number of animated cursor.
     --duration <duration>     Duration (in milliseconds) for this frame.
-    --background <file>       Background image file for compositing.
 
 _EOT_
 }
 
-THEMENAME="${THEMENAME:-custom}"
-
+# source the theme config file
+THEMENAME="${THEMENAME:-Custom}"
 configfile="ComixCursorsConfigs/${THEMENAME}.CONFIG"
+source "${configfile}"
 
 # don't do transparency post-processing by default
 # used for ComixCursors but not for flatbedcursors
 CURSORTRANS=0
-
-# source the theme config file
-source "${configfile}"
 
 # some initialisation before argument processing
 orientation="RightHanded"
@@ -71,18 +66,14 @@ while [ "${1::1}" == "-" ]; do
             shift
             orientation="$1"
             ;;
-	--frame)
+    	--frame)
             shift
-	    frame=$1
-	    ;;
-	--duration)
-	    shift
-	    duration=$1
-	    ;;
-	--background)
-	    shift
-	    background_image="$1"
-	    ;;
+    	    frame=$1
+    	    ;;
+    	--duration)
+    	    shift
+    	    duration=$1
+    	    ;;
         *)
             printf "Unexpected option: %q\n" "$1" >&2
             show_usage_message
@@ -101,56 +92,29 @@ NAME="$1"
 infile="$2"
 outfile="$3"
 
-TMPSIZE=$(echo "$SIZE * $TMPSCALE" | bc)
-
-XMOVE=$(echo "$XOFFSET * $TMPSCALE" | bc)
-YMOVE=$(echo "$YOFFSET * $TMPSCALE" | bc)
-
-SCALEBLUR=$(echo "$BLUR * $TMPSCALE" | bc)
-SCALESIZE=$(echo "$SIZE * $TMPSCALE" | bc)
-
-# Scaling the shadow from the cursor image.
-SHADOWSIZE=$(echo "$TMPSIZE * $SHADOWSCALE" | bc)
-RIGHT=$(echo "$TMPSIZE / $SHADOWSCALE" | bc)
-LEFT=$(echo "$TMPSIZE - $RIGHT" | bc)
-
 if [ "$frame" -lt 1 ]; then
     echo "processing $NAME..."
 else
     echo "processing $NAME frame $frame..."
 fi
 
+xcursor_config="${builddir}/${NAME}.conf"
+
 # write the hotspot config file
 hotspots_file="$(dirname $infile)/HOTSPOTS"
-if [ "$background_image" ] ; then
-    background_filename="$(basename $background_image)"
-    hotspot_name="${background_filename%.png}"
-else
-    hotspot_name="$NAME"
-fi
+hotspot_name="$NAME"
 hotspot=( $(grep "^$hotspot_name" "$hotspots_file") )
 
-hotx=$(echo "${hotspot[1]} * $SIZE / 500" | bc)
-hoty=$(echo "${hotspot[2]} * $SIZE / 500" | bc)
-
-xcursor_config="$(dirname $outfile)/${NAME}.conf"
-if [ "$frame" -lt 2 ] ; then
-    if [ -e "${xcursor_config}" ]; then
-        rm "${xcursor_config}"
+function reset_xcursor_config {
+    # Delete the config file if it exists.
+    local xcursor_config="$1"
+    local frame="$2"
+    if [ "$frame" -lt 2 ]; then
+        if [ -e "${xcursor_config}" ]; then
+            rm "${xcursor_config}"
+        fi
     fi
-fi
-
-if [ "$frame" -gt 0 ] ; then
-    echo "$SIZE $hotx $hoty $outfile $duration" >> "${xcursor_config}"
-else
-    echo "$SIZE $hotx $hoty $outfile" >> "${xcursor_config}"
-fi
-
-image_name="${outfile%.png}"
-bare_image="${image_name}.bare.png"
-shadow_name="${image_name%.frame*}"
-shadow_image="${shadow_name}.${orientation}.${SIZE}.${SHADOWCOLOR}.${SHADOWTRANS}.shadow.png"
-silhouette_image="${image_name}.silhouette.png"
+}
 
 function svg2png {
     # Convert a single SVG image to PNG.
@@ -158,57 +122,45 @@ function svg2png {
     local outfile="$2"
     local size=$3
 
+    # Write hotspots to config file.
+    hotx=$(echo "${hotspot[1]} * $size / 500" | bc)
+    hoty=$(echo "${hotspot[2]} * $size / 500" | bc)
+
+    if [ "$frame" -gt 0 ]; then
+        echo "$size $hotx $hoty $outfile $duration" >> "${xcursor_config}"
+    else
+        echo "$size $hotx $hoty $outfile" >> "${xcursor_config}"
+    fi
+
+    # Render png image.
     rsvg-convert --format png \
         --dpi-x 72 --dpi-y 72 \
         --width $size --height $size \
         "$infile" > "$outfile"
 }
 
-function make_shadow_image {
-    # Make the shadow image from a bare image and a silhouette.
-    local infile="$1"
-    local silhouette_image="$2"
-    local shadow_image="$3"
-
-    convert \
-        -extract ${SHADOWSIZE}x${SHADOWSIZE}+${LEFT}+${LEFT} \
-        -resize ${TMPSIZE}x${TMPSIZE} \
-        "$bare_image" "$silhouette_image"
-
-    convert -modulate 0 \
-        -fill "$SHADOWCOLOR" \
-        -colorize 100 \
-        -channel Alpha \
-        -fx \'a-$SHADOWTRANS\' \
-        "$silhouette_image" "$shadow_image"
-
-    mogrify -channel Alpha \
-        -blur ${SCALEBLUR}x${SCALEBLUR} \
-        -resize 50% \
-        "$shadow_image"
-
-    mogrify -roll +${XMOVE}+${YMOVE} \
-        "$shadow_image"
-
-}
-
-# Render the bare cursor image.
-svg2png "$infile" "$bare_image" $TMPSIZE
-
-# Check whether the shadow image is cached.
-if [ ! -f "$shadow_image" ] ; then
-    # Make the shadow image.
-    make_shadow_image "$bare_image" "$silhouette_image" "$shadow_image"
+# Render the cursor image/s.
+if [ ${MULTISIZE} ]; then 
+    # Render multiple sizes combined cursors per default.
+    # Reset the config file (hotspots).
+    reset_xcursor_config "$xcursor_config" "$frame"
+    # Render multiple cursor sizes.
+    for SIZENAMES in ${SIZES[@]} ; do 
+        SIZENAME=${SIZENAMES%%=*}
+        SIZE=${SIZENAMES##*=}
+        # Render the cursor image.
+        svg2png "$infile" "${outfile%.*}.${SIZE}.png" $SIZE
+    done
+else 
+    # Render single sized cursors.
+    for SIZENAMES in ${SIZES[@]} ; do 
+        SIZENAME=${SIZENAMES%%=*}
+        SIZE=${SIZENAMES##*=}
+        # Reset the config file (hotspots).
+        xcursor_config="${builddir}/${NAME}.conf"
+        reset_xcursor_config "$xcursor_config" "$frame"
+        # Render the cursor image.
+        svg2png "$infile" "${outfile%.*}.${SIZE}.png" $SIZE
+    done
 fi
 
-# Apply alpha-channel opacity to the bare image.
-if [ $(echo "$CURSORTRANS > 0" | bc) -gt 0 ]; then
-    convert -channel Alpha -fx \'a-$CURSORTRANS\' "$bare_image" "$bare_image"
-fi
-
-# Compose the final image.
-composite -geometry ${SIZE}x${SIZE} "$bare_image" "$shadow_image" "$outfile"
-
-if [ "$background_image" ]; then
-    composite "$outfile" "$background_image" "$outfile"
-fi
