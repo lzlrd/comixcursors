@@ -23,6 +23,8 @@
 
 THEMENAME="${THEMENAME:-Custom}"
 export THEMENAME
+ORIENTATION="${ORIENTATION:-RightHanded}"
+export ORIENTATION
 
 bindir="$(dirname $0)"
 
