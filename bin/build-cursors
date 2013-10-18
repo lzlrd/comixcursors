@@ -21,15 +21,26 @@
 
 # Create the cursor image files from SVG source.
 
-THEMENAME="${THEMENAME:-custom}"
+THEMENAME="${THEMENAME:-Custom}"
 export THEMENAME
+ORIENTATION="${ORIENTATION:-RightHanded}"
+export ORIENTATION
 
 bindir="$(dirname $0)"
 
-configfile="ComixCursorsConfigs/${THEMENAME}.CONFIG"
+themename_stem="ComixCursors"
+configfile_dir="${themename_stem}Configs"
+configfile="${configfile_dir}/${THEMENAME}.CONFIG"
+theme_template="${configfile_dir}/${themename_stem}.theme"
 
 # source the theme config file
 source "${configfile}"
+if [ ${THEMEINCLUDE} ] ; then
+    source "${configfile_dir}/${THEMEINCLUDE#-}.INCLUDE"
+fi
+
+SHADOWOPAQ=$(echo "1 - $SHADOWTRANS" | bc | sed 's/^\./0\./' | sed 's/\.0$//')
+CURSOROPAQ=$(echo "1 - $CURSORTRANS" | bc | sed 's/^\./0\./' | sed 's/\.0$//')
 
 function svg_substitutions {
     # Process an SVG file with custom substitutions.
@@ -43,6 +54,9 @@ function svg_substitutions {
         "s/#999933/$HILIGHTHI/g"
         "s/#666600/$HILIGHTLO/g"
         "s/#010101/$HAIR/g"
+        "s/#111111/$SHADOWCOLOR/g"
+        "s/opacity:0.15/opacity:$SHADOWOPAQ/g"
+        "s/opacity:0.75/opacity:$CURSOROPAQ/g"
         )
 
     sed $(for subst in "${substitutions[@]}" ; do printf " -e ${subst}" ; done) \
@@ -61,17 +75,7 @@ function svg_rotate {
 
 svgdir="svg"
 
-case "$THEMENAME" in
-    LH-*)
-        orientation="LeftHanded"
-        ;;
-
-    *)
-        orientation="RightHanded"
-        ;;
-esac
-
-indir="${svgdir}/${orientation}"
+indir="${svgdir}/${ORIENTATION}"
 workdir="tmp"
 builddir="build"
 xcursor_builddir="cursors"
@@ -81,8 +85,31 @@ mkdir --parents "${builddir}"
 mkdir --parents "${workdir}"
 mkdir --parents "${xcursor_builddir}"
 
+# Copy the HOTSPOTS file to the working directory.
 hotspots_file="${indir}/HOTSPOTS"
 cp "$hotspots_file" "$workdir"/.
+
+function generate_theme {
+    # Process the theme file.
+    local name="$1"
+    local sizename="$2"
+    xcursor_theme="${builddir}/${name}.theme"
+    custom_theme="ComixCursorsConfigs/${name}.theme"
+    themename=${name//-/ }
+    if [[ $ORIENTATION == "LeftHanded" ]]; then
+        facing=" left-handed"
+    else
+        facing=""
+    fi
+
+    variation=" ${THEMEINCLUDE#-}" && [ -v ${THEMEINCLUDE} ]  && variation=""
+
+    if [ -f "$custom_theme" ]; then
+        sed "s/THEMENAME/$themename/g" "$custom_theme" | sed "s/ORIENTATION/$facing/g" | sed "s/SIZENAME/$sizename/g" | sed "s/VARIATION/$variation/g" > "$xcursor_theme"
+    elif [ -f "$theme_template" ]; then
+        sed "s/THEMENAME/$themename/g" "$theme_template" | sed "s/ORIENTATION/$facing/g" | sed "s/SIZENAME/$sizename/g" | sed "s/VARIATION/$variation/g" > "$xcursor_theme"
+    fi
+}
 
 function generate_animation_source_frames {
     # Generate the source frame images for an animation.
@@ -97,8 +124,8 @@ function generate_animation_source_frames {
                 cp "$first_frame_file" "$frame_file"
                 ;;
             *)
-	        angle=$(echo "360 / $frames_count * ($frame - 1)" | bc)
-		svg_rotate "$first_frame_file" $angle > "$frame_file"
+	            angle=$(echo "360 / $frames_count * ($frame - 1)" | bc)
+                svg_rotate "$first_frame_file" $angle > "$frame_file"
                 ;;
         esac
     done
@@ -111,12 +138,12 @@ function render_cursor_image {
     local frame=$3
     local frame_duration=$4
 
-    compose_opts="${compose_opts} --orientation $orientation"
+    compose_opts="${compose_opts} --orientation $ORIENTATION"
 
-    if [[ "$frame" ]] ; then
+    if [[ "$frame" ]]; then
         image_name="${name}.frame${frame}"
         compose_opts="${compose_opts} --frame $frame"
-        if [[ "$frame_duration" ]] ; then
+        if [[ "$frame_duration" ]]; then
             compose_opts="${compose_opts} --duration $frame_duration"
         fi
     else
@@ -125,7 +152,7 @@ function render_cursor_image {
     fi
 
     infile="${indir}/${image_name}.svg"
-    if [[ ! -f "$infile" ]] ; then
+    if [[ ! -f "$infile" ]]; then
         echo "skipping $name; no svg file found."
         return 1
     fi
@@ -135,6 +162,13 @@ function render_cursor_image {
     "${bindir}"/render-cursor-image $compose_opts "$name" "$tempfile" "$outfile"
 }
 
+# Generate the theme file. Process the size argument only if the
+# configuration has only one SIZES() item.
+if [ ${#SIZES[@]} -eq 1 ]; then
+    sizename=${SIZES[0]%%=*}
+fi
+
+generate_theme "$THEMENAME" "$sizename"
 
 # the basic cursors
 names="
@@ -168,16 +202,6 @@ w-resize
 X-cursor
 zoom-in
 zoom-out
-"
-
-for name in $names; do
-    compose_opts=""
-    render_cursor_image "$name" "$compose_opts"
-done
-
-# the pointer combined cursors
-
-names="
 alias
 context-menu
 copy
@@ -186,14 +210,14 @@ no-drop
 "
 
 for name in $names; do
-    compose_opts="--background ${builddir}/default.png"
+    compose_opts=""
     render_cursor_image "$name" "$compose_opts"
 done
 
-# the animated cursors 
+# the animated cursors
 
 name="help"
-compose_opts="--background ${builddir}/default.png"
+compose_opts=""
 frames_count=2
 generate_animation_source_frames "$name" $frames_count
 render_cursor_image "$name" "$compose_opts" 1 2000
@@ -203,7 +227,7 @@ name="progress"
 frames_count=24
 generate_animation_source_frames "$name" $frames_count
 for frame in $(seq --equal-width 1 $frames_count) ; do
-    compose_opts="--background ${builddir}/default.png"
+    compose_opts=""
     render_cursor_image "$name" "$compose_opts" $frame
 done
 

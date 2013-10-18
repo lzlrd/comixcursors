@@ -23,13 +23,16 @@
 
 themename_stem="ComixCursors"
 configfile_dir="${themename_stem}Configs"
-configfile_template_name="custom"
+configfile_template_name="Custom"
 
 bindir="$(dirname $0)"/bin
 
 # Set the ICONSDIR destination to a default (if not already set).
 ICONSDIR=${ICONSDIR:-~/.icons}
 export ICONSDIR
+
+# We want to use cursors with multiple sizes combined.
+export MULTISIZE=1
 
 # argument processing and usage
 function show_usage_message {
@@ -66,29 +69,49 @@ function build_theme {
     # Build the cursors for a particular theme.
     THEMENAME="$1"
 
-    destdir="${ICONSDIR}/${themename_stem}-${THEMENAME}"
-    if [ -d "${destdir}" ] ; then
-        rm -r "${destdir}"
-    fi
-
     export THEMENAME
-    if [ $UNINSTALL ] ; then
+    if [ $UNINSTALL ]; then
         make uninstall
     else
-        printf "\nBuilding \"${THEMENAME}\":\n\n"
+        printf "\nBuilding \"${THEMENAME}${THEMEOPTIONS}${THEMEINCLUDE}\":\n\n"
         "${bindir}"/build-cursors
         make
         make install
     fi
 }
 
+function build_include_theme {
+    themename="$1"
+
+    # build the right-handed version
+    export ORIENTATION="RightHanded"
+    export THEMEOPTIONS=""
+    build_theme "$themename"
+
+    # also build the left-handed version
+    export ORIENTATION="LeftHanded"
+    export THEMEOPTIONS="-LH"
+    build_theme "$themename"
+}
+
 for configfile in "${configfile_dir}"/*.CONFIG ; do
     # Each config file represents a theme to be built.
     configfile_name=$(basename "$configfile")
     themename="${configfile_name%.CONFIG}"
-    if [ "$themename" == "$configfile_template_name" ] ; then
+    if [ "$themename" == "$configfile_template_name" ]; then
         # The template isn't a theme we want to build.
         continue
     fi
-    build_theme "$themename"
+
+    unset THEMEINCLUDE
+    build_include_theme "$themename"
+
+    for includefile in "${configfile_dir}"/*.INCLUDE ; do
+        includefile_name=$(basename "$includefile")
+        export THEMEINCLUDE="-${includefile_name%.INCLUDE}"
+        build_include_theme "$themename"
+    done
+
 done
+
+exit 0

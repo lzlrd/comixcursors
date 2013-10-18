@@ -105,7 +105,7 @@ To install all the original ComixCursors issue::
     $ ./install-all
 
 which will process all the configurations in the
-ComixCursorsConfigs directory and install all 42 cursor
+ComixCursorsConfigs directory and install all cursor
 sets provided into your ~/.icons directory.
 
 If you want to remove all the original ComixCursors from its installed
