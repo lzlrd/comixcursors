@@ -114,6 +114,7 @@ ${configfile}: ${template_configfile}
 	cp "$<" "$@"
 
 ${themefile}: ${template_themefile}
+	mkdir "${builddir}"
 	cp "$<" "$@"
 
 
