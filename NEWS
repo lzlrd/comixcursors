@@ -1,7 +1,7 @@
-Version NEXT
-============
+Version 0.8.1
+=============
 
-:Released: FUTURE
+:Released: 2013-10-12
 :Maintainer: Jens Luetkens <j.luetkens@limitland.de>
 
 * Set orientation RightHanded if not specified.
