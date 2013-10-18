@@ -6,6 +6,7 @@ Version NEXT
 
 * Set orientation RightHanded if not specified.
 * Build theme variants.
+* Fix the multisize build process from sources.
 
 
 Version 0.8
