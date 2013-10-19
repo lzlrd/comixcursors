@@ -56,7 +56,7 @@ orientation="RightHanded"
 frame=0
 
 # parse argument list
-while [ "${1::1}" == "-" ]; do
+while [ "${1::1}" == "-" ] ; do
     case "$1" in
         --help)
             show_usage_message
@@ -83,7 +83,7 @@ while [ "${1::1}" == "-" ]; do
     shift
 done
 
-if [ $# -lt 3 ]; then
+if [ $# -lt 3 ] ; then
     show_usage_message
     exit 2
 fi
@@ -92,7 +92,7 @@ NAME="$1"
 infile="$2"
 outfile="$3"
 
-if [ "$frame" -lt 1 ]; then
+if [ "$frame" -lt 1 ] ; then
     echo "processing $NAME..."
 else
     echo "processing $NAME frame $frame..."
@@ -109,8 +109,8 @@ function reset_xcursor_config {
     # Delete the config file if it exists.
     local xcursor_config="$1"
     local frame="$2"
-    if [ "$frame" -lt 2 ]; then
-        if [ -e "${xcursor_config}" ]; then
+    if [ "$frame" -lt 2 ] ; then
+        if [ -e "${xcursor_config}" ] ; then
             rm "${xcursor_config}"
         fi
     fi
@@ -126,7 +126,7 @@ function svg2png {
     hotx=$(echo "${hotspot[1]} * $size / 500" | bc)
     hoty=$(echo "${hotspot[2]} * $size / 500" | bc)
 
-    if [ "$frame" -gt 0 ]; then
+    if [ "$frame" -gt 0 ] ; then
         echo "$size $hotx $hoty $outfile $duration" >> "${xcursor_config}"
     else
         echo "$size $hotx $hoty $outfile" >> "${xcursor_config}"
@@ -140,20 +140,20 @@ function svg2png {
 }
 
 # Render the cursor image/s.
-if [ ${MULTISIZE} ]; then 
+if [ ${MULTISIZE} ] ; then
     # Render multiple sizes combined cursors per default.
     # Reset the config file (hotspots).
     reset_xcursor_config "$xcursor_config" "$frame"
     # Render multiple cursor sizes.
-    for SIZENAMES in ${SIZES[@]} ; do 
+    for SIZENAMES in ${SIZES[@]} ; do
         SIZENAME=${SIZENAMES%%=*}
         SIZE=${SIZENAMES##*=}
         # Render the cursor image.
         svg2png "$infile" "${outfile%.*}.${SIZE}.png" $SIZE
     done
-else 
+else
     # Render single sized cursors.
-    for SIZENAMES in ${SIZES[@]} ; do 
+    for SIZENAMES in ${SIZES[@]} ; do
         SIZENAME=${SIZENAMES%%=*}
         SIZE=${SIZENAMES##*=}
         # Reset the config file (hotspots).

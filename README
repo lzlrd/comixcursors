@@ -24,7 +24,7 @@ KNOWN ISSUES
 * nVIDIA graphics cards:
 
   If you experience the cursor shadow looking strange, e.g. with the i
-  christmas theme, or the whole cursor appear gray when it's supposed to be 
+  christmas theme, or the whole cursor appear gray when it's supposed to be
   white, disable hardware cursor rendering.
 
   In the xorg.conf file in the device section insert the HWCursor line
@@ -51,12 +51,12 @@ KNOWN ISSUES
 NAMING CURSORS
 ==============
 
-The cursors are named according to the current freedesktop.org cursor 
+The cursors are named according to the current freedesktop.org cursor
 conventions specification (draft):
 
     <http://www.freedesktop.org/Standards/cursor-spec>
 
-Other cursors are provided as symlinks by name or hash. 
+Other cursors are provided as symlinks by name or hash.
 
 
     X-cursor           The X window system logo.

@@ -39,7 +39,7 @@ Options:
 _EOT_
 }
 
-while getopts ":uh" opt; do
+while getopts ":uh" opt ; do
     case $opt in
         h)
             show_usage_message
