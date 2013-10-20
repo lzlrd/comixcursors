@@ -32,7 +32,10 @@ ICONSDIR=${ICONSDIR:-~/.icons}
 export ICONSDIR
 
 # We want to use cursors with multiple sizes combined.
-export MULTISIZE=1
+# The script check wether MULTISIZE is exported at all, so don't export 
+# MULTISIZE if you want distinct cursor sizes, comment it out here or
+# unset it from the shell.
+export MULTISIZE=true
 
 # argument processing and usage
 function show_usage_message {
@@ -44,11 +47,12 @@ Install the ComixCursors mouse theme.
 Options:
     -h:    Display this help text, then exit.
     -u:    Uninstall the ComixCursors mouse theme.
+    -v:    Be verbose.
 
 _EOT_
 }
 
-while getopts ":uh" opt; do
+while getopts ":uhv" opt; do
     case $opt in
         h)
             show_usage_message
@@ -56,6 +60,9 @@ while getopts ":uh" opt; do
             ;;
         u)
             UNINSTALL=true
+            ;;
+        v)
+            export VERBOSE=true
             ;;
         *)
             printf "Unexpected option: -%s\n" "$OPTARG" >&2
@@ -68,15 +75,39 @@ done
 function build_theme {
     # Build the cursors for a particular theme.
     THEMENAME="$1"
-
     export THEMENAME
+    
     if [ $UNINSTALL ]; then
         make uninstall
     else
-        printf "\nBuilding \"${THEMENAME}${THEMEOPTIONS}${THEMEINCLUDE}\":\n\n"
-        "${bindir}"/build-cursors
-        make
-        make install
+        if [ ${MULTISIZE} ] ; then
+            printf "\nBuilding \"${THEMENAME}${THEMEOPTIONS}${THEMEINCLUDE}\" (multisize)\n"
+            "${bindir}"/build-cursors
+            if [ $VERBOSE ] ; then
+                make
+                make install
+            else
+                make -s
+                make -s install
+            fi
+        else
+            # build one theme for each configured size
+            configfile="${configfile_dir}/${THEMENAME}.CONFIG"
+            source "${configfile}"
+            for SIZENAMES in ${SIZES[@]} ; do
+                export SIZENAME="-${SIZENAMES%%=*}"
+                export CURSORSIZE=${SIZENAMES##*=}
+                printf "\nBuilding \"${THEMENAME}${THEMEOPTIONS}${THEMEINCLUDE}${SIZENAME}\"\n"
+                "${bindir}"/build-cursors
+                if [ $VERBOSE ] ; then
+                    make
+                    make install
+                else
+                    make -s
+                    make -s install
+                fi
+            done
+        fi
     fi
 }
 
@@ -111,7 +142,6 @@ for configfile in "${configfile_dir}"/*.CONFIG ; do
         export THEMEINCLUDE="-${includefile_name%.INCLUDE}"
         build_include_theme "$themename"
     done
-
 done
 
 exit 0

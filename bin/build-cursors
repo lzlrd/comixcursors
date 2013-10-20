@@ -92,7 +92,7 @@ cp "$hotspots_file" "$workdir"/.
 function generate_theme {
     # Process the theme file.
     local name="$1"
-    local sizename="$2"
+    local sizename="${SIZENAME//-/ }"
     xcursor_theme="${builddir}/${name}.theme"
     custom_theme="ComixCursorsConfigs/${name}.theme"
     themename=${name//-/ }
@@ -102,7 +102,8 @@ function generate_theme {
         facing=""
     fi
 
-    variation=" ${THEMEINCLUDE#-}" && [ -v ${THEMEINCLUDE} ]  && variation=""
+    variation=" ${THEMEINCLUDE#-}" && [ -v ${THEMEINCLUDE} ] && variation=""
+    variation=${variation//-/ }
 
     if [ -f "$custom_theme" ] ; then
         sed "s/THEMENAME/$themename/g" "$custom_theme" | sed "s/ORIENTATION/$facing/g" | sed "s/SIZENAME/$sizename/g" | sed "s/VARIATION/$variation/g" > "$xcursor_theme"
@@ -162,13 +163,13 @@ function render_cursor_image {
     "${bindir}"/render-cursor-image $compose_opts "$name" "$tempfile" "$outfile"
 }
 
-# Generate the theme file. Process the size argument only if the
-# configuration has only one SIZES() item.
-if [ ${#SIZES[@]} -eq 1 ] ; then
-    sizename=${SIZES[0]%%=*}
-fi
+## Generate the theme file. Process the size argument only if the
+## configuration has only one SIZES() item.
+#if [ ${#SIZES[@]} -eq 1 ]; then
+#    sizename=${SIZES[0]%%=*}
+#fi
 
-generate_theme "$THEMENAME" "$sizename"
+generate_theme "$THEMENAME"
 
 # the basic cursors
 names="

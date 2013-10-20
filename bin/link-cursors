@@ -29,6 +29,8 @@ sed -e 's/#.*$//' "${linksfile}" \
     | grep -v '^[[:space:]]*$' \
     | (cd "${cursordir}" ;
         while read orig new ; do
-            printf "Creating symlink of %s at %s\n" "$orig" "$new" ;
+            if [ $VERBOSE ] ; then
+                printf "Creating symlink of %s at %s\n" "$orig" "$new" ;
+            fi
             ln -sf "$orig" "$new" ;
         done)
