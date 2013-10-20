@@ -3,8 +3,8 @@
 # bin/build-cursors
 # Part of ComixCursors, a desktop cursor theme.
 #
-# Copyright © 2010 Ben Finney <ben+gnome@benfinney.id.au>
-# Copyright © 2006–2010 Jens Luetkens <j.luetkens@hamburg.de>
+# Copyright © 2010–2013 Ben Finney <ben+opendesktop@benfinney.id.au>
+# Copyright © 2006–2013 Jens Luetkens <j.luetkens@hamburg.de>
 #
 # This work is free software: you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by
@@ -96,7 +96,7 @@ function generate_theme {
     xcursor_theme="${builddir}/${name}.theme"
     custom_theme="ComixCursorsConfigs/${name}.theme"
     themename=${name//-/ }
-    if [[ $ORIENTATION == "LeftHanded" ]]; then
+    if [[ $ORIENTATION == "LeftHanded" ]] ; then
         facing=" left-handed"
     else
         facing=""
@@ -105,9 +105,9 @@ function generate_theme {
     variation=" ${THEMEINCLUDE#-}" && [ -v ${THEMEINCLUDE} ] && variation=""
     variation=${variation//-/ }
 
-    if [ -f "$custom_theme" ]; then
+    if [ -f "$custom_theme" ] ; then
         sed "s/THEMENAME/$themename/g" "$custom_theme" | sed "s/ORIENTATION/$facing/g" | sed "s/SIZENAME/$sizename/g" | sed "s/VARIATION/$variation/g" > "$xcursor_theme"
-    elif [ -f "$theme_template" ]; then
+    elif [ -f "$theme_template" ] ; then
         sed "s/THEMENAME/$themename/g" "$theme_template" | sed "s/ORIENTATION/$facing/g" | sed "s/SIZENAME/$sizename/g" | sed "s/VARIATION/$variation/g" > "$xcursor_theme"
     fi
 }
@@ -141,10 +141,10 @@ function render_cursor_image {
 
     compose_opts="${compose_opts} --orientation $ORIENTATION"
 
-    if [[ "$frame" ]]; then
+    if [[ "$frame" ]] ; then
         image_name="${name}.frame${frame}"
         compose_opts="${compose_opts} --frame $frame"
-        if [[ "$frame_duration" ]]; then
+        if [[ "$frame_duration" ]] ; then
             compose_opts="${compose_opts} --duration $frame_duration"
         fi
     else
@@ -153,7 +153,7 @@ function render_cursor_image {
     fi
 
     infile="${indir}/${image_name}.svg"
-    if [[ ! -f "$infile" ]]; then
+    if [[ ! -f "$infile" ]] ; then
         echo "skipping $name; no svg file found."
         return 1
     fi
@@ -210,7 +210,7 @@ move
 no-drop
 "
 
-for name in $names; do
+for name in $names ; do
     compose_opts=""
     render_cursor_image "$name" "$compose_opts"
 done
