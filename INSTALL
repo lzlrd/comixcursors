@@ -79,7 +79,7 @@ The ‘$THEMENAME.CONFIG’ file configures the theme-specific behaviour of the
 ‘bin/render-cursor-image’ program. Run the program with no parameters for a
 list of options that can be specified.
 
-With version 0.8 teh cursors can be rendered as multisize xcursors. That's 
+With version 0.8 teh cursors can be rendered as multisize xcursors. That's
 why the build process requires either the "MULTISIZE" environment variable
 or the "CURSORSIZE" environment variable::
 

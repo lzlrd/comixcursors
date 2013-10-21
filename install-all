@@ -32,7 +32,7 @@ ICONSDIR=${ICONSDIR:-~/.icons}
 export ICONSDIR
 
 # We want to use cursors with multiple sizes combined.
-# The script check wether MULTISIZE is exported at all, so don't export 
+# The script check wether MULTISIZE is exported at all, so don't export
 # MULTISIZE if you want distinct cursor sizes, comment it out here or
 # unset it from the shell.
 export MULTISIZE=true
@@ -76,7 +76,7 @@ function build_theme {
     # Build the cursors for a particular theme.
     THEMENAME="$1"
     export THEMENAME
-    
+
     if [ $UNINSTALL ]; then
         make uninstall
     else
