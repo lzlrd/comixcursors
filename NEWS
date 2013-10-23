@@ -1,7 +1,7 @@
-Version NEXT
-============
+Version 0.8.2
+=============
 
-:Released: FUTURE
+:Released: 2013-10-23
 :Maintainer: Jens Luetkens <j.luetkens@limitland.de>
 
 * Correct build of entire cursor set from source.
