@@ -145,18 +145,18 @@ function svg2png {
 
 xcursor_config="${builddir}/${NAME}.conf"
 
-if [ ${MULTISIZE} ]; then 
+if [ ${MULTISIZE} ]; then
     # Render multiple sizes combined cursors per default.
     # Reset the config file (hotspots).
     reset_xcursor_config "$xcursor_config" "$frame"
     # Render multiple cursor sizes.
-    for SIZENAMES in ${SIZES[@]} ; do 
+    for SIZENAMES in ${SIZES[@]} ; do
         SIZENAME=${SIZENAMES%%=*}
         SIZE=${SIZENAMES##*=}
         # Render the cursor image.
         svg2png "$infile" "${outfile%.*}.${SIZE}.png" "${SIZE}"
     done
-else 
+else
     # Render single sized cursors.#
     export CURSORSIZE="${CURSORSIZE:-32}"
     # Reset the config file (hotspots).

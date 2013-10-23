@@ -1,3 +1,15 @@
+Version NEXT
+============
+
+:Released: FUTURE
+:Maintainer: Jens Luetkens <j.luetkens@limitland.de>
+
+* Correct build of entire cursor set from source.
+* Explain how to set cursor size in Gnome 3.
+* Correct transparency level for Opaque cursors.
+* Set hairline colour consistently.
+
+
 Version 0.8.1
 =============
 
