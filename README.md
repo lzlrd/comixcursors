@@ -10,6 +10,10 @@ INSTALLATION
 Refer to the ‘INSTALL’ file for requirements and detailed instructions
 to build and install.
 
+If you want to use "NOHAIR" cursors, that is no hairline in the text-, vertical-text- and
+crosshair-cursors, checkout the NOHAIR branch. We will keep this branch synchronized
+with the master. 
+
 COPYRIGHT
 ---------
 
