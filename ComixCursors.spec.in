@@ -5,13 +5,13 @@ Summary:        SUMMARY
 
 Group:          System/X11/Icons
 License:        GPLv3
-URL:            http://opendesktop.org/content/show.php/ComixCursors?content=32627
+URL:            https://gitlab.com/limitland/comixcursors
 Source0:        %{name}-%{version}.tar.bz2
 BuildArch:	noarch
 
 Requires: 	XFree86
 
-Packager:	Jens Luetkens <j.luetkens@hamburg.de>
+Packager:	Jens Luetkens <j.luetkens@limitland.de>
 Distribution:	generic
 
 prefix: /usr/share

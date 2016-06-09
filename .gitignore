@@ -1,0 +1,7 @@
+obsolete
+build
+cursors
+tmp
+*~
+svg/*/*frame*.svg
+.directory

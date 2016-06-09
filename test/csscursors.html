@@ -6,8 +6,15 @@ ul.cursor-demo {
     width: 50%;
 }
 ul.cursor-demo li {
-    margin: 0.2em;
-    border: 2px black solid;
+    margin: 5px;
+    padding: 10px 15px;
+    border: 1px black solid;
+    list-style-type: none;
+}
+#position {
+  cursor: inherit;
+  position: absolute;
+  z-index: -1;
 }
 </style>
 </head>
@@ -16,7 +23,8 @@ ul.cursor-demo li {
 <h1>CSS cursors test</h1>
 
 <p>
-Hover over the CSS cursor name to see your browser's cursor style:
+Hover over the CSS cursor name to see your browser's cursor style and where the HOTSPOT is. 
+</p>
 
 <ul class="cursor-demo">
     <li style="cursor: default">default</li>
@@ -43,6 +51,34 @@ Hover over the CSS cursor name to see your browser's cursor style:
     <li style="cursor: col-resize">col-resize</li>
     <li style="cursor: row-resize">row-resize</li>
 </ul>
-</p>
 
+<img id="position" src="positionmarker.png">
+
+<script type="text/javascript">
+(function() {
+    var tracker = document.getElementById('position');
+    document.onmousemove = handleMouseMove;
+    function handleMouseMove(event) {
+        var dot, eventDoc, doc, body, pageX, pageY;
+        event = event || window.event; // IE-ism
+        // If pageX/Y aren't available and clientX/Y are,
+        // calculate pageX/Y - logic taken from jQuery.
+        // (This is to support old IE)
+        if (event.pageX == null && event.clientX != null) {
+            eventDoc = (event.target && event.target.ownerDocument) || document;
+            doc = eventDoc.documentElement;
+            body = eventDoc.body;
+            event.pageX = event.clientX +
+              (doc && doc.scrollLeft || body && body.scrollLeft || 0) -
+              (doc && doc.clientLeft || body && body.clientLeft || 0);
+            event.pageY = event.clientY +
+              (doc && doc.scrollTop  || body && body.scrollTop  || 0) -
+              (doc && doc.clientTop  || body && body.clientTop  || 0 );
+        }
+        // Use event.pageX / event.pageY here
+        tracker.style.top = event.pageY;
+        tracker.style.left = event.pageX;
+    }
+})();
+</script>
 </body>

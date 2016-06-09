@@ -4,7 +4,7 @@
 # Part of ComixCursors, a desktop cursor theme.
 #
 # Copyright © 2010–2013 Ben Finney <ben+opendesktop@benfinney.id.au>
-# Copyright © 2006–2013 Jens Luetkens <j.luetkens@hamburg.de>
+# Copyright © 2006–2013 Jens Luetkens <j.luetkens@limitland.de>
 # Copyright © 2003 Unai G
 #
 # This work is free software: you can redistribute it and/or modify it

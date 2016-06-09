@@ -1,8 +1,11 @@
-Version NEXT
-============
+Version 0.9.0
+=============
 
-:Released: FUTURE
-:Maintainer: 
+:Released: 2016-06-10
+:Maintainer: Jens Luetkens <j.luetkens@limitland.de>
+
+* Move the original repository to gitlab.com
+* Increase the shadows transparency.
 
 
 Version 0.8.2

@@ -1,8 +1,7 @@
-Comix Cursors installation instructions
-#######################################
+# Comix Cursors installation instructions
 
 Basic Installation
-==================
+------------------
 
 Requirements:
 - ImageMagick <http://www.imagemagick.org/>
@@ -10,7 +9,7 @@ Requirements:
 
 Download the ComixCursors sources from:
 
-<http://opendesktop.org/content/show.php/ComixCursors?content=32627>
+<https://gitlab.com/limitland/comixcursors>
 
 Change into the download directory and unpack the sources::
 
@@ -54,7 +53,7 @@ invoke::
 
 
 Customizing Cursors
-===================
+-------------------
 
 Apart from the actual SVG files, a lot of customization can be done
 while composing the images.
@@ -112,7 +111,7 @@ invoke::
 
 
 Complete Installation
-=====================
+---------------------
 
 To install all the original ComixCursors issue::
 
@@ -129,7 +128,7 @@ location, invoke::
 
 
 System Installation
-===================
+-------------------
 
 For system-wide installation you need to copy the cursor-
 directories to you X11 lib directory. Issue these commands::
@@ -151,8 +150,8 @@ the file /etc/sysconfig/windowmanager to read::
 or whatever your (custom) cursors directory is named.
 
 
-You can also download pre-built RPMs from the opendesktop.org site
-above and install them with::
+You can also download pre-built RPMs from <http://limitland.de>
+and install them with::
 
     $ sudo rpm -Uv ComixCursors-<version>.noarch.rpm
 
