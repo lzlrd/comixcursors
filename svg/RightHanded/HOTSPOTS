@@ -2,7 +2,7 @@ all-scroll 190 90
 cell 250 175
 col-resize 250 200
 crosshair 250 202
-default 100 60
+default 100 65
 e-resize 320 160
 ew-resize 250 214
 grabbing 195 165
@@ -15,8 +15,8 @@ nw-resize 180 80
 nwse-resize 250 214
 pencil 140 310
 pirate 250 150
-pointer 176 60
-right-arrow 400 60
+pointer 176 65
+right-arrow 400 65
 row-resize 250 200
 s-resize 250 90
 se-resize 320 220
@@ -29,10 +29,10 @@ wait 250 180
 X-cursor 250 180
 zoom-in 230 190
 zoom-out 230 190
-alias 100 60
-context-menu 100 60
-copy 100 60
-move 100 60
-no-drop 100 60
-help 100 60
-progress 100 60
+alias 100 65
+context-menu 100 65
+copy 100 65
+move 100 65
+no-drop 100 65
+help 100 65
+progress 100 65
