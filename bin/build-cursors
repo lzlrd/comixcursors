@@ -55,7 +55,7 @@ function svg_substitutions {
         "s/#666600/$HILIGHTLO/g"
         "s/#010101/$HAIR/g"
         "s/#111111/$SHADOWCOLOR/g"
-        "s/opacity:0.15/opacity:$SHADOWOPAQ/g"
+        "s/opacity:0.05/opacity:$SHADOWOPAQ/g"
         "s/opacity:0.75/opacity:$CURSOROPAQ/g"
         )
 
