@@ -54,6 +54,7 @@ srcname="${themename_root}-sources-${VERSION}"
 srcdir="${workdir}/${srcname}"
 mkdir --parents "${srcdir}"
 # bzr export "$srcdir"/
+git clone . "${srcdir}"
 
 mkdir --parents "$distdir"
 rm -rf "$distdir"/*
