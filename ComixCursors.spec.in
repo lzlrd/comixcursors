@@ -9,8 +9,6 @@ URL:            https://gitlab.com/limitland/comixcursors
 Source0:        %{name}-%{version}.tar.bz2
 BuildArch:	noarch
 
-Requires: 	XFree86
-
 Packager:	Jens Luetkens <j.luetkens@limitland.de>
 Distribution:	generic
 

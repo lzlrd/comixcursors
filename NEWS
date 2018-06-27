@@ -1,3 +1,14 @@
+Version 0.9.1
+=============
+
+:Released: 2018-06-27
+:Maintainer: Jens Luetkens <j.luetkens@limitland.de>
+
+* Minor updates to the build scripts.
+* Remove XFree86 requirement for distribution PRMs. 
+* Add gitlab.com CI/CD pipeline and page configuration.
+
+
 Version 0.9.0
 =============
 

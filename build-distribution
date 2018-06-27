@@ -105,7 +105,7 @@ function package_variant {
     #
     # RPM packages
     #
-    rpmdir="/usr/src/packages"
+    rpmdir=${RPMDIR:-"/usr/src/packages"}
     if [ -d "$rpmdir" ] ; then
         printf "Creating RPM package...\n"
         specfilename="${PACKAGENAME}.spec"
