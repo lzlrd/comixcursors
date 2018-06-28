@@ -1,7 +1,10 @@
 # The original Comix Cursors sources README
 
-The official ComixCursors releases can be found on gitlab.com:
+The official ComixCursors releases are available on gitlab.com:
 <https://gitlab.com/limitland/comixcursors>
+
+The latest build artifacts (releases) are available on gitlab pages:
+<https://limitland.gitlab.io/comixcursors>
 
 
 INSTALLATION
@@ -12,7 +15,7 @@ to build and install.
 
 If you want to use "NOHAIR" cursors, that is no hairline in the text-, vertical-text- and
 crosshair-cursors, checkout the NOHAIR branch. We will keep this branch synchronized
-with the master. 
+with the master.
 
 COPYRIGHT
 ---------

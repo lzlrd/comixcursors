@@ -21,6 +21,7 @@ build-distribution:
     - mkdir -p /root/rpmbuild/{BUILD,RPMS,SOURCES,SPECS,SRPMS,RPMS/noarch}
     - export RPMDIR=/root/rpmbuild
     - ./build-distribution
+    - cp ./deployment/index.html ./dist
   artifacts:
     paths:
     - dist
