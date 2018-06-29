@@ -67,12 +67,13 @@
 <body>
 
   <h1>The limitland THEMENAME releases</h1>
+  <h2>version VERSION</h2>
   <div class="container">
     <h3>Download the latest build pipeline artifacts below. </h3>
     <hr>
     FILELIST
     <hr>
-    <p>The THEMENAME git repository is hosted on gitlab: <a href="https://gitlab.com/limitland">https://gitlab.com/limitland</a></p>
+    <p>The THEMENAME git repository is hosted on gitlab: <a href="https://gitlab.com/limitland/comixcursors">https://gitlab.com/limitland/comixcursors</a></p>
     <h3><a href="javascript:history.back()" class="js-go-back go-back">Go back</a></h3>
   </div>
   <script>

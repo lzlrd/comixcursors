@@ -141,6 +141,7 @@ templatefile="deployment/index.html.template"
 indexfile="deployment/index.html"
 sed "s/THEMENAME/${themename_root}/g" "${templatefile}" > "${indexfile}"
 FILES=$(find ${distdir} -type f -printf '<p><a href="%f">%f<\\/a> (<code>%TY-%Tm-%Td %TH:%Tm, %k kB<\\/code>)<\\/p>\\n')
+sed -i "s/VERSION/${VERSION}/" "${indexfile}"
 sed -i "s/FILELIST/${FILES}/" "${indexfile}"
 
 
