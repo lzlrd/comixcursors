@@ -26,6 +26,7 @@ configfile_dir="${themename_stem}Configs"
 configfile_template_name="Custom"
 
 bindir="$(dirname $0)"/bin
+builddir="$(dirname $0)"/build
 
 # Set the ICONSDIR destination to a default (if not already set).
 ICONSDIR=${ICONSDIR:-~/.icons}
@@ -81,7 +82,7 @@ function build_theme {
         make uninstall
     else
         if [ ${MULTISIZE} ] ; then
-            printf "\nBuilding \"${THEMENAME}${THEMEOPTIONS}${THEMEINCLUDE}\" (multisize)\n"
+            printf "\nBuilding \"%s%s%s\" (multisize)\n" "${THEMENAME}" "${THEMEOPTIONS}" "${THEMEINCLUDE}"
             "${bindir}"/build-cursors
             if [ $VERBOSE ] ; then
                 make
@@ -97,7 +98,7 @@ function build_theme {
             for SIZENAMES in ${SIZES[@]} ; do
                 export SIZENAME="-${SIZENAMES%%=*}"
                 export CURSORSIZE=${SIZENAMES##*=}
-                printf "\nBuilding \"${THEMENAME}${THEMEOPTIONS}${THEMEINCLUDE}${SIZENAME}\"\n"
+                printf "\nBuilding \"%s%s%s%s\"\n" "${THEMENAME}" "${THEMEOPTIONS}" "${THEMEINCLUDE}" "${SIZENAME}"
                 "${bindir}"/build-cursors
                 if [ $VERBOSE ] ; then
                     make
@@ -108,6 +109,8 @@ function build_theme {
                 fi
             done
         fi
+
+        rm "${builddir:?}"/* && sync
     fi
 }
 

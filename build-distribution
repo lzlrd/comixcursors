@@ -40,7 +40,7 @@ distdir="${PWD}/dist"
 # start
 #
 
-printf "Packaging %s %s...\n" "$themename_root" $VERSION
+printf "Packaging %s %s...\n" "$themename_root" "$VERSION"
 
 workdir="$(mktemp -t -d)"
 
@@ -57,7 +57,7 @@ mkdir --parents "${srcdir}"
 git clone . "${srcdir}"
 
 mkdir --parents "$distdir"
-rm -rf "$distdir"/*
+rm -rf "${distdir:?}"/*
 
 tarfile="${distdir}/${srcname}.tar.bz2"
 tar -cjf "$tarfile" --exclude-vcs --directory "$workdir" "$srcname"/
