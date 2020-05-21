@@ -23,7 +23,7 @@
 # the sources. Run it as root from inside the source VCS working tree.
 #
 # Additional requirements:
-# * Bazaar VCS program <http://bazaar.canonical.com/>
+# * Git <https://git-scm.com/>
 # * RPM package building tools <http://rpm.org/>
 
 set -o errexit

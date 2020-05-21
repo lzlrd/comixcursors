@@ -25,8 +25,7 @@ themename_stem="ComixCursors"
 configfile_dir="${themename_stem}Configs"
 configfile_template_name="Custom"
 
-bindir="$(dirname $0)"/bin
-builddir="$(dirname $0)"/build
+bindir="$(dirname $0)/bin"
 
 # Set the ICONSDIR destination to a default (if not already set).
 ICONSDIR=${ICONSDIR:-~/.icons}
@@ -78,11 +77,14 @@ function build_theme {
     THEMENAME="$1"
     export THEMENAME
 
+    THEMEVARIANT="${THEMENAME}${THEMEOPTIONS}${THEMEINCLUDE}"
+    export THEMEVARIANT
+
     if [ $UNINSTALL ]; then
         make uninstall
     else
         if [ ${MULTISIZE} ] ; then
-            printf "\nBuilding \"%s%s%s\" (multisize)\n" "${THEMENAME}" "${THEMEOPTIONS}" "${THEMEINCLUDE}"
+            printf "\nBuilding \"%s\" (multisize)\n" "${THEMEVARIANT}"
             "${bindir}"/build-cursors
             if [ $VERBOSE ] ; then
                 make
@@ -98,7 +100,7 @@ function build_theme {
             for SIZENAMES in ${SIZES[@]} ; do
                 export SIZENAME="-${SIZENAMES%%=*}"
                 export CURSORSIZE=${SIZENAMES##*=}
-                printf "\nBuilding \"%s%s%s%s\"\n" "${THEMENAME}" "${THEMEOPTIONS}" "${THEMEINCLUDE}" "${SIZENAME}"
+                printf "\nBuilding \"%s%s\"\n" "${THEMEVARIANT}" "${SIZENAME}"
                 "${bindir}"/build-cursors
                 if [ $VERBOSE ] ; then
                     make
@@ -109,8 +111,6 @@ function build_theme {
                 fi
             done
         fi
-
-        rm "${builddir:?}"/* && sync
     fi
 }
 

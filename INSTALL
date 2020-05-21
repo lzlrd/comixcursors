@@ -4,7 +4,6 @@ Basic Installation
 ------------------
 
 Requirements:
-- ImageMagick <http://www.imagemagick.org/>
 - librsvg <http://librsvg.sourceforge.net/>
 
 Download the ComixCursors sources from:
@@ -150,7 +149,7 @@ the file /etc/sysconfig/windowmanager to read::
 or whatever your (custom) cursors directory is named.
 
 
-You can also download pre-built RPMs from <http://limitland.de>
+You can also download pre-built RPMs from the official releases <https://limitland.gitlab.io/comixcursors/>
 and install them with::
 
     $ sudo rpm -Uv ComixCursors-<version>.noarch.rpm

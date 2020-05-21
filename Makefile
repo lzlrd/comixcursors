@@ -29,6 +29,7 @@ PACKAGENAME ?= ${CURSORSNAME}
 SUMMARY ?= The original Comix Cursors
 ICONSDIR ?= ${HOME}/.icons
 THEMENAME ?= Custom
+THEMEVARIANT ?= ${THEMENAME}-${THEMEOPTIONS}-${THEMEINCLUDE}
 
 GENERATED_FILES :=
 
@@ -43,11 +44,12 @@ svgdir = svg
 indir = ${svgdir}/${orientation}
 workdir = tmp
 builddir = build
+buildvariantdir = ${builddir}/${THEMEVARIANT}
 xcursor_builddir = cursors
 distdir = dist
 configdir = ComixCursorsConfigs
 configfile = ${configdir}/${THEMENAME}.CONFIG
-themefile = ${builddir}/${THEMENAME}.theme
+themefile = ${buildvariantdir}/${THEMENAME}.theme
 
 destdir = ${ICONSDIR}/${CURSORSNAME}${THEMEOPTIONS}${THEMEINCLUDE}${SIZENAME}-${THEMENAME}
 xcursor_destdir = ${destdir}/cursors
@@ -56,7 +58,7 @@ template_configfile = ${configdir}/Custom.CONFIG
 template_themefile = ${configdir}/Custom.theme
 
 # Derive cursor file names.
-conffiles = $(wildcard ${builddir}/*.conf)
+conffiles = $(wildcard ${buildvariantdir}/*.conf)
 cursornames = $(foreach conffile,${conffiles},$(basename $(notdir ${conffile})))
 cursorfiles = $(foreach cursor,${cursornames},${xcursor_builddir}/${cursor})
 
@@ -82,7 +84,7 @@ MAKE_SPECFILE = "${bindir}/make-specfile"
 .PHONY: all
 all: ${cursorfiles}
 
-${xcursor_builddir}/%: ${builddir}/%.conf $(wildcard ${builddir}/%*.png)
+${xcursor_builddir}/%: ${buildvariantdir}/%.conf $(wildcard ${buildvariantdir}/%*.png)
 	xcursorgen "$<" "$@"
 
 
@@ -114,7 +116,7 @@ ${configfile}: ${template_configfile}
 	cp "$<" "$@"
 
 ${themefile}: ${template_themefile}
-	install -d "${builddir}"
+	install -d "${buildvariantdir}"
 	cp "$<" "$@"
 
 

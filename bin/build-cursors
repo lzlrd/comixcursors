@@ -77,7 +77,8 @@ svgdir="svg"
 
 indir="${svgdir}/${ORIENTATION}"
 workdir="tmp"
-builddir="build"
+builddir="${builddir:-build/${THEMEVARIANT}}"
+# builddir="build/${THEMENAME}"
 xcursor_builddir="cursors"
 export workdir builddir
 

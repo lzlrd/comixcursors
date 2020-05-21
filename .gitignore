@@ -1,7 +1,12 @@
 obsolete
 build
 cursors
+dist
 tmp
 *~
 svg/*/*frame*.svg
 .directory
+.idea
+deployment/index.html
+ComixCursors*
+specfile-changelog
