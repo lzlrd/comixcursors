@@ -1,3 +1,12 @@
+Version 0.9.1.1
+=============
+
+:Released: 2020-05-21
+:Maintainer: Jens Luetkens <j.luetkens@limitland.de>
+
+* Solve problems with the build pipeline, causing currupted images in the build artifacts.
+
+
 Version 0.9.1
 =============
 
@@ -5,7 +14,7 @@ Version 0.9.1
 :Maintainer: Jens Luetkens <j.luetkens@limitland.de>
 
 * Minor updates to the build scripts.
-* Remove XFree86 requirement for distribution PRMs. 
+* Remove XFree86 requirement for distribution PRMs.
 * Add gitlab.com CI/CD pipeline and page configuration.
 
 
