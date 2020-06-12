@@ -46,6 +46,7 @@ workdir = tmp
 builddir = build
 buildvariantdir = ${builddir}/${THEMEVARIANT}
 xcursor_builddir = cursors
+xcursor_buildvariantdir = ${xcursor_builddir}/${THEMEVARIANT}
 distdir = dist
 configdir = ComixCursorsConfigs
 configfile = ${configdir}/${THEMENAME}.CONFIG
@@ -60,7 +61,7 @@ template_themefile = ${configdir}/Custom.theme
 # Derive cursor file names.
 conffiles = $(wildcard ${buildvariantdir}/*.conf)
 cursornames = $(foreach conffile,${conffiles},$(basename $(notdir ${conffile})))
-cursorfiles = $(foreach cursor,${cursornames},${xcursor_builddir}/${cursor})
+cursorfiles = $(foreach cursor,${cursornames},${xcursor_buildvariantdir}/${cursor})
 
 GENERATED_FILES += ${svgdir}/*/*.frame*.svg
 GENERATED_FILES += ${workdir}
@@ -80,14 +81,12 @@ LINK_CURSORS = "${bindir}/link-cursors"
 MAKE_SPECFILE_CHANGELOG = "${bindir}/news-to-specfile-changelog"
 MAKE_SPECFILE = "${bindir}/make-specfile"
 
-
 .PHONY: all
 all: ${cursorfiles}
 
-${xcursor_builddir}/%: ${buildvariantdir}/%.conf $(wildcard ${buildvariantdir}/%*.png)
+${xcursor_buildvariantdir}/%: ${buildvariantdir}/%.conf $(wildcard ${buildvariantdir}/%*.png)
 	xcursorgen "$<" "$@"
 
-
 .PHONY: install
 install: all
 # Create necessary directories.
@@ -96,7 +95,7 @@ install: all
 	install -d "${xcursor_destdir}"
 
 # Install the cursors.
-	install -m u=rw,go=r "${xcursor_builddir}"/* "${xcursor_destdir}"
+	install -m u=rw,go=r "${xcursor_buildvariantdir}"/* "${xcursor_destdir}"
 
 # Install the theme configuration file.
 	install -m u=rw,go=r "${themefile}" "${destdir}/index.theme"
@@ -108,7 +107,6 @@ install: all
 uninstall:
 	$(RM) -r "${destdir}"
 
-
 .PHONY: custom-theme
 custom-theme: ${configfile} ${themefile}
 
@@ -119,7 +117,6 @@ ${themefile}: ${template_themefile}
 	install -d "${buildvariantdir}"
 	cp "$<" "$@"
 
-
 .PHONY: rpm
 rpm: ${rpm_specfile}
 
@@ -129,12 +126,10 @@ ${rpm_specfile_changelog}: ${news_file}
 ${rpm_specfile}: ${rpm_spec_template} ${rpm_specfile_changelog}
 	$(MAKE_SPECFILE)
 
-
 .PHONY: clean
 clean:
 	$(RM) -r ${GENERATED_FILES}
 
-
 # Local Variables:
 # mode: makefile
 # coding: utf-8

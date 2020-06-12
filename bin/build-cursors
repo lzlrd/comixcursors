@@ -79,7 +79,7 @@ indir="${svgdir}/${ORIENTATION}"
 workdir="tmp"
 builddir="${builddir:-build/${THEMEVARIANT}}"
 # builddir="build/${THEMENAME}"
-xcursor_builddir="cursors"
+xcursor_builddir="cursors/${THEMEVARIANT}"
 export workdir builddir
 
 mkdir --parents "${builddir}"
