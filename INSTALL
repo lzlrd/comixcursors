@@ -6,17 +6,11 @@ Basic Installation
 Requirements:
 - librsvg <http://librsvg.sourceforge.net/>
 
-Download the ComixCursors sources from:
+Checkout the ComixCursors sources with git:
 
-<https://gitlab.com/limitland/comixcursors>
+    $ git clone https://gitlab.com/limitland/comixcursors.git
 
-Change into the download directory and unpack the sources::
-
-    $ tar -xjvf ComixCursors-<version>.tar.bz2
-    $ cd ComixCursors-<version>
-
-where “<version>” is the version you downloaded.
-
+Or use the source packages from the build pipeline: https://limitland.gitlab.io/comixcursors/
 When you have the required programs, issue::
 
     $ export MULTISIZE=true

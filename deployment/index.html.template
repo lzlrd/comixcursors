@@ -73,8 +73,6 @@
     <hr>
     FILELIST
     <hr>
-      There are currently difficulties with the build artifacts, some cursors are included incorrectly. We are investigating the problem and will release the corrected packages with version 0.9.2, please stay tuned.
-    <hr>
     <p>The THEMENAME git repository is hosted on gitlab: <a href="https://gitlab.com/limitland/comixcursors">https://gitlab.com/limitland/comixcursors</a></p>
     <h3><a href="javascript:history.back()" class="js-go-back go-back">Go back</a></h3>
   </div>
