@@ -101,6 +101,7 @@ function package_variant {
         cd "$packagedir"
         ls
     )
+    ln -s "${PACKAGENAME}-${VERSION}.tar.bz2" "${distdir}/${PACKAGENAME}-latest.tar.bz2"
 
     #
     # RPM packages
@@ -140,7 +141,7 @@ printf "Generating deployment index.html...\n"
 templatefile="deployment/index.html.template"
 indexfile="deployment/index.html"
 sed "s/THEMENAME/${themename_root}/g" "${templatefile}" > "${indexfile}"
-FILES=$(find ${distdir} -type f -printf '<p><a href="%f">%f<\\/a> (<code>%TY-%Tm-%Td %TH:%Tm, %k kB<\\/code>)<\\/p>\\n')
+FILES=$(find -L ${distdir} -type f -printf '<p><a href="%f">%f<\\/a> (%TY-%Tm-%Td %TH:%TM, %k kB)<\\/p>\\n')
 sed -i "s/VERSION/${VERSION}/" "${indexfile}"
 sed -i "s/FILELIST/${FILES}/" "${indexfile}"
 
