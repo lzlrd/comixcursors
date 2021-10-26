@@ -27,7 +27,7 @@ SHELL = /bin/bash
 CURSORSNAME = ComixCursors
 PACKAGENAME ?= ${CURSORSNAME}
 SUMMARY ?= The original Comix Cursors
-ICONSDIR ?= ${HOME}/.icons
+ICONSDIR ?= /usr/share/icons
 THEMENAME ?= Custom
 THEMEVARIANT ?= ${THEMENAME}-${THEMEOPTIONS}-${THEMEINCLUDE}
 

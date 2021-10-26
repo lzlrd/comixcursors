@@ -28,7 +28,7 @@ configfile_template_name="Custom"
 bindir="$(dirname $0)/bin"
 
 # Set the ICONSDIR destination to a default (if not already set).
-ICONSDIR=${ICONSDIR:-~/.icons}
+ICONSDIR=${ICONSDIR:-/usr/share/icons}
 export ICONSDIR
 
 # argument processing and usage
