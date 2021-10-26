@@ -119,7 +119,7 @@ function generate_animation_source_frames {
     local frames_count=$2
 
     first_frame_file="${indir}/${name}.svg"
-    for frame in $(seq --equal-width 1 $frames_count) ; do
+    for frame in $(seq --widths 1 $frames_count) ; do
         frame_file="${indir}/${name}.frame${frame}.svg"
         case $frame in
             1)
@@ -228,7 +228,7 @@ render_cursor_image "$name" "$compose_opts" 2 500
 name="progress"
 frames_count=24
 generate_animation_source_frames "$name" $frames_count
-for frame in $(seq --equal-width 1 $frames_count) ; do
+for frame in $(seq --widths 1 $frames_count) ; do
     compose_opts=""
     render_cursor_image "$name" "$compose_opts" $frame
 done
@@ -236,7 +236,7 @@ done
 name="wait"
 frames_count=36
 generate_animation_source_frames "$name" $frames_count
-for frame in $(seq --equal-width 1 $frames_count) ; do
+for frame in $(seq --widths 1 $frames_count) ; do
     compose_opts=""
     render_cursor_image "$name" "$compose_opts" $frame
 done
