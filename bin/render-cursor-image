@@ -151,7 +151,7 @@ if [ -z ${CURSORSIZE+x} ]; then
     reset_xcursor_config "$xcursor_config" "$frame"
 
     if [ -z ${SIZES+x} ]; then
-        SIZES=("24" "32" "48" "64")
+        SIZES=("32" "40" "48" "64")
     fi
     # Render multiple cursor sizes.
     for SIZENAMES in ${SIZES[@]} ; do
