@@ -24,7 +24,7 @@
 
 SHELL = /bin/bash
 
-CURSORSNAME = ComixCursors
+CURSORSNAME = ComizCursors
 PACKAGENAME ?= ${CURSORSNAME}
 SUMMARY ?= The original Comix Cursors
 ICONSDIR ?= /usr/share/icons
@@ -72,8 +72,8 @@ GENERATED_FILES += ${distdir}
 # Packaging files.
 news_file = NEWS
 rpm_specfile_changelog = specfile-changelog
-rpm_specfile = ${PACKAGENAME}.spec
-rpm_spec_template = ${CURSORSNAME}.spec.in
+rpm_specfile = ComixCursors.spec
+rpm_spec_template = ComixCursors.spec.in
 
 GENERATED_FILES += ${rpm_specfile_changelog} *.spec
 

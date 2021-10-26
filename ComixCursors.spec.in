@@ -5,21 +5,17 @@ Summary:        SUMMARY
 
 Group:          System/X11/Icons
 License:        GPLv3
-URL:            https://gitlab.com/limitland/comixcursors
+URL:            https://gitlab.com/lazerl0rd/comixcursors
 Source0:        %{name}-%{version}.tar.bz2
 BuildArch:	noarch
 
-Packager:	Jens Luetkens <j.luetkens@limitland.de>
+Packager:	Diab Neiroukh <lazerl0rd@thezest.dev>
 Distribution:	generic
 
 prefix: /usr/share
 
 %description
-X11 mouse theme with a comics feeling.
- The package comes with 12 different mouse themes for X11.
- 6 colors (black, blue, green, orange, red and white)
- 2 different weights (slim and normal)
- 4 sizes (small, regular, large and huge) are combined into multisize cursors
+Comix Cursors with a twist, by lazerl0rd.
 
 %prep
 %setup -q -c %{name}-%{version} -n %{name}-%{version}
@@ -30,7 +26,7 @@ X11 mouse theme with a comics feeling.
 [ "%{buildroot}" != / ] && rm -rf "%{buildroot}"
 
 install -d %{buildroot}%{prefix}/icons
-cp -r ComixCursors-* %{buildroot}%{prefix}/icons
+cp -r ComizCursors-* %{buildroot}%{prefix}/icons
 
 %clean
 [ "%{buildroot}" != / ] && rm -rf "%{buildroot}"

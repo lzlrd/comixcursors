@@ -98,9 +98,9 @@ function generate_theme {
     custom_theme="ComixCursorsConfigs/${name}.theme"
     themename=${name//-/ }
     if [[ $ORIENTATION == "LeftHanded" ]] ; then
-        facing=" left-handed"
+        facing=" Left-facing"
     else
-        facing=""
+        facing=" Right-facing"
     fi
 
     variation=" ${THEMEINCLUDE#-}" && [ -v ${THEMEINCLUDE} ] && variation=""
