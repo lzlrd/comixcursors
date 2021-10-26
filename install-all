@@ -31,12 +31,6 @@ bindir="$(dirname $0)/bin"
 ICONSDIR=${ICONSDIR:-~/.icons}
 export ICONSDIR
 
-# We want to use cursors with multiple sizes combined.
-# The script check wether MULTISIZE is exported at all, so don't export
-# MULTISIZE if you want distinct cursor sizes, comment it out here or
-# unset it from the shell.
-export MULTISIZE=true
-
 # argument processing and usage
 function show_usage_message {
     cat <<_EOT_
